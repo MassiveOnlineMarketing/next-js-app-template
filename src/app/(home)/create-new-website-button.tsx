@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Link from "next/link";
 import useWebsiteOperations from '@/presentation/hooks/useWebsiteOpperations';
 
-import { WebsiteSchemaType } from '@/application/schemas/websiteSchema';
+import { WebsiteInputSchemaType } from '@/application/schemas/websiteSchema';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 import { Dialog, DialogContent, DialogHeader } from '@/presentation/components/common/dialog'
@@ -24,9 +24,9 @@ const CreateNewWebsiteButton = () => {
     reset,
     setValue,
     formState: { errors },
-  } = useForm<WebsiteSchemaType>({});
+  } = useForm<WebsiteInputSchemaType>({});
 
-  const onSubmit: SubmitHandler<WebsiteSchemaType> = async (data) => {
+  const onSubmit: SubmitHandler<WebsiteInputSchemaType> = async (data) => {
     const res = await handleCreateWebsite(data)
     if (res.success) {
       reset()

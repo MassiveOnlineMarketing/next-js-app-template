@@ -24,4 +24,14 @@ export class Website {
     // Initialize other properties and validate as necessary
   }
 
+  static fromDto(websiteDto: CreateWebsiteDto, user: any): Website {
+    return new Website(
+      '123',
+      user.id,
+      websiteDto.websiteName,
+      websiteDto.domainUrl,
+      websiteDto.gscUrl,
+    );
+  }
+
 }
