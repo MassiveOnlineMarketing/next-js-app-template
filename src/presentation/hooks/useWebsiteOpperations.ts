@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createWebsite } from '@/application/useCases/website/createWebsite';
 import { useToast } from '../components/toast/use-toast';
-import { WebsiteSchemaType } from '@/application/schemas/websiteSchema';
+import { WebsiteInputSchemaType } from '@/application/schemas/websiteSchema';
 // import { updateWebsite } from '@/application/useCases/website/updateWebsite';
 // import { deleteWebsite } from '@/application/useCases/website/deleteWebsite';
 
@@ -10,7 +10,7 @@ function useWebsiteOperations() {
 
   const { toast } = useToast();
 
-  const handleCreateWebsite = async (websiteData: WebsiteSchemaType) => {
+  const handleCreateWebsite = async (websiteData: WebsiteInputSchemaType) => {
     setIsLoading(true);
     try {
       const response = await createWebsite(websiteData);
