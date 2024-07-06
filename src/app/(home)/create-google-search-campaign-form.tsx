@@ -30,7 +30,7 @@ export default function CreateGoogleSearchCampaignForm() {
   };
 
   return (
-    <main className="min-h-screen p-24">
+    <div className="min-h-screen p-24">
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Campaign Name:</label>
         <input
@@ -55,6 +55,6 @@ export default function CreateGoogleSearchCampaignForm() {
 
         <button type="submit">Create Campaign</button>
       </form>
-    </main>
+    </div>
   );
 }

@@ -3,7 +3,6 @@
 // Import necessary dependencies
 import { CreateGoogleSearchCampaignDto } from '@/application/dto/GoogleSearchCampaignDto';
 import { GoogleSearchCampaignService } from '@/application/services/GoogleSearchCampaignService';
-
 import googleSearchCampaignRepository from '@/infrastructure/repositories/GoogleSearchCampaignRepository';
 
 // This could be a function or a class method, depending on your design preference
@@ -25,7 +24,6 @@ export async function createGoogleSearchProject(campaignDto: CreateGoogleSearchC
   try {
     const createdCampaign = await googleSearchCampaignService.createCampaign(campaignDto);
     // Optionally, perform any post-creation actions, like sending notifications, logging, etc.
-
 
     // At the end of createGoogleSearchProject function, before returning
     const serializableCampaign = {
