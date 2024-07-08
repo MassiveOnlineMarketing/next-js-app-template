@@ -1,5 +1,5 @@
 
-import { IWebsiteRepository } from "@/domain/_repository/IWebsiteRepository";
+import { IWebsiteRepository } from "@/domain/repository/IWebsiteRepository";
 import { Website } from "@/domain/_entities/Website";
 import { db } from "../db/prisma";
 import { CreateWebsiteDto, UpdateWebsiteDto } from "@/application/dto/WebsiteDto";

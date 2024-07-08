@@ -1,4 +1,4 @@
-import { IWebsiteRepository } from "@/domain/_repository/IWebsiteRepository";
+import { IWebsiteRepository } from "@/domain/repository/IWebsiteRepository";
 import { CreateWebsiteDto, UpdateWebsiteDto } from "../dto/WebsiteDto";
 import { Website } from "@/domain/_entities/Website";
 import { AuthService } from "./AuthService";
@@ -21,14 +21,12 @@ export class WebsiteService {
   async createWebsite(websiteDto: CreateWebsiteDto): Promise<Website> {
 
     //TODO: Validate the session and user permissions
-    const session = AuthService.session()
-    const isAuthorized = AuthService.isAuthenticated(session)
-
-    if (!isAuthorized) {
-      throw new Error('Unauthorized')
+    // validate userId
+    const userId = await AuthService.getUserId();
+    if (!userId) {
+        throw new Error('Unauthorized');
     }
 
-    
     //TODO: Check if the website is already created by the user
 
 
@@ -44,7 +42,7 @@ export class WebsiteService {
     const website = new Website(websiteDto)
 
     // Persist the website entity using the repository
-    return this.websiteRepository.create(website, session.user.id);
+    return this.websiteRepository.create(website, userId);
   }
 
 
@@ -58,11 +56,10 @@ export class WebsiteService {
    */
   async updateWebsite(websiteDto: UpdateWebsiteDto): Promise<Website> {
     //TODO: Validate the session and user permissions
-    const session = AuthService.session()
-    const isAuthorized = AuthService.isAuthenticated(session)
-
-    if (!isAuthorized) {
-      throw new Error('Unauthorized')
+    // validate userId
+    const userId = await AuthService.getUserId();
+    if (!userId) {
+        throw new Error('Unauthorized');
     }
 
 

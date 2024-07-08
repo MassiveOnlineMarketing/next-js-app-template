@@ -8,7 +8,7 @@ import { WebsiteInputSchemaType } from '@/application/schemas/websiteSchema';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 import { Dialog, DialogContent, DialogHeader } from '@/presentation/components/common/dialog'
-import { ErrorMessage, InputFieldApp } from '@/presentation/components/common/inputFields';
+import { ErrorMessage, InputFieldApp } from '@/presentation/components/ui/inputFields';
 
 const CreateNewWebsiteButton = () => {
   const [open, setOpen] = useState(true)
