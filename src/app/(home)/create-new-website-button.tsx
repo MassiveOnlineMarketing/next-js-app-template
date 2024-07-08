@@ -9,18 +9,9 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 import { Dialog, DialogContent, DialogHeader } from '@/presentation/components/common/dialog'
 import { ErrorMessage, InputFieldApp } from '@/presentation/components/common/inputFields';
-import { getUserById } from './action';
 
 const CreateNewWebsiteButton = () => {
   const [open, setOpen] = useState(true)
-
-  useEffect(() => {
-    async function fetchData() {
-      const user = await getUserById('clv3tdoqv000010uqcdlbewnz')
-      console.log(user)
-    }
-    fetchData()
-  },[])
 
   const { handleCreateWebsite } = useWebsiteOperations();
 
