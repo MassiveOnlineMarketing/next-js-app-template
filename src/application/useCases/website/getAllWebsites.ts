@@ -1,12 +1,12 @@
 'use server'
 
-import { CreateWebsiteDto } from '@/application/dto/WebsiteDto';
 import { WebsiteService } from '@/application/services/WebsiteService';
+import { websiteDomainService } from '@/domain/_service/WebsiteDomainService';
 
 import websiteRepository from '@/infrastructure/repositories/WebsiteRepository';
 
 export async function getAllWebsites () {
-  const websiteService = new WebsiteService(websiteRepository);
+  const websiteService = new WebsiteService(websiteRepository, websiteDomainService);
 
   try {
     const websites = await websiteService.getAllWebsites();

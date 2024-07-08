@@ -16,12 +16,12 @@ function useWebsiteOperations() {
       const response = await createWebsite(websiteData);
       console.log('create website response (useHook):', response);
       
-      if (response.error) {
-        showErrorToast(response.error);
-        return { success: false };
-      } else {
+      if (response.success) {
         showSuccessToast('Website created successfully!');
         return { success: true };
+      } else {
+        showErrorToast(response.error?.message || 'Unknown error');
+        return { success: false };
       }
     } catch (error: any) { 
       showErrorToast(error.message || 'Unknown error');

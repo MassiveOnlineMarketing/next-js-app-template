@@ -11,14 +11,14 @@ export interface IWebsiteRepository {
    * @param userId - The ID of the user associated with the website.
    * @returns A promise that resolves with the created website entity.
    */
-  create(website: CreateWebsiteDto, userId: string): Promise<Website>;
+  create(website: Website, userId: string): Promise<Website>;
 
   /**
    * Updates an existing website entity.
    * @param website - The website data to update.
    * @returns A promise that resolves with the updated website entity.
    */
-  update(website: UpdateWebsiteDto): Promise<Website>;
+  update(website: Website): Promise<Website>;
 
   /**
    * Retrieves all website entities.

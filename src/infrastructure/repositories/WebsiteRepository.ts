@@ -5,7 +5,7 @@ import { db } from "../db/prisma";
 import { CreateWebsiteDto, UpdateWebsiteDto } from "@/application/dto/WebsiteDto";
 
 class WebsiteRepository implements IWebsiteRepository {
-  async create(website: CreateWebsiteDto, userId: string): Promise<Website> {
+  async create(website: Website, userId: string): Promise<Website> {
     // Implement database interaction to create a new website
 
     const resWebsite = await db.website.create({
@@ -18,7 +18,7 @@ class WebsiteRepository implements IWebsiteRepository {
     return resWebsite;
   }
 
-  async update(website: UpdateWebsiteDto): Promise<Website> {
+  async update(website: Website): Promise<Website> {
     const resWebsite = await db.website.update({
       where: {
         id: website.id

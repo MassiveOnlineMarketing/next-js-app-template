@@ -13,11 +13,13 @@ export async function updateWebsite(websiteDto: UpdateWebsiteDto) {
   //TODO: Check form data
 
   try {
-  const updateWebsite = await websiteService.updateWebsite(websiteDto);
+    const updateWebsite = await websiteService.updateWebsite(websiteDto);
+
+    return { success: updateWebsite };
   } catch (error) {
     const errorMessage = (error as Error).message;
     console.error(`Error updating website ${errorMessage}`);
-    return {error: errorMessage};
+    return { error: errorMessage };
   }
 
 }

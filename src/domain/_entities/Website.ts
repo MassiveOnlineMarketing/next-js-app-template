@@ -1,5 +1,15 @@
 
-import { CreateWebsiteDto } from "@/application/dto/WebsiteDto";
+import { CreateWebsiteDto, UpdateWebsiteDto } from "@/application/dto/WebsiteDto";
+import { User } from "@prisma/client";
+
+
+interface WebsiteConstructorParams {
+  id?: string;
+  userId: string;
+  websiteName: string;
+  domainUrl: string;
+  gscUrl?: string;
+}
 
 export class Website {
   id: string;
@@ -10,28 +20,27 @@ export class Website {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(id: string, userId: string, websiteName: string, domainUrl: string, gscUrl?: string) {
-    if (websiteName !== '') {
-      throw new Error('websiteName must be empty');
+  constructor(params: WebsiteConstructorParams | CreateWebsiteDto | UpdateWebsiteDto, user?: User) {
+    const isDto = !('userId' in params);
+    if (isDto && !user) {
+      throw new Error("User must be provided when creating a website with CreateWebsiteDto or UpdateWebsiteDto");
     }
-    this.id = id;
-    this.userId = userId;
-    this.websiteName = websiteName;
-    this.domainUrl = domainUrl;
-    this.gscUrl = gscUrl;
+    this.id = 'id' in params && params.id ? params.id : generateUUID();
+    this.userId = isDto ? user!.id : params.userId;
+    this.websiteName = params.websiteName;
+    this.domainUrl = params.domainUrl;
+    this.gscUrl = 'gscUrl' in params ? params.gscUrl : null;
     this.createdAt = new Date();
     this.updatedAt = new Date();
     // Initialize other properties and validate as necessary
   }
+  
+}
 
-  static fromDto(websiteDto: CreateWebsiteDto, user: any): Website {
-    return new Website(
-      '123',
-      user.id,
-      websiteDto.websiteName,
-      websiteDto.domainUrl,
-      websiteDto.gscUrl,
-    );
-  }
-
+export function generateUUID() {
+  // Returns a string containing a randomly generated UUID.
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
