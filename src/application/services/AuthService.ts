@@ -6,8 +6,12 @@ import { TokenService } from "./TokensService";
 
 import emailRepository from "@/infrastructure/repositories/EMailRepository";
 import userRepository from "@/infrastructure/repositories/UserRepository";
+import tokenRepository from "@/infrastructure/repositories/TokensRepository";
 
-export class AuthService {
+// 
+import bcrypt from "bcryptjs";
+
+export class AuthService implements AuthInterface {
 
   static session(): Promise<Session | null> {
     return auth()
@@ -20,6 +24,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string, callbackUrl?: string | null) {
+    console.log('login', email, password, callbackUrl)
     const existingUser = await userRepository.getByEmail(email);
 
     if (!existingUser || !existingUser.email || !existingUser.password) {
@@ -59,42 +64,155 @@ export class AuthService {
   }
 
   async register(email: string, password: string, name: string) {
-    console.log('regesting user service')
-
     const existingUser = await userRepository.getByEmail(email);
-
     if (existingUser) {
       return { error: "Email already in use!" };
     }
 
     await userRepository.create(email, password, name);
 
+    //? Send verification email
     const verificationToken = await new TokenService().generateVerificationToken(email);
-    
-    
-    emailRepository.sendVerificationEmail(
-      verificationToken.email,
-      verificationToken.token,
-    );
+    emailRepository.sendVerificationEmail(verificationToken.email, verificationToken.token);
 
     return { success: "Confirmation email sent!" };
   }
 
+  async resetPassword(email: string) {
+    const existingUser = await userRepository.getByEmail(email);
+    if (!existingUser) {
+      return { error: "Email does not exist!" };
+    }
 
-  // static session(): Promise<Session> {
-  //   return auth().then(session => {
-  //     if (session === null) {
-  //       throw new Error('Session is null');
-  //     }
-  //     return session;
-  //   });
-  // }
+    const passwordResetToken = await new TokenService().generatePasswordResetToken(email);
+    emailRepository.sendPasswordResetEmail(passwordResetToken.email, passwordResetToken.token);
+
+    return { success: "Reset email sent!" };
+  }
+
+  async newPassword(password: string, token: string) {
+    const existingToken = await tokenRepository.getPasswordResetTokenByEmail(token);
+    if (!existingToken) {
+      return { error: "Invalid token!" };
+    }
+
+    const hasExpired = new Date(existingToken.expires) < new Date();
+    if (hasExpired) {
+      return { error: "Token has expired!" };
+    }
+
+    const existingUser = await userRepository.getByEmail(existingToken.email);
+    if (!existingUser) {
+      return { error: "Email does not exist!" };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await userRepository.updatePassword(existingUser.id, hashedPassword);
+    await tokenRepository.deletePasswordResetToken(existingToken.id);
+
+    return { success: "Password updated!" };
+  }
+
+  async newVerification(token: string) {
+    const existingtoken = await tokenRepository.getVerificationTokenByToken(token);
+    if (!existingtoken) {
+      return { error: "Token does not exist!" };
+    }
+
+    const hasExpired = new Date(existingtoken.expires) < new Date();
+    if (hasExpired) {
+      return { error: "Token has expired!" };
+    }
+
+    if (existingtoken.userId !== null) {
+      const existingUser = await userRepository.getById(existingtoken.userId);
+      if (!existingUser) {
+        return { error: "Email does not exist!" };
+      }
+
+      await userRepository.updateEmailVerified(existingUser.id, existingtoken.email);
+      await tokenRepository.deleteVerificationToken(existingtoken.id);
+
+      return { success: "Email updated!" };
+    }
+
+    const existingUser = await userRepository.getByEmail(existingtoken.email);
+    if (!existingUser) {
+      return { error: "Email does not exist!" };
+    }
+
+    await userRepository.updateEmailVerified(existingUser.id, existingtoken.email);
+    await tokenRepository.deleteVerificationToken(existingtoken.id);
+
+    return { success: "Email verified!" };
+  }
+
+  async updateUserDetails(currentPassword: string | undefined, password: string | undefined, passwordConfirmation: string | undefined, email: string | null, name: string | null) {
+    const session = await auth();
+    const user = session?.user;
+    if (!user) {
+      return { error: "Unauthorized" };
+    }
+
+    const currentUser = await userRepository.getById(user.id as string);
+    if (!currentUser) {
+      return { error: "Unauthorized" };
+    }
+
+    let data = {
+      name: name || undefined,
+      email: email || undefined,
+      password: password || undefined,
+    };
+
+
+    if (email && email !== currentUser.email) {
+      const existingUser = await userRepository.getByEmail(email);
+      if (existingUser && existingUser.id !== user.id) {
+        return { error: "Email is already in use" };
+      }
+
+      const verificationToken = await new TokenService().generateVerificationToken(email, user.id);
+      emailRepository.sendVerificationEmail(email, verificationToken.token);
+
+      return { success: "Verification email sent!" };
+    }
+
+    if (
+      currentPassword &&
+      password &&
+      passwordConfirmation &&
+      currentUser.password
+    ) {
+
+
+      const isNewPasswordValid = password === passwordConfirmation
+
+      if (!isNewPasswordValid) {
+        return { error: "Password and password confirmation do not match." };
+      }
+
+      const doesCurrentPasswordMatch = await bcrypt.compare(
+        currentPassword,
+        currentUser.password,
+      );
+
+      if (!doesCurrentPasswordMatch) {
+        return { error: "Current password is incorrect." };
+      }
+
+      data.password = await bcrypt.hash(password, 10);
+    }
+    
+    const updatedUser = await userRepository.update(data, user.id as string);
+
+    return { success: "User details updated!", data: updatedUser };
+  }
 
   static isAuthenticated(session: Session | null): boolean {
     return !!session;
   }
 
-  // Additional methods for authorization checks can be added here
 }
 
 import NextAuth from "next-auth";
@@ -102,11 +220,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "../../../auth.config";
 
 import { db } from "@/infrastructure/db/prisma";
-import { getUserByEmail, getUserById } from "@/presentation/auth/data/user";
-import { updateGoogleAccount } from "@/presentation/auth/data/account";
 import { DEFAULT_LOGIN_REDIRECT } from "../../../routes";
-import { IEmailService } from "@/domain/repository/IEMailMailRepository";
-
+import { AuthInterface } from "../interface/authInterface";
 
 
 export const {
@@ -268,4 +383,41 @@ const updateLoginProvider = async (id: string, provider: string) => {
   } catch {
     return null;
   }
+};
+
+const getUserById = async (id: string) => {
+  try {
+    const user = await db.user.findUnique({ where: { id } });
+
+    return user;
+  } catch {
+    return null;
+  }
+};
+export const updateGoogleAccount = async (
+  userId: string,
+  refresh_token: string,
+  scope: string,
+) => {
+  return await db.$transaction(async (prisma) => {
+    const account = await prisma.account.findFirst({
+      where: { userId: userId },
+    });
+
+    if (!account) {
+      return null;
+    }
+
+    const updatedAccount = await prisma.account.update({
+      where: {
+        id: account.id,
+      },
+      data: {
+        refresh_token,
+        scope,
+      },
+    });
+
+    return updatedAccount;
+  });
 };

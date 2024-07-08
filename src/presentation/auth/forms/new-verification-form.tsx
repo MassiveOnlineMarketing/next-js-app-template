@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { CardWrapper } from "@/presentation/auth/forms/card-wrapper";
 import { FormError } from "@/presentation/auth/forms/form-error";
 import { FormSuccess } from "@/presentation/auth/forms/form-success";
-import { newVerification } from "@/presentation/auth/actions/new-verification";
+import { newVerification } from "@/application/useCases/auth/newVerification";
 
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>();

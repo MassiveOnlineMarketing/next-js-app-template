@@ -6,8 +6,8 @@ import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { newPassword } from "@/application/useCases/auth/newPassword";
 import { NewPasswordSchema } from "@/application/schemas/authSchema";
-import { newPassword } from "@/presentation/auth/actions/new-password";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
 import { CardWrapper } from "./card-wrapper";
@@ -39,6 +39,7 @@ export const NewPasswordForm = () => {
     startTransition(() => {
       newPassword(values, token).then((data) => {
         setError(data?.error);
+        // @ts-ignore
         setSuccess(data?.success);
       });
     });

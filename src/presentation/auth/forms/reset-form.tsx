@@ -6,7 +6,7 @@ import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ResetSchema } from "@/application/schemas/authSchema";
-import { reset } from "@/presentation/auth/actions/reset";
+import { reset } from "@/application/useCases/auth/reset";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
 import { CardWrapper } from "./card-wrapper";
@@ -35,6 +35,7 @@ export const ResetForm = () => {
     startTransition(() => {
       reset(values).then((data) => {
         setError(data?.error);
+        // @ts-ignore
         setSuccess(data?.success);
       });
     });

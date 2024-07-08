@@ -12,14 +12,13 @@ export const login = async (
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Invalid fields!" };  
   }
 
   const { email, password, code } = validatedFields.data;
 
 
   const authService = new AuthService();
-
   const login = await authService.login(email, password, callbackUrl);
 
   return login;

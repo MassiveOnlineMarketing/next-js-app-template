@@ -5,11 +5,9 @@ import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 
 import { LoginSchema } from "@/application/schemas/authSchema";
-// import { getUserByEmail } from "@/auth/data/user";
 import { db } from "@/infrastructure/db/prisma";
 
 import bcrypt from "bcryptjs";
-import { getUserByEmail } from "@/presentation/auth/data/user";
 
 export default {
   providers: [
@@ -47,3 +45,14 @@ export default {
     }),
   ],
 } satisfies NextAuthConfig;
+
+
+const getUserByEmail = async (email: string) => {
+  try {
+    const user = await db.user.findUnique({ where: { email } });
+
+    return user;
+  } catch {
+    return null;
+  }
+};
