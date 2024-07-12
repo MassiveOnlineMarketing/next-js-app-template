@@ -21,4 +21,12 @@ export interface IEmailService {
    * @returns A promise that resolves when the email is sent.
    */
   sendPasswordResetEmail(email: string, token: string): Promise<void>;
+
+  /**
+   * Sends a two-factor authentication token email to the specified email address with the given token.
+   * @param email - The email address to send the two-factor authentication token email to.
+   * @param token - The two-factor authentication token to include in the email.
+   * @returns A promise that resolves when the email is sent.
+   */
+  sendTwoFactorTokenEmail(email: string, token: string): Promise<void>;
 }

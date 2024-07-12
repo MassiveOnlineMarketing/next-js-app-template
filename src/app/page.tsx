@@ -1,10 +1,13 @@
-import { Toaster } from "@/presentation/components/toast/toaster";
+
+
 import CreateNewWebsiteButton from "./(home)/create-new-website-button";
-import WebsitesList from "./(home)/websites-list";
-import CreateGoogleSearchCampaignForm from "./(home)/create-google-search-campaign-form";
+import currentUser from "@/presentation/auth/actions/currentUser";
 
 
-export default function Home() {
+export default async function Home() {
+  const session = await currentUser()
+  console.log('session user', session)
+
 
   return (
     <div className="min-h-screen p-24">

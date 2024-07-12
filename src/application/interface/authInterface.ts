@@ -1,4 +1,5 @@
 import { Session } from "next-auth";
+import { ExtendedUser } from "../../../next-auth";
 
 type SucessResponse = {
   success: string;
@@ -14,6 +15,19 @@ type ErrorResponse = {
  * Represents the interface for authentication operations.
  */
 export interface AuthInterface {
+
+  /**
+   * Returns the current user.
+   * @returns A promise that resolves to a success response, error response, or null.
+   */
+  session: () => Promise<Session | null>;
+
+  /**
+   * Returns the current user.
+   * @returns A promise that resolves to a success response, error response, or null.
+   */
+  currentUser: () => Promise<ExtendedUser | null>;
+
   /**
    * Logs in a user with the provided email and password.
    * @param email - The user's email.

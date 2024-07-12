@@ -4,27 +4,36 @@ import { Session } from "next-auth";
 import { AuthError } from "next-auth";
 import { TokenService } from "./TokensService";
 
-import emailRepository from "@/infrastructure/repositories/EMailRepository";
+import EmailRepository from "@/infrastructure/repositories/EMailRepository";
 import userRepository from "@/infrastructure/repositories/UserRepository";
 import tokenRepository from "@/infrastructure/repositories/TokensRepository";
 
 // 
 import bcrypt from "bcryptjs";
 
+
+//* Client components should use the useSession() hook
+//  hooks are located in the presentation layer under the auth/hooks folder. 
+
+//* Server components should use the auth() function
+//  functions are located in the application layer under auth/actions folder.
+
+//* For 'back-end' server functions use the AuthService class
+
 export class AuthService implements AuthInterface {
 
-  static session(): Promise<Session | null> {
+  async session(): Promise<Session | null> {
     return auth()
   }
 
-  static getUserId() {
-    return auth().then((session) => {
-      return session?.user?.id;
-    });
+  async currentUser(): Promise<ExtendedUser | null>{
+    const session = await auth();
+    const user = session?.user as ExtendedUser;
+
+    return user || null
   }
 
   async login(email: string, password: string, callbackUrl?: string | null) {
-    console.log('login', email, password, callbackUrl)
     const existingUser = await userRepository.getByEmail(email);
 
     if (!existingUser || !existingUser.email || !existingUser.password) {
@@ -35,7 +44,7 @@ export class AuthService implements AuthInterface {
 
       const verificationToken = await new TokenService().generateVerificationToken(email, existingUser.id);
 
-      emailRepository.sendVerificationEmail(
+      const h = new EmailRepository().sendVerificationEmail(
         verificationToken.email,
         verificationToken.token,
       );
@@ -73,7 +82,7 @@ export class AuthService implements AuthInterface {
 
     //? Send verification email
     const verificationToken = await new TokenService().generateVerificationToken(email);
-    emailRepository.sendVerificationEmail(verificationToken.email, verificationToken.token);
+    const h = new EmailRepository().sendVerificationEmail(verificationToken.email, verificationToken.token);
 
     return { success: "Confirmation email sent!" };
   }
@@ -85,7 +94,7 @@ export class AuthService implements AuthInterface {
     }
 
     const passwordResetToken = await new TokenService().generatePasswordResetToken(email);
-    emailRepository.sendPasswordResetEmail(passwordResetToken.email, passwordResetToken.token);
+    const h = new EmailRepository().sendPasswordResetEmail(passwordResetToken.email, passwordResetToken.token);
 
     return { success: "Reset email sent!" };
   }
@@ -173,7 +182,7 @@ export class AuthService implements AuthInterface {
       }
 
       const verificationToken = await new TokenService().generateVerificationToken(email, user.id);
-      emailRepository.sendVerificationEmail(email, verificationToken.token);
+      const h = new EmailRepository().sendVerificationEmail(email, verificationToken.token);
 
       return { success: "Verification email sent!" };
     }
@@ -208,11 +217,6 @@ export class AuthService implements AuthInterface {
 
     return { success: "User details updated!", data: updatedUser };
   }
-
-  static isAuthenticated(session: Session | null): boolean {
-    return !!session;
-  }
-
 }
 
 import NextAuth from "next-auth";
@@ -222,6 +226,7 @@ import authConfig from "../../../auth.config";
 import { db } from "@/infrastructure/db/prisma";
 import { DEFAULT_LOGIN_REDIRECT } from "../../../routes";
 import { AuthInterface } from "../interface/authInterface";
+import { ExtendedUser } from "../../../next-auth";
 
 
 export const {
@@ -238,6 +243,7 @@ export const {
   session: { strategy: "jwt" },
   events: {
     async linkAccount({ user, account }) {
+
       await db.user.update({
         where: { id: user.id },
         data: { emailVerified: new Date() },
@@ -269,7 +275,7 @@ export const {
   callbacks: {
     // * Triggered when a user signs in or gives permissions using sign in function
     async signIn({ user, account }) {
-      // console.log('signIn', user, account)
+      console.log('signIn', user, account)
 
       // * Allow OAuth without email verification
       if (account?.provider !== "credentials") {
@@ -292,7 +298,7 @@ export const {
 
       // * only triggers when email has been used to create an account
       if (user.id) {
-        const existingUser = await getUserById(user.id);
+        const existingUser = await userRepository.getById(user.id);
 
         // Prevent sign in without email verification
         if (!existingUser?.emailVerified) return false;
@@ -320,7 +326,7 @@ export const {
       if (!token.sub) return token;
 
       // Fetch the existing user
-      const existingUser = await getUserById(token.sub);
+      const existingUser = await userRepository.getById(token.sub);
 
       // If the user doesn't exist, return the token as is
       if (!existingUser) return token;
@@ -344,7 +350,7 @@ export const {
     // is available in auth()
     // TODO: Check why token is not working
     async session({ session, token }: any) {
-      const latestUserData = await getUserById(token.sub);
+      const latestUserData = await userRepository.getById(token.sub);
 
       // If there's a user in the session, add extra data to the user
       if (session.user && latestUserData) {
@@ -385,15 +391,7 @@ const updateLoginProvider = async (id: string, provider: string) => {
   }
 };
 
-const getUserById = async (id: string) => {
-  try {
-    const user = await db.user.findUnique({ where: { id } });
 
-    return user;
-  } catch {
-    return null;
-  }
-};
 export const updateGoogleAccount = async (
   userId: string,
   refresh_token: string,

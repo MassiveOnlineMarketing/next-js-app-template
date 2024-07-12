@@ -1,7 +1,9 @@
-import { IWebsiteRepository } from "@/domain/repository/IWebsiteRepository";
 import { CreateWebsiteDto, UpdateWebsiteDto } from "../dto/WebsiteDto";
-import { Website } from "@/domain/_entities/Website";
+
 import { AuthService } from "./AuthService";
+
+import { Website } from "@/domain/_entities/Website";
+import { IWebsiteRepository } from "@/domain/repository/IWebsiteRepository";
 import { IWebsiteDomainService } from "@/domain/_service/IWebsiteDomainService";
 
 
@@ -80,6 +82,9 @@ export class WebsiteService {
   }
 
   async getAllWebsites(): Promise<Website[]> {
+    if (!this.websiteRepository) {
+      throw new Error('Website repository is not defined');
+    }
     return this.websiteRepository.getAll();
   }
 }
