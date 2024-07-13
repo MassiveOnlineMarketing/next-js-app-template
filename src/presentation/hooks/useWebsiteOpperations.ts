@@ -24,7 +24,7 @@ function useWebsiteOperations() {
         return { success: false };
       }
     } catch (error: any) { 
-      showErrorToast(error.message || 'Unknown error');
+      console.error('error creating website:', error);
       return { success: false };
     } finally {
       setIsLoading(false);

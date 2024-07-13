@@ -4,6 +4,8 @@ import "./globals.css";
 
 import { Toaster } from "@/presentation/components/toast/toaster";
 import AuthProvider from "./app/layout";
+import ReactQueryProvider from "./_providers/reactQueryProvider";
+import { UserAccountStoreProvider } from "./_providers/userAccountStoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,13 +22,17 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <AuthProvider>
-        <body className={inter.className}>
-          <main>
-            {children}
-          </main>
+        <UserAccountStoreProvider>
+          <ReactQueryProvider>
+            <body className={inter.className}>
+              <main>
+                {children}
+              </main>
 
-          <Toaster />
-        </body>
+              <Toaster />
+            </body>
+          </ReactQueryProvider>
+        </UserAccountStoreProvider>
       </AuthProvider>
     </html>
   );

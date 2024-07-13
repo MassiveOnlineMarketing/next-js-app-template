@@ -8,10 +8,14 @@ import { IWebsiteDomainService } from "@/domain/_service/IWebsiteDomainService";
 
 
 export class WebsiteService {
+  private authService: AuthService;
+
   constructor(
     private websiteRepository: IWebsiteRepository,
     private websiteDomainService: IWebsiteDomainService
-  ) {}
+  ) {
+    this.authService = new AuthService();
+  }
 
   /**
    * Creates a new website.
@@ -21,30 +25,29 @@ export class WebsiteService {
    * @throws An error if the user is unauthorized or if the domain is not available.
    */
   async createWebsite(websiteDto: CreateWebsiteDto): Promise<Website> {
-
     //TODO: Validate the session and user permissions
     // validate userId
-    const userId = await AuthService.getUserId();
-    if (!userId) {
-        throw new Error('Unauthorized');
+    const user = await this.authService.currentUser();
+    if (!user?.id) {
+      throw new Error('Unauthorized');
     }
 
     //TODO: Check if the website is already created by the user
 
 
     //TODO: Validate business rules and invariants, this can be done in the domain service layer
-    // For example, check if the website name is unique, etc.
-    const isDomainAvailable = await this.websiteDomainService.verifyDomainAvailability(websiteDto.domainUrl)
-    if (!isDomainAvailable) {
-      throw new Error('Domain is not available')
-    }
+    // // For example, check if the website name is unique, etc.
+    // const isDomainAvailable = await this.websiteDomainService.verifyDomainAvailability(websiteDto.domainUrl)
+    // if (!isDomainAvailable) {
+    //   throw new Error('Domain is not available')
+    // }
 
 
     // TODO: when all the validations are passed create the website
-    const website = new Website(websiteDto)
+    const website = new Website(websiteDto, user.id)
 
     // Persist the website entity using the repository
-    return this.websiteRepository.create(website, userId);
+    return this.websiteRepository.create(website, user.id);
   }
 
 
@@ -59,9 +62,9 @@ export class WebsiteService {
   async updateWebsite(websiteDto: UpdateWebsiteDto): Promise<Website> {
     //TODO: Validate the session and user permissions
     // validate userId
-    const userId = await AuthService.getUserId();
-    if (!userId) {
-        throw new Error('Unauthorized');
+    const user = await this.authService.currentUser();
+    if (!user?.id) {
+      throw new Error('Unauthorized');
     }
 
 

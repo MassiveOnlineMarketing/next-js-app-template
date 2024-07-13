@@ -23,6 +23,6 @@ export async function createWebsite(websiteDto: CreateWebsiteDto) {
   } catch (error) {
     const errorMessage = (error as Error).message;
     console.error(`Error creating website ${errorMessage}`);
-    return { success: false, error: { message: errorMessage } };
+    return { success: false, error: { message: 'Something happend please try again later' } };
   }
 }

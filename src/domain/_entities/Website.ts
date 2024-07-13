@@ -20,13 +20,17 @@ export class Website {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(params: WebsiteConstructorParams | CreateWebsiteDto | UpdateWebsiteDto, user?: User) {
+  /**
+   * Represents a Website entity.
+   */
+  constructor(params: WebsiteConstructorParams | CreateWebsiteDto | UpdateWebsiteDto, userId?: string) {
     const isDto = !('userId' in params);
-    if (isDto && !user) {
+    if (isDto && !userId) {
       throw new Error("User must be provided when creating a website with CreateWebsiteDto or UpdateWebsiteDto");
     }
+    console.log('Website constructor params:', params);
     this.id = 'id' in params && params.id ? params.id : generateUUID();
-    this.userId = isDto ? user!.id : params.userId;
+    this.userId = isDto ? userId! : params.userId;
     this.websiteName = params.websiteName;
     this.domainUrl = params.domainUrl;
     this.gscUrl = 'gscUrl' in params ? params.gscUrl : null;

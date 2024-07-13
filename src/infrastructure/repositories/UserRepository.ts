@@ -1,6 +1,7 @@
 import { IUserRepository } from '@/domain/repository/IUserRepository';
 import { User } from '@/domain/_entities/User';
 import { db } from '@/infrastructure/db/prisma';
+import { Account } from '@prisma/client';
 
 
 class UserRepository implements IUserRepository {
@@ -29,6 +30,14 @@ class UserRepository implements IUserRepository {
       where: { id },
     });
 
+    return user;
+  }
+
+  async getAccountById(id: string): Promise<Account | null> {
+    const user = await db.account.findFirst({
+      where: { userId: id },
+    });
+    
     return user;
   }
 

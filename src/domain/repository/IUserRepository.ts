@@ -1,3 +1,4 @@
+import { Account } from "@prisma/client";
 import { User } from "../_entities/User";
 
 /**
@@ -26,6 +27,13 @@ export interface IUserRepository {
    * @returns A promise that resolves to the found user, or null if not found.
    */
   getById(id: string): Promise<User | null>;
+
+  /**
+   * Retrieves an account by the user ID.
+   * @param id - The ID of the user.
+   * @returns A promise that resolves to the found account, or null if not found.
+   */
+  getAccountById(id: string): Promise<Account | null>;
 
   /**
    * Updates the email verification status of a user.
