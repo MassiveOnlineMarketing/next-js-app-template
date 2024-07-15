@@ -1,9 +1,12 @@
 import React from 'react'
 
 import LogoutButton from '@/presentation/auth/components/logout-button'
-import WebsiteSelectionButton from '@/presentation/components/website-selection-button'
 import ClientComp from './clientcomp'
-import UpdateWebsiteButton from '@/presentation/components/update-website-button'
+import Link from 'next/link'
+
+
+
+
 
 const page = async () => {
 
@@ -12,8 +15,10 @@ const page = async () => {
       page
       <LogoutButton />
       <ClientComp />
-      <WebsiteSelectionButton />
-      <UpdateWebsiteButton />
+
+      <Link href="/app/search/website">
+        Website
+      </Link>
     </div>
   )
 }

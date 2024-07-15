@@ -2,11 +2,16 @@
 
 import React, { useState } from 'react'
 
-import { Cog6ToothIcon } from "@heroicons/react/20/solid";
+import { useWebsiteDetailsStore } from '../../stores/website-details-store';
 import WebsiteFormDialog from './website-form-dialog';
-import { useWebsiteDetailsStore } from '../stores/website-details-store';
+import { cn } from '../../lib/utils';
 
-const UpdateWebsiteButton = () => {
+type UpdateWebsiteButtonProps = {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const UpdateWebsiteButton = ({ children, className }: UpdateWebsiteButtonProps) => {
   const [openWebsiteDialog, setOpenWebsiteDialog] = useState(false);
   const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
   
@@ -14,12 +19,12 @@ const UpdateWebsiteButton = () => {
     <div>
       <button
         onClick={() => setOpenWebsiteDialog(true)}
-        className="py-2 flex gap-4 items-center"
+        className={cn(
+          "py-2 flex gap-4 items-center",
+          className
+        )}
       >
-        <Cog6ToothIcon className="w-6 h-6 text-gray-400" />
-        <span className="text-gray-500 text-base leading-6 font-medium">
-          Website Settings
-        </span>
+        {children}
       </button>
       <WebsiteFormDialog open={openWebsiteDialog} setOpen={setOpenWebsiteDialog} website={currentWebsite}/>
     </div>
