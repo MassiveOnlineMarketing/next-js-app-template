@@ -89,10 +89,27 @@ export class WebsiteService {
     return this.websiteRepository.update(website);
   }
 
-  async getAllWebsites(): Promise<Website[]> {
-    if (!this.websiteRepository) {
-      throw new Error('Website repository is not defined');
+
+  async deleteWebsite(websiteId: string): Promise<boolean> {
+    const user = await this.authService.currentUser();
+    if (!user?.id) {
+      throw new Error('Unauthorized');
     }
+
+    const existingWebsite = await this.websiteRepository.getById(websiteId);
+    if (!existingWebsite) {
+      throw new Error('Website not found');
+    }
+
+    if (existingWebsite.userId !== user.id) {
+      throw new Error('Unauthorized');
+    }
+
+    return this.websiteRepository.delete(websiteId);
+  }
+
+  async getAllWebsites(): Promise<Website[]> {
+
     return this.websiteRepository.getAll();
   }
 

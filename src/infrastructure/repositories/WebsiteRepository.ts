@@ -6,8 +6,6 @@ import { IWebsiteRepository } from "@/domain/repository/IWebsiteRepository";
 
 class WebsiteRepository implements IWebsiteRepository {
   async create(website: Website, userId: string): Promise<Website> {
-    // Implement database interaction to create a new website
-
     const resWebsite = await db.website.create({
       data: {
         ...website,
@@ -31,8 +29,17 @@ class WebsiteRepository implements IWebsiteRepository {
     return resWebsite;
   }
 
+  async delete (websiteId: string): Promise<boolean> {
+    const website = await db.website.delete({
+      where: {
+        id: websiteId
+      }
+    })
+
+    return !!website;
+  }
+
   async getAll(): Promise<Website[]> {
-    // Implement database interaction to get all websites
     const websites = await db.website.findMany();
 
     return websites;
@@ -44,6 +51,14 @@ class WebsiteRepository implements IWebsiteRepository {
     })
 
     return websites;
+  }
+
+  async getById(websiteId: string): Promise<Website | null> {
+    const website = await db.website.findUnique({
+      where: { id: websiteId }
+    })
+
+    return website;
   }
 }
 

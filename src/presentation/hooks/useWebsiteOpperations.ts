@@ -9,17 +9,35 @@ import { WebsiteInputSchemaType } from '@/application/schemas/websiteSchema';
 // Use cases
 import { createWebsite } from '@/application/useCases/website/createWebsite';
 import { updateWebsite } from '@/application/useCases/website/updateWebsite';
+import { deleteWebsite } from '@/application/useCases/website/deleteWebsite';
 
 
 
+/**
+ * Custom hook for website operations.
+ * Provides functions for creating, updating, and deleting websites.
+ * Also manages loading state and displays toast messages.
+ *
+ * @returns An object containing the website operation functions and loading state.
+ */
 function useWebsiteOperations() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
-  const setWebsiteDetails = useWebsiteDetailsStore((state) => state.setWebsiteDetails);
-  const addWebsiteToStore = useWebsiteDetailsStore((state) => state.addWebsite);
-  const updateWebsiteInStore = useWebsiteDetailsStore((state) => state.updateWebsite);
+  const { setWebsiteDetails, removeWebsiteFromStore, resetWebsiteDetails, addWebsiteToStore, updateWebsiteInStore } = useWebsiteDetailsStore(state => ({
+    addWebsiteToStore: state.addWebsite,
+    updateWebsiteInStore: state.updateWebsite,
+    setWebsiteDetails: state.setWebsiteDetails,
+    removeWebsiteFromStore: state.removeWebsite,
+    resetWebsiteDetails: state.resetWebsiteDetails
+  }));
 
+  /**
+   * Handles the creation of a website with toast messages.
+   * 
+   * @param websiteData - The data for the website to be created.
+   * @returns A promise that resolves to an object indicating the success of the operation.
+   */
   const handleCreateWebsite = async (websiteData: WebsiteInputSchemaType) => {
     setIsLoading(true);
     try {
@@ -46,6 +64,12 @@ function useWebsiteOperations() {
     }
   };
 
+  /**
+   * Updates a website with the provided data with toast messages.
+   * @param websiteData - The data to update the website with.
+   * @param websiteId - The ID of the website to update.
+   * @returns A promise that resolves to an object with a `success` property indicating whether the update was successful.
+   */
   const handleUpdateWebsite = async (websiteData: WebsiteInputSchemaType, websiteId: string) => {
     setIsLoading(true);
     try {
@@ -68,18 +92,34 @@ function useWebsiteOperations() {
     }
   }
 
-  // const handleDeleteWebsite = async (websiteId) => {
-  //   setIsLoading(true);
-  //   try {
-  //     await deleteWebsite(websiteId);
-  //     toast.success('Website deleted successfully!');
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     toast.error(`Error deleting website: ${error.message}`);
-  //     setIsLoading(false);
-  //     throw error;
-  //   }
-  // };
+  /**
+   * Handles the deletion of a website  with toast messages.
+   * 
+   * @param websiteId - The ID of the website to be deleted.
+   * @returns An object indicating the success of the deletion operation.
+   */
+  const handleDeleteWebsite = async (websiteId: string) => {
+    setIsLoading(true);
+    try {
+      const response = await deleteWebsite(websiteId);
+
+      if (response.success) {
+        removeWebsiteFromStore(websiteId);
+        resetWebsiteDetails();
+        showSuccessToast('Website deleted successfully!');
+        return { success: true };
+      } else {
+        showErrorToast(response.error || 'Unknown error');
+        return { success: false };
+      }
+    } catch (error: any) {
+      console.error('error deleting website:', error);
+      showErrorToast(`Error deleting website`);
+      return { success: false };
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const showErrorToast = (message: string) => {
     toast({
@@ -96,8 +136,7 @@ function useWebsiteOperations() {
     });
   };
 
-  // return { handleCreateWebsite, handleUpdateWebsite, handleDeleteWebsite, isLoading };
-  return { handleCreateWebsite, handleUpdateWebsite, isLoading };
+  return { handleCreateWebsite, handleUpdateWebsite, handleDeleteWebsite, isLoading };
 }
 
 

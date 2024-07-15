@@ -13,7 +13,7 @@ import { WebsiteInputSchemaType } from '@/application/schemas/websiteSchema';
 import { useForm, SubmitHandler, Controller, Control } from "react-hook-form";
 import { ErrorMessage, InputFieldApp } from '@/presentation/components/ui/inputFields';
 
-import { Dialog, DialogContent, DialogHeader } from '@/presentation/components/common/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/presentation/components/common/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/presentation/components/ui/select';
 import { Website } from '@/domain/_entities/Website';
 
@@ -29,7 +29,7 @@ const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
   setOpen,
   website,
 }) => {
-  const { handleCreateWebsite, handleUpdateWebsite } = useWebsiteOperations();
+  const { handleCreateWebsite, handleUpdateWebsite, handleDeleteWebsite } = useWebsiteOperations();
 
   const {
     register,
@@ -43,9 +43,9 @@ const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
 
   useEffect(() => {
     if (website) {
-      setValue("websiteName", website.websiteName ?? '');
-      setValue("domainUrl", website.domainUrl ?? '');
-      setValue("gscUrl", website.gscUrl  ?? '');
+      setValue("websiteName", website.websiteName);
+      setValue("domainUrl", website.domainUrl);
+      setValue("gscUrl", website.gscUrl ?? '');
     }
   }, [open]);
 
@@ -65,16 +65,26 @@ const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
     }
   }
 
+  const onDelete = async () => {
+    if (!website) return
+    const res = await handleDeleteWebsite(website.id)
+    if (res.success) {
+      reset()
+      setOpen(false)
+    }
+  }
+
+
   return (
     <div className='p-4 bg-gray-50 rounded-lg w-fit'>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <h2 className="font-medium text-2xl text-gray-800">
+            <DialogTitle className="font-medium text-2xl text-gray-800">
               {website
                 ? "Update your Website"
                 : "Setup your website"}
-            </h2>
+            </DialogTitle>
             <p className="font-medium text-base text-gray-500 pt-[4px]">
               Please enter the details of your website
             </p>
@@ -105,12 +115,24 @@ const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
 
             <GoogleSearchConsoleSiteSelector control={control} />
 
-            <button
-              type="submit"
-              className="mt-8 px-6 py-2 w-fit flex mx-auto rounded-lg text-lg font-semibold"
-            >
-              {website ? "Update" : "Create"}
-            </button>
+            <div className='mt-8 w-full inline-flex justify-center text-lg font-semibold'>
+              {/* TODO: button styles */}
+              {website && (
+                <button
+                  onClick={onDelete}
+                  type='button'
+                  className=" px-6 py-2 w-fit flex rounded-lg text-red-500"
+                >
+                  Delete
+                </button>
+              )}
+              <button
+                type="submit"
+                className=" px-6 py-2 w-fit flex rounded-lg text-green-500"
+              >
+                {website ? "Update" : "Create"}
+              </button>
+            </div>
           </form>
         </DialogContent>
       </Dialog>
