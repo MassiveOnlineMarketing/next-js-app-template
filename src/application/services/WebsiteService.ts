@@ -75,10 +75,10 @@ export class WebsiteService {
 
     //TODO: Validate business rules and invariants, this can be done in the domain service layer
     // For example, check if the website name is unique, etc.
-    const isDomainAvailable = await this.websiteDomainService.verifyDomainAvailability(websiteDto.domainUrl)
-    if (!isDomainAvailable) {
-      throw new Error('Domain is not available')
-    }
+    // const isDomainAvailable = await this.websiteDomainService.verifyDomainAvailability(websiteDto.domainUrl)
+    // if (!isDomainAvailable) {
+    //   throw new Error('Domain is not available')
+    // }
 
 
     //TODO: when all the validations are passed create the website

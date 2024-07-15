@@ -6,9 +6,10 @@ import { create } from "zustand";
 
 export type WebsiteDetailsActions = {
   setWebsiteDetails: (website: Website) => void;
+  
   setWebsites: (websites: Website[]) => void; 
   addWebsite: (website: Website) => void;
-  updateWebsites: (website: Website) => void;
+  updateWebsite: (website: Website) => void;
 };
 
 export type WebsiteDetailsState = {
@@ -35,7 +36,7 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>((set) => ({
       return state;
     });
   },
-  updateWebsites: (website) => {
+  updateWebsite: (website) => {
     set((state) => {
       if (state.websites) {
         return {

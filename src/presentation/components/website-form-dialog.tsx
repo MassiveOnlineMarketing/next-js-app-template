@@ -29,9 +29,7 @@ const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
   setOpen,
   website,
 }) => {
-  const { handleCreateWebsite } = useWebsiteOperations();
-
-  // const website = null
+  const { handleCreateWebsite, handleUpdateWebsite } = useWebsiteOperations();
 
   const {
     register,
@@ -40,13 +38,30 @@ const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
     reset,
     setValue,
     formState: { errors },
+
   } = useForm<WebsiteInputSchemaType>({});
 
+  useEffect(() => {
+    if (website) {
+      setValue("websiteName", website.websiteName ?? '');
+      setValue("domainUrl", website.domainUrl ?? '');
+      setValue("gscUrl", website.gscUrl  ?? '');
+    }
+  }, [open]);
+
   const onSubmit: SubmitHandler<WebsiteInputSchemaType> = async (data) => {
-    const res = await handleCreateWebsite(data)
-    if (res.success) {
-      reset()
-      setOpen(false)
+    if (website) {
+      const res = await handleUpdateWebsite(data, website.id)
+      if (res.success) {
+        reset()
+        setOpen(false)
+      }
+    } else {
+      const res = await handleCreateWebsite(data)
+      if (res.success) {
+        reset()
+        setOpen(false)
+      }
     }
   }
 
