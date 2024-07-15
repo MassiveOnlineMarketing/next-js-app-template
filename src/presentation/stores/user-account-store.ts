@@ -2,7 +2,7 @@ import { Account } from "@prisma/client"
 import { create } from "zustand"
 
 export type UserAccount = {
-  setAccountDetails: (accountDetails: Account) => void;
+  setAccountDetails: (accountDetails: Account | null) => void;
   // Testing
   hasAccess: (scope: ScopeOption) => boolean;
 }

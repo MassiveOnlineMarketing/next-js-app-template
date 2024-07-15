@@ -37,6 +37,14 @@ class WebsiteRepository implements IWebsiteRepository {
 
     return websites;
   }
+
+  async getByUserId(userId: string): Promise<Website[]> {
+    const websites = await db.website.findMany({
+      where: { userId }
+    })
+
+    return websites;
+  }
 }
 
 const websiteRepository = new WebsiteRepository();

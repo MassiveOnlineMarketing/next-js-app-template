@@ -1,6 +1,7 @@
 'use server';
 
 import { CreateWebsiteDto } from '@/application/dto/WebsiteDto';
+import { AuthService } from '@/application/services/AuthService';
 import { WebsiteService } from '@/application/services/WebsiteService';
 
 import { websiteDomainService } from '@/domain/_service/WebsiteDomainService';
@@ -10,7 +11,7 @@ import websiteRepository from '@/infrastructure/repositories/WebsiteRepository';
 //* Gets the request from the client and creates a new website entity.
 export async function createWebsite(websiteDto: CreateWebsiteDto) {
 
-  const websiteService = new WebsiteService(websiteRepository, websiteDomainService);
+  const websiteService = new WebsiteService(new AuthService, websiteRepository, websiteDomainService);
 
   //TODO: Check form data with Zod  
 

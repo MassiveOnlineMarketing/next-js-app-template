@@ -25,4 +25,11 @@ export interface IWebsiteRepository {
    * @returns A promise that resolves with an array of website entities.
    */
   getAll(): Promise<Website[]>;
+
+  /**
+   * Retrieves all website entities associated with a specific user.
+   * @param userId - The ID of the user.
+   * @returns A promise that resolves with an array of website entities.
+   */
+  getByUserId(userId: string): Promise<Website[]>;
 }

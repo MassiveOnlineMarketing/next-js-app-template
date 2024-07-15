@@ -19,21 +19,19 @@ import { Website } from '@/domain/_entities/Website';
 
 
 interface WebsiteFormDialogProps {
-  // open: boolean;
-  // setOpen: (open: boolean) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
   website?: Website | null;
 }
 
 const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
-  // open,
-  // setOpen,
-  // website,
+  open,
+  setOpen,
+  website,
 }) => {
-  console.log('render website button')
-  const [open, setOpen] = useState(false)
   const { handleCreateWebsite } = useWebsiteOperations();
 
-  const website = null
+  // const website = null
 
   const {
     register,
@@ -54,53 +52,53 @@ const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
 
   return (
     <div className='p-4 bg-gray-50 rounded-lg w-fit'>
-      {/* <Dialog open={open} onOpenChange={setOpen}> */}
-      {/* <DialogContent> */}
-      {/* <DialogHeader> */}
-      <h2 className="font-medium text-2xl text-gray-800">
-        {website
-          ? "Update your Website"
-          : "Setup your website"}
-      </h2>
-      <p className="font-medium text-base text-gray-500 pt-[4px]">
-        Please enter the details of your website
-      </p>
-      {/* </DialogHeader> */}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-4 text-gray-800 font-medium"
-      >
-        <p>Project Name</p>
-        <InputFieldApp
-          type="text"
-          placeholder="My Awsome Website"
-          // required
-          {...register("websiteName", { required: true })}
-        />
-        <ErrorMessage message={errors?.websiteName?.message} />
-        {errors.websiteName && <span>This field is required</span>}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <h2 className="font-medium text-2xl text-gray-800">
+              {website
+                ? "Update your Website"
+                : "Setup your website"}
+            </h2>
+            <p className="font-medium text-base text-gray-500 pt-[4px]">
+              Please enter the details of your website
+            </p>
+          </DialogHeader>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mt-4 text-gray-800 font-medium"
+          >
+            <p>Project Name</p>
+            <InputFieldApp
+              type="text"
+              placeholder="My Awsome Website"
+              // required
+              {...register("websiteName", { required: true })}
+            />
+            <ErrorMessage message={errors?.websiteName?.message} />
+            {errors.websiteName && <span>This field is required</span>}
 
-        <p className="mt-7">Domain Url</p>
-        <InputFieldApp
-          type="text"
-          placeholder="https://www.example.com"
-          required
-          {...register("domainUrl", { required: true })}
-        />
-        <ErrorMessage message={errors?.domainUrl?.message} />
-        {errors.domainUrl && <p>{errors.domainUrl.message}</p>}
+            <p className="mt-7">Domain Url</p>
+            <InputFieldApp
+              type="text"
+              placeholder="https://www.example.com"
+              required
+              {...register("domainUrl", { required: true })}
+            />
+            <ErrorMessage message={errors?.domainUrl?.message} />
+            {errors.domainUrl && <p>{errors.domainUrl.message}</p>}
 
-        <GoogleSearchConsoleSiteSelector control={control} />
+            <GoogleSearchConsoleSiteSelector control={control} />
 
-        <button
-          type="submit"
-          className="mt-8 px-6 py-2 w-fit flex mx-auto rounded-lg text-lg font-semibold"
-        >
-          {website ? "Update" : "Create"}
-        </button>
-      </form>
-      {/* </DialogContent>
-     </Dialog> */}
+            <button
+              type="submit"
+              className="mt-8 px-6 py-2 w-fit flex mx-auto rounded-lg text-lg font-semibold"
+            >
+              {website ? "Update" : "Create"}
+            </button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

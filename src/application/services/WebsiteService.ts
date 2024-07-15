@@ -9,12 +9,17 @@ import { IWebsiteDomainService } from "@/domain/_service/IWebsiteDomainService";
 
 export class WebsiteService {
   private authService: AuthService;
+  private websiteRepository: IWebsiteRepository;
+  private websiteDomainService: IWebsiteDomainService;
 
   constructor(
-    private websiteRepository: IWebsiteRepository,
-    private websiteDomainService: IWebsiteDomainService
+    authService: AuthService,
+    websiteRepository: IWebsiteRepository,
+    websiteDomainService: IWebsiteDomainService
   ) {
-    this.authService = new AuthService();
+    this.authService = authService;
+    this.websiteRepository = websiteRepository;
+    this.websiteDomainService = websiteDomainService;
   }
 
   /**
@@ -89,5 +94,16 @@ export class WebsiteService {
       throw new Error('Website repository is not defined');
     }
     return this.websiteRepository.getAll();
+  }
+
+  async getWebsiteByUserId(userId: string): Promise<Website[]> {
+    const currentUser = await this.authService.currentUser();
+    if (!currentUser?.id) {
+      throw new Error('Please log in');
+    }
+
+    const websites = await this.websiteRepository.getByUserId(userId);
+
+    return websites;
   }
 }
