@@ -11,18 +11,18 @@ const page = async ({
 
   const campaign = await getGoogleSearchCampaignById(campaign_id)
   // TODO: handle error
-  if (!campaign.success) {
+  if (!campaign.data) {
     return <div className='flex h-full w-full items-center justify-center'>error</div>
   }
 
   return (
     <div className="px-6 pb-6 w-full h-full">
       <p>Bread Crumb</p>
-      <Suspense fallback={<div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>}>
+      {/* <Suspense fallback={<div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>}>
         {campaign?.data && (
           <ClientComp campaing={campaign.data} />
         )}
-      </Suspense>
+      </Suspense> */}
       <pre>{JSON.stringify(campaign, null, 2)}</pre>
     </div>
   )
