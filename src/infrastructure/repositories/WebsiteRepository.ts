@@ -29,10 +29,10 @@ class WebsiteRepository implements IWebsiteRepository {
     return resWebsite;
   }
 
-  async delete (websiteId: string): Promise<boolean> {
+  async delete (id: string): Promise<boolean> {
     const website = await db.website.delete({
       where: {
-        id: websiteId
+        id: id
       }
     })
 
@@ -53,9 +53,9 @@ class WebsiteRepository implements IWebsiteRepository {
     return websites;
   }
 
-  async getById(websiteId: string): Promise<Website | null> {
+  async getById(id: string): Promise<Website | null> {
     const website = await db.website.findUnique({
-      where: { id: websiteId }
+      where: { id: id }
     })
 
     return website;

@@ -28,6 +28,8 @@ export interface AuthInterface {
    */
   currentUser: () => Promise<ExtendedUser | null>;
 
+  isAdmin: () => Promise<boolean>;
+
   /**
    * Logs in a user with the provided email and password.
    * @param email - The user's email.

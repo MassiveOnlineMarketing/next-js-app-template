@@ -53,7 +53,7 @@ function useWebsiteOperations() {
         }
         return { success: false };
       } else {
-        showErrorToast(response.error?.message || 'Unknown error');
+        showErrorToast(response.error || 'Unknown error');
         return { success: false };
       }
     } catch (error: any) { 

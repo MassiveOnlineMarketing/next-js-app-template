@@ -33,6 +33,13 @@ export class AuthService implements AuthInterface {
     return user || null
   }
 
+  async isAdmin() {
+    const session = await auth();
+    const user = session?.user as ExtendedUser;
+
+    return user.role === "ADMIN";
+  }
+
   async login(email: string, password: string, callbackUrl?: string | null) {
     const existingUser = await userRepository.getByEmail(email);
 

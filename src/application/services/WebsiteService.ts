@@ -5,6 +5,7 @@ import { AuthService } from "./AuthService";
 import { Website } from "@/domain/_entities/Website";
 import { IWebsiteRepository } from "@/domain/repository/IWebsiteRepository";
 import { IWebsiteDomainService } from "@/domain/_service/IWebsiteDomainService";
+import { SimpleError } from "@/domain/errors/simpleErrors";
 
 
 export class WebsiteService {
@@ -106,6 +107,23 @@ export class WebsiteService {
     }
 
     return this.websiteRepository.delete(websiteId);
+  }
+
+  async getById(websiteId: string): Promise<Website> {
+    const user = await this.authService.currentUser();
+    if (!user?.id) {
+      throw new SimpleError(401, 'Unauthorized');
+    }
+
+    const website = await this.websiteRepository.getById(websiteId);
+    if (!website) {
+      throw new SimpleError(404, 'Website not found');
+    }
+    if (website.userId !== user.id) {
+      throw new SimpleError(403, 'Website does not belong to user');
+    }
+
+    return website;
   }
 
   async getAllWebsites(): Promise<Website[]> {

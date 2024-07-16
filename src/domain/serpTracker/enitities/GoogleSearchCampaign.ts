@@ -3,36 +3,52 @@
 import { CreateGoogleSearchCampaignDto } from "@/application/dto/GoogleSearchCampaignDto";
 
 
+// ! Note in use
 export class GoogleSearchCampaign {
   id: string;
-  name: string;
-  keywords: string[];
-  description?: string;
+  userId: string;
+  projectName: string;
+  domainUrl: string;
+  language: string;
+  country: string;
+  gscUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  websiteId: string;
 
-  constructor(id: string, name: string, keywords: string[]) {
+  constructor(
+    id: string,
+    userId: string,
+    projectName: string,
+    domainUrl: string,
+    language: string,
+    country: string,
+    gscUrl: string | null,
+    createdAt: Date,
+    updatedAt: Date,
+    websiteId: string,
+  ){
     this.id = id;
-    this.name = name;
-    this.keywords = keywords;
-    // Initialize other properties and validate as necessary
+    this.userId = userId;
+    this.projectName = projectName;
+    this.domainUrl = domainUrl;
+    this.language = language;
+    this.country = country;
+    this.gscUrl = gscUrl;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.websiteId = websiteId;
   }
 
   // Business methods and behaviors, like validation or update logic
-  update(newDetails: Partial<GoogleSearchCampaign>) {
-    if (newDetails.name) {
-      this.name = newDetails.name;
-    }
-    if (newDetails.description) {
-      this.description = newDetails.description;
-    }
-    // Update other properties as necessary
-  }
 
-  static fromDto(campaignDto: CreateGoogleSearchCampaignDto): GoogleSearchCampaign {
-    console.log('Creating Google Search dto:', campaignDto);
-    return new GoogleSearchCampaign(
-      '123',
-      campaignDto.name,
-      campaignDto.keywords,
-    );
-  }
+
+  // static fromDto(campaignDto: CreateGoogleSearchCampaignDto): GoogleSearchCampaign {
+  //   console.log('Creating Google Search dto:', campaignDto);
+  //   return new GoogleSearchCampaign(
+  //     '123',
+  //     campaignDto.name,
+  //     campaignDto.keywords,
+  //   );
+  // }
 }

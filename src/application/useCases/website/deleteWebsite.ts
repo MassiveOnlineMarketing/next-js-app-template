@@ -27,5 +27,4 @@ export async function deleteWebsite(websiteId: string) {
     return { error: errorMessage };
     
   }
-
 }
