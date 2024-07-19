@@ -26,8 +26,11 @@ function useGoogleSearchCampaignOpperations() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const { setGoogleSearchCampaignDetails } = useGoogleSearchCampaignDetailsStore(state => ({
-    setGoogleSearchCampaignDetails: state.setCampaignDetails
+  const { setGoogleSearchCampaignDetails, updateGoogleSearchCampaigns, removeCampaignFromList, addCampaignToList } = useGoogleSearchCampaignDetailsStore(state => ({
+    setGoogleSearchCampaignDetails: state.setCampaignDetails,
+    updateGoogleSearchCampaigns: state.updateCampaign,
+    removeCampaignFromList: state.removeCampaignFromList,
+    addCampaignToList: state.addCampaignToList
   }));
 
   /**
@@ -59,9 +62,10 @@ function useGoogleSearchCampaignOpperations() {
       if (response.success) {
         if (response.data) {
           setGoogleSearchCampaignDetails(response.data);
+          // Add project to campaign list
+          addCampaignToList(response.data);
           showSuccessToast('Google search campaign created successfully!');
-          return { success: true };
-          // TODO: Add project to side menu
+          return { success: true, campaignId: response.data.id };
           // TODO: Process keywords
         } else {
           showErrorToast(response.error || 'Unknown error');
@@ -112,7 +116,10 @@ function useGoogleSearchCampaignOpperations() {
       const response = await updateGoogleSearchCampaign(googleSearchCampaignData, campaignId, addCompetitors);
       
       if (response.success && response.data) {
+        // Set the updated campaign details
         setGoogleSearchCampaignDetails(response.data);
+        // Update the campaign list
+        updateGoogleSearchCampaigns(response.data);
         showSuccessToast('Google search campaign updated successfully!');
         return { success: true };
       } else {
@@ -130,6 +137,7 @@ function useGoogleSearchCampaignOpperations() {
 
   /**
    * Deletes a Google search campaign with toasts.
+   * 
    * @param campaignId - The ID of the campaign to delete.
    * @returns A promise that resolves to an object indicating the success of the operation.
    */
@@ -140,6 +148,8 @@ function useGoogleSearchCampaignOpperations() {
       const response = await deleteGoogleSearchCampaign(campaignId);
 
       if (response.success) {
+        // Remove the campaign from the list
+        removeCampaignFromList(campaignId);
         showSuccessToast('Google search campaign deleted successfully!');
         return { success: true };
       } else {

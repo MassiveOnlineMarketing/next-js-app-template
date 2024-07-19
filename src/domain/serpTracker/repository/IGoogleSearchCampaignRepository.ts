@@ -46,6 +46,13 @@ export interface IGoogleSearchCampaignRepository {
   getById(id: string): Promise<GoogleSearchCampaign | null>;
 
   /**
+   * Retrieves a Google Search Campaign by its associated website ID.
+   * @param websiteId - The ID of the website.
+   * @returns A promise that resolves to the retrieved GoogleSearchCampaign object, or null if not found.
+   */
+  getByWebsiteId(websiteId: string): Promise<GoogleSearchCampaign[]>;
+
+  /**
    * Retrieves all Google Search Campaigns.
    * @returns A promise that resolves to an array of GoogleSearchCampaign objects.
    */

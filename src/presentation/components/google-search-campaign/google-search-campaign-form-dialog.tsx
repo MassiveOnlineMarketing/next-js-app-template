@@ -2,35 +2,32 @@
 
 // External libraries
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 // Internal types
 import { GoogleSearchCampaignSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
 import { COUNTRY_OPTIONS, DayOfWeek, DAYS_OF_WEEK, LANGUAGE_OPTIONS } from "./form-options";
+import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
+import { Website } from "@/domain/_entities/Website";
 
-
-// Store
-import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-store";
+import useGoogleSearchCampaignOpperations from "@/presentation/hooks/useGoogleSearchCampaignOpperations";
+import { getCompetitorsByGoogleSearchCampaignId } from "@/application/useCases/googleSearchCampaign/getCompetitorsByGoogleSearchCampaignId";
 
 // Components
 import { Dialog, DialogContent, DialogHeader } from "@/presentation/components/common/dialog";
 import { InputFieldApp, TestInput, TextareaApp } from "@/presentation/components/ui/inputFields";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/presentation/components/ui/select";
+import { ToggleWithIcon } from "../ui/toggle";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
-import { ToggleWithIcon } from "../ui/toggle";
-import useGoogleSearchCampaignOpperations from "@/presentation/hooks/useGoogleSearchCampaignOpperations";
-import { Website } from "@/domain/_entities/Website";
-import { getCompetitorsByGoogleSearchCampaignId } from "@/application/useCases/googleSearchCampaign/getCompetitorsByGoogleSearchCampaignId";
 
 
 interface GoogleSearchProjectFormDialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   googleSearchCampaign?: GoogleSearchCampaign | null;
-  website: Website;
+  website?: Website;
 }
 /**
  * GoogleSearchProjectFormDialog component represents a dialog for creating or updating a Google Search Campaign.
@@ -57,6 +54,8 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
   website
 }) => {
   const router = useRouter();
+  const path = usePathname();
+
   const currentWebsite = website;
   const { handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign } = useGoogleSearchCampaignOpperations();
 
@@ -88,10 +87,13 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
 
   const onSubmit: SubmitHandler<GoogleSearchCampaignSchemaType> = async (data) => {
     if (!googleSearchCampaign) {
+      // TODO: handle no current website there
+      if (!currentWebsite) return;
       const res = await handleCreateCampaign(data, currentWebsite.id, currentWebsite?.domainUrl, addedCompetitors);
       if (res?.success) {
         reset();
-        // TODO: Send user to the campaign route
+        // Send user to the campaign route
+        router.push(`/app/search/google-search/${res.campaignId}`);
         setOpen(false);
       } 
     } else {
@@ -107,7 +109,10 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
     if (!googleSearchCampaign) return;
     const res = await handleDeleteCampaign(googleSearchCampaign?.id);
     if (res?.success) {
-      // TODO: Send user away from the campaign route
+      // Send user to the search page
+      if (path.includes(googleSearchCampaign?.id)){
+        router.push("/app/search");
+      }
       reset();
       setOpen(false);
     }

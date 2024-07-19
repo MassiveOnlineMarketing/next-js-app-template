@@ -1,7 +1,6 @@
 import { getGoogleSearchCampaignById } from '@/application/useCases/googleSearchCampaign/getGoogleSearchCampaignById'
-import React, { Suspense } from 'react'
-import ClientComp from '../../search-project/clientComp'
-import { LoadingSpinner } from '@/presentation/components/ui/loading-spinner'
+import React from 'react'
+import ClientPage from '../client-page'
 
 const page = async ({
   params: { campaign_id }
@@ -10,19 +9,20 @@ const page = async ({
 }) => {
 
   const campaign = await getGoogleSearchCampaignById(campaign_id)
-  // TODO: handle error
   if (!campaign.data) {
-    return <div className='flex h-full w-full items-center justify-center'>error</div>
+    return (
+      <div className='flex h-full w-full items-center justify-center'>
+        <div className='bg-white p-4 rounded-xl text-xl'>
+          {campaign.error ?? 'Campaign not found'}
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="px-6 pb-6 w-full h-full">
       <p>Bread Crumb</p>
-      {/* <Suspense fallback={<div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>}>
-        {campaign?.data && (
-          <ClientComp campaing={campaign.data} />
-        )}
-      </Suspense> */}
+      <ClientPage googleSearchCampaign={campaign.data} />
       <pre>{JSON.stringify(campaign, null, 2)}</pre>
     </div>
   )

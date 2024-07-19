@@ -58,4 +58,6 @@ export interface IUserRepository {
    * @returns A promise that resolves to the updated user.
    */
   update(data: any, userId: string): Promise<User>;
+
+  decrementUserCredits(userId: string, credits: number): Promise<boolean> 
 }

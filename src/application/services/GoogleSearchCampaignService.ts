@@ -125,6 +125,29 @@ export class GoogleSearchCampaignService {
   }
 
   /**
+   * Retrieves Google search campaigns by website ID.
+   * @param websiteId - The ID of the website.
+   * @returns A promise that resolves to an array of GoogleSearchCampaign objects.
+   * @throws {GoogleSearchError} If the user is unauthorized, the campaign is not found, or the campaign does not belong to the user.
+   */
+  async getByWebsiteId(websiteId: string): Promise<GoogleSearchCampaign[]> {
+    const user = await this.authService.currentUser();
+    if (!user?.id) {
+      throw new GoogleSearchError(401, 'Unauthorized');
+    }
+
+    const campaigns = await this.campaignRepository.getByWebsiteId(websiteId);
+    if (!campaigns) {
+      throw new GoogleSearchError(404, 'Campaign not found');
+    }
+    if (campaigns[0].userId !== user.id) {
+      throw new GoogleSearchError(403, 'Campaing does not belong to user');
+    }
+
+    return campaigns;
+  }
+
+  /**
    * Retrieves all Google search campaigns.
    * @returns A promise that resolves to an array of GoogleSearchCampaign objects.
    */

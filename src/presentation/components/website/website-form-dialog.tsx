@@ -76,67 +76,65 @@ const WebsiteFormDialog: React.FC<WebsiteFormDialogProps> = ({
 
 
   return (
-    <div className='p-4 bg-gray-50 rounded-lg w-fit'>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="font-medium text-2xl text-gray-800">
-              {website
-                ? "Update your Website"
-                : "Setup your website"}
-            </DialogTitle>
-            <p className="font-medium text-base text-gray-500 pt-[4px]">
-              Please enter the details of your website
-            </p>
-          </DialogHeader>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="mt-4 text-gray-800 font-medium"
-          >
-            <p>Project Name</p>
-            <InputFieldApp
-              type="text"
-              placeholder="My Awsome Website"
-              // required
-              {...register("websiteName", { required: true })}
-            />
-            <ErrorMessage message={errors?.websiteName?.message} />
-            {errors.websiteName && <span>This field is required</span>}
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="font-medium text-2xl text-gray-800">
+            {website
+              ? "Update your Website"
+              : "Setup your website"}
+          </DialogTitle>
+          <p className="font-medium text-base text-gray-500 pt-[4px]">
+            Please enter the details of your website
+          </p>
+        </DialogHeader>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mt-4 text-gray-800 font-medium"
+        >
+          <p>Project Name</p>
+          <InputFieldApp
+            type="text"
+            placeholder="My Awsome Website"
+            // required
+            {...register("websiteName", { required: true })}
+          />
+          <ErrorMessage message={errors?.websiteName?.message} />
+          {errors.websiteName && <span>This field is required</span>}
 
-            <p className="mt-7">Domain Url</p>
-            <InputFieldApp
-              type="text"
-              placeholder="https://www.example.com"
-              required
-              {...register("domainUrl", { required: true })}
-            />
-            <ErrorMessage message={errors?.domainUrl?.message} />
-            {errors.domainUrl && <p>{errors.domainUrl.message}</p>}
+          <p className="mt-7">Domain Url</p>
+          <InputFieldApp
+            type="text"
+            placeholder="https://www.example.com"
+            required
+            {...register("domainUrl", { required: true })}
+          />
+          <ErrorMessage message={errors?.domainUrl?.message} />
+          {errors.domainUrl && <p>{errors.domainUrl.message}</p>}
 
-            <GoogleSearchConsoleSiteSelector control={control} />
+          <GoogleSearchConsoleSiteSelector control={control} />
 
-            <div className='mt-8 w-full inline-flex justify-center text-lg font-semibold'>
-              {/* TODO: button styles */}
-              {website && (
-                <button
-                  onClick={onDelete}
-                  type='button'
-                  className=" px-6 py-2 w-fit flex rounded-lg text-red-500"
-                >
-                  Delete
-                </button>
-              )}
+          <div className='mt-8 w-full inline-flex justify-center text-lg font-semibold'>
+            {/* TODO: button styles */}
+            {website && (
               <button
-                type="submit"
-                className=" px-6 py-2 w-fit flex rounded-lg text-green-500"
+                onClick={onDelete}
+                type='button'
+                className=" px-6 py-2 w-fit flex rounded-lg text-red-500"
               >
-                {website ? "Update" : "Create"}
+                Delete
               </button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </div>
+            )}
+            <button
+              type="submit"
+              className=" px-6 py-2 w-fit flex rounded-lg text-green-500"
+            >
+              {website ? "Update" : "Create"}
+            </button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
   )
 }
 

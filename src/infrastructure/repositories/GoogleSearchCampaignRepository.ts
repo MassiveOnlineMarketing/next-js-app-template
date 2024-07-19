@@ -77,6 +77,14 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
     return campaigns;
   }
 
+  getByWebsiteId(id: string): Promise<GoogleSearchCampaign[]> {
+    const campaigns = db.googleSearchProject.findMany({
+      where: { websiteId: id }
+    });
+
+    return campaigns
+  }
+
   getAll(): Promise<GoogleSearchCampaign[]> {
     const campaigns = db.googleSearchProject.findMany();
 

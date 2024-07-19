@@ -63,6 +63,15 @@ class UserRepository implements IUserRepository {
 
     return user;
   }
+
+  async decrementUserCredits(userId: string, credits: number): Promise<boolean> {
+    const res = await db.user.update({
+      where: { id: userId },
+      data: { credits: { decrement: credits } },
+    });
+
+    return !!res;
+  }
 }
 
 const userRepository = new UserRepository();
