@@ -37,7 +37,12 @@ export class GoogleSearchCampaignService {
       throw new GoogleSearchError(401, 'Unauthorized');
     }
 
-    return this.campaignRepository.create(data);
+    const competitors = data.competitors;
+    // cosnt campaign = data.
+    const campaign = GoogleSearchCampaign.fromDto(data);
+    console.log('campaign',campaign);
+
+    return this.campaignRepository.create(campaign, competitors);
   }
 
   /**
@@ -132,13 +137,15 @@ export class GoogleSearchCampaignService {
    */
   async getByWebsiteId(websiteId: string): Promise<GoogleSearchCampaign[]> {
     const user = await this.authService.currentUser();
+    console.log('user',user);
     if (!user?.id) {
       throw new GoogleSearchError(401, 'Unauthorized');
     }
 
     const campaigns = await this.campaignRepository.getByWebsiteId(websiteId);
-    if (!campaigns) {
-      throw new GoogleSearchError(404, 'Campaign not found');
+    console.log('campaigns',campaigns);
+    if (!campaigns || campaigns.length === 0) {
+      throw new GoogleSearchError(404, 'Campaigns not found');
     }
     if (campaigns[0].userId !== user.id) {
       throw new GoogleSearchError(403, 'Campaing does not belong to user');

@@ -30,3 +30,13 @@ export type SerpApiPeopleAsloAsk = {
 export type SerpApiRelatedSearches = {
   query: string;
 };
+
+
+
+export type GoogleSearchLocation = {
+  name: string;
+  canonicalName: string;
+  googleId: number;
+  countryCode: string;
+  targetType: string;
+} 

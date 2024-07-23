@@ -2,3 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+.custom-scrollbar::-webkit-scrollbar {
+  @apply w-2;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-indigo-500 rounded;
+}
+
+
+.locationSearchBar {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  will-change: auto;
+}

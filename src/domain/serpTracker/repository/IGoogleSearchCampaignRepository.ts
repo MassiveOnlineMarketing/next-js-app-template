@@ -14,7 +14,7 @@ export interface IGoogleSearchCampaignRepository {
    * @param campaign - The campaign data.
    * @returns A promise that resolves to the created GoogleSearchCampaign object.
    */
-  create(campaign: CreateGoogleSearchCampaignDto): Promise<GoogleSearchCampaign>;
+  create(campaign: GoogleSearchCampaign, competitors: string[] | null): Promise<GoogleSearchCampaign>;
 
   /**
    * Updates an existing Google Search Campaign.

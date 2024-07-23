@@ -1,8 +1,10 @@
 import { TKeyword } from "@/domain/serpTracker/enitities/Keyword";
 import { ISerperApiRepository } from "@/domain/serpTracker/repository/ISerperApiRepository";
-import { SerpResult, UserSerpResult } from "@/domain/models/serpResult";
+
 import { IGoogleSearchSerpResultRepository } from "@/domain/serpTracker/repository/IGoogleSearchSerpResultRepository";
 import { SuccessfulSerpApiFetches } from "@/domain/models/serperApi";
+import { SerpUserResult } from "@/domain/serpTracker/enitities/SerpUserResult";
+import { SerpResult } from "@/domain/serpTracker/enitities/SerpResult";
 
 
 export class SerperApiService {
@@ -27,6 +29,7 @@ export class SerperApiService {
     const topTenResultData = this.handleTopTenResults(serperApiResponse);
     this.googleSearchSerpResultRepository.insertSerpResults(topTenResultData);
 
+    // const userResultData = this.handleUserResults(serperApiResponse);
     const userResultData = this.handleUserResults(serperApiResponse);
     const successfullUserInserts = await this.googleSearchSerpResultRepository.insertUserResults(userResultData);
 
@@ -39,59 +42,38 @@ export class SerperApiService {
     const insertData = [];
     for (const results of serperApiResponse) {
       for (const result of results.organic.slice(0, 10)) {
-        insertData.push({
-          keywordId: result.keywordId,
-          position: result.position,
-          url: result.link,
-          metaTitle: result.title,
-          metaDescription: result.snippet,
-        });
+        insertData.push(new SerpResult(result));
       }
     }
 
     return insertData;
   }
 
-  handleUserResults(serperApiResponse: SuccessfulSerpApiFetches[]): UserSerpResult[] {
-    const newResults: UserSerpResult[] = [];
+  handleUserResults(serperApiResponse: SuccessfulSerpApiFetches[]): SerpUserResult[] {
+    const newResults: SerpUserResult[] = [];
     console.log("🟡 handle user results");
-
+  
     for (const result of serperApiResponse) {
-      const filteredResults = result.organic.filter((item) =>
-        item.link.includes(item.domain),
-      );
-      // console.log('filteredResults', filteredResults);
+      const filteredResults = result.organic.filter(item => {
+        // Normalize the item.link and item.domain for comparison
+        const link = new URL(item.link).hostname.replace('www.', '');
+        const domain = new URL(item.domain).hostname.replace('www.', '');
+      
+        // Check if the normalized link includes the normalized domain
+        return link.includes(domain);
+      });
 
+      // console.log('filteredResults', filteredResults);
+  
       if (filteredResults.length === 0) {
-        newResults.push({
-          keywordId: result.organic[0].keywordId,
-          resultTitle: undefined,
-          resultURL: undefined,
-          resultDescription: undefined,
-          resultPosition: null,
-          resultName: result.organic[0].keywordName,
-          resultProjectdId: result.organic[0].projectId,
-          peopleAlsoAsk: result.peopleAlsoAsk,
-          relatedSearches: result.relatedSearches,
-          userId: result.organic[0].userId,
-        });
+        const item = result.organic[0];
+        newResults.push(new SerpUserResult(item, result, false));
       } else {
         const item = filteredResults[0];
-        newResults.push({
-          keywordId: item.keywordId,
-          resultTitle: item.title,
-          resultURL: item.link.replace(`https://${item.domain}`, ""),
-          resultDescription: item.snippet,
-          resultPosition: item.position,
-          resultName: item.keywordName,
-          resultProjectdId: item.projectId,
-          peopleAlsoAsk: result.peopleAlsoAsk,
-          relatedSearches: result.relatedSearches,
-          userId: item.userId,
-        });
+        newResults.push(new SerpUserResult(item, result, true));
       }
     }
-
+  
     return newResults;
   }
 }

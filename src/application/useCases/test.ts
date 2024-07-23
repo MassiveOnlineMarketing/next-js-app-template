@@ -1,17 +1,21 @@
 'use server';
 
+// Keywords
 import { Keyword } from "@/domain/serpTracker/enitities/Keyword";
-
-import { GoogleAdsApiService } from "../services/GoogleAdsApiService";
-
 import keywordRepository from "@/infrastructure/repositories/KeywordRepository";
+
+// Google Ads Metrics
+import { GoogleAdsApiService } from "../services/GoogleAdsApiService";
 import googleAdsApiRepository from "@/infrastructure/repositories/GoogleAdsApiRepository";
 import googleAdsKeywordMetrics from "@/infrastructure/repositories/GoogleAdsKeywordMetrics";
-import serperApiRepository from "@/infrastructure/repositories/SerperApiRepository";
+
+// Serp Results
 import { SerperApiService } from "../services/SerperApiService";
+import serperApiRepository from "@/infrastructure/repositories/SerperApiRepository";
 import googleSearchSerpResultRepository from "@/infrastructure/repositories/GoogleSearchSerpResultRepository";
+
+// User
 import userRepository from "@/infrastructure/repositories/UserRepository";
-import { auth } from "../services/AuthService";
 
 type TestUseCaseProps = {
   projectId: string;
@@ -29,10 +33,11 @@ export async function testUseCase({ projectId, keywordNames, country, language, 
     throw new Error('Failed to create keywords');
   }
 
+  //* Google Ads Metrics
   // const googleAdsApiService = new GoogleAdsApiService(googleAdsApiRepository, googleAdsKeywordMetrics);
   // googleAdsApiService.handleKeywordsForGoogleAdsApi(keywords, country, language);
 
-
+  //* Serp Results
   const serperApiService = new SerperApiService(serperApiRepository, googleSearchSerpResultRepository );
   const successfullInserts = await serperApiService.handleGoogleSearchResults(keywords, language, country, domainUrl, userId, projectId);
 
@@ -50,8 +55,4 @@ export async function testUseCase({ projectId, keywordNames, country, language, 
   
 
   return {success: true, data: latestResults};
-
-  console.log('Generated keywords:', keywords);
-
-  // return serperApiResponse;
 }

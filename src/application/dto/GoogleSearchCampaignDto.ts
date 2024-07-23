@@ -1,17 +1,18 @@
 // src/application/dto/GoogleSearchCampaignDto.ts
+import { GoogleSearchLocation } from "@/domain/models/serperApi";
 
 export interface CreateGoogleSearchCampaignDto {
   userId: string
   domainUrl: string;
   websiteId: string;
-  competitors: string[] | undefined;
+  competitors: string[] | null;
+  location: GoogleSearchLocation | null;
   projectName: string;
   language: string;
   country: string;
-  isMobile: boolean;
   specificDaysOfWeek?: ("MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY")[] | undefined;
-  gscSite?: string | undefined;
-  keywords?: string | undefined;
+  gscSite: string | null;
+  keywords: string | null;
 }
 
 
@@ -21,7 +22,6 @@ export interface UpdateGoogleSearchCampaignDto {
   projectName: string;
   language: string;
   country: string;
-  isMobile: boolean;
   specificDaysOfWeek?: ("MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY")[] | undefined;
   gscSite?: string | undefined;
   keywords?: string | undefined;

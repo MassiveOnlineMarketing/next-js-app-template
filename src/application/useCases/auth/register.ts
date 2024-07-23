@@ -21,7 +21,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const authService = new AuthService();
 
   try {
-    console.log("Registering user", email, hashedPassword, name)
+    console.log("🟡 Registering user", email, name)
     const login = await authService.register(email, hashedPassword, name);
 
     console.log("User registered", login);

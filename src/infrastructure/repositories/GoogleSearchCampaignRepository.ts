@@ -8,20 +8,13 @@ import { CreateGoogleSearchCampaignDto, UpdateGoogleSearchCampaignDto } from '@/
 
 class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository {
 
-  create(campaign: CreateGoogleSearchCampaignDto): Promise<GoogleSearchCampaign> {
+  create(campaign: GoogleSearchCampaign, competitors: string[] | null): Promise<GoogleSearchCampaign> {
     const newCampaign = db.googleSearchProject.create({
       data: {
-        domainUrl: campaign.domainUrl,
-        websiteId: campaign.websiteId,
-        userId: campaign.userId,
-        projectName: campaign.projectName,
-        // isMobile: campaign.isMobile,  
-        country: campaign.country,
-        language: campaign.language,
-        gscUrl: campaign.gscSite || null,
+        ...campaign,
         competitor: {
           createMany: {
-            data: campaign.competitors?.map(competitor => {
+            data: competitors?.map(competitor => {
               return { domainUrl: competitor }
             }) ?? []
           }

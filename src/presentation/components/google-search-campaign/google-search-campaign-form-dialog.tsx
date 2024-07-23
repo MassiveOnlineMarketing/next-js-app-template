@@ -7,9 +7,11 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 // Internal types
 import { GoogleSearchCampaignSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
-import { COUNTRY_OPTIONS, DayOfWeek, DAYS_OF_WEEK, LANGUAGE_OPTIONS } from "./form-options";
+import { GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, DayOfWeek, DAYS_OF_WEEK, GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS } from "./form-options";
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 import { Website } from "@/domain/_entities/Website";
+import { GoogleSearchLocation } from "@/domain/models/serperApi";
+
 
 import useGoogleSearchCampaignOpperations from "@/presentation/hooks/useGoogleSearchCampaignOpperations";
 import { getCompetitorsByGoogleSearchCampaignId } from "@/application/useCases/googleSearchCampaign/getCompetitorsByGoogleSearchCampaignId";
@@ -18,9 +20,12 @@ import { getCompetitorsByGoogleSearchCampaignId } from "@/application/useCases/g
 import { Dialog, DialogContent, DialogHeader } from "@/presentation/components/common/dialog";
 import { InputFieldApp, TestInput, TextareaApp } from "@/presentation/components/ui/inputFields";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/presentation/components/ui/select";
-import { ToggleWithIcon } from "../ui/toggle";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
+
+// Location search bar
+import LocationSearchBar from "./location-search-bar";
+import { LOCATIONS } from "./location-constant";
 
 
 interface GoogleSearchProjectFormDialogProps {
@@ -85,20 +90,26 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
     }
   }, [open]);
 
+  // TODO: Create reset function
   const onSubmit: SubmitHandler<GoogleSearchCampaignSchemaType> = async (data) => {
     if (!googleSearchCampaign) {
       // TODO: handle no current website there
       if (!currentWebsite) return;
-      const res = await handleCreateCampaign(data, currentWebsite.id, currentWebsite?.domainUrl, addedCompetitors);
+      const res = await handleCreateCampaign(data, selectedLocation, currentWebsite.id, currentWebsite?.domainUrl, addedCompetitors);
       if (res?.success) {
         reset();
+        setAddedCompetitors([]);
+        setWordFromChild('');
         // Send user to the campaign route
         router.push(`/app/search/google-search/${res.campaignId}`);
         setOpen(false);
-      } 
+      }
     } else {
       const res = await handleUpdateCampaign(data, googleSearchCampaign?.id, addedCompetitors, removedCompetitors);
       if (res?.success) {
+        setAddedCompetitors([]);
+        setWordFromChild('');
+        setRemovedCompetitors([]);
         reset();
         setOpen(false);
       }
@@ -110,15 +121,32 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
     const res = await handleDeleteCampaign(googleSearchCampaign?.id);
     if (res?.success) {
       // Send user to the search page
-      if (path.includes(googleSearchCampaign?.id)){
+      if (path.includes(googleSearchCampaign?.id)) {
         router.push("/app/search");
       }
       reset();
+      setWordFromChild('');
+      setRemovedCompetitors([])
+      setAddedCompetitors([]);
       setOpen(false);
     }
   }
 
 
+  // Stuff for location
+  const [wordFromChild, setWordFromChild] = React.useState("");
+  const handleWordChangeFromChild = (word: string) => {
+    setWordFromChild(word);
+  };
+  console.log('wordFromChild', wordFromChild);
+  const [selectedLocation, setSelectedLocation] = React.useState<GoogleSearchLocation | null>(null);
+  // Callback function to update the selected location
+  const handleLocationSelect = (location: GoogleSearchLocation) => {
+    setSelectedLocation(location);
+    setValue("country", location.countryCode);
+  };
+
+  
   // Stuff for competitors 
   const [domainInput, setDomainInput] = React.useState('');
   const [fetchedCompetitors, setFetchedCompetitors] = React.useState<string[]>([]);
@@ -172,19 +200,6 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
           />
           {errors.projectName && <ErrorField error={"* A Name is Required"} />}
 
-          <p className="mt-7">Mobile or Desktop</p>
-          <Controller
-            name="isMobile" // This is the field name in your form
-            control={control} // This is from useForm()
-            defaultValue={false} // Default value
-            render={({ field: { onChange, value } }) => (
-              <ToggleWithIcon
-                checked={value}
-                onChange={(newValue) => onChange(newValue)}
-              />
-            )}
-          />
-
           <p className="mt-7">Language</p>
           <Controller
             name="language"
@@ -200,7 +215,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {LANGUAGE_OPTIONS.map((option) => {
+                  {GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS.map((option) => {
                     return (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -214,13 +229,16 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
           {errors.language && <ErrorField error={"* Language is Required"} />}
 
           <p className="mt-7">Location</p>
+          <LocationSearchBar placeholder='Select Location' width={444} data={LOCATIONS} onLocationSelect={handleLocationSelect} onWordChange={handleWordChangeFromChild} />
+
+          <p className="mt-7">County</p>
           <Controller
             name="country"
             control={control}
             defaultValue=""
             rules={{ required: true }}
             render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select onValueChange={field.onChange} value={field.value} disabled={wordFromChild ? true : false}>
                 <SelectTrigger>
                   <SelectValue
                     placeholder="Select a country"
@@ -228,7 +246,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {COUNTRY_OPTIONS.map((option) => {
+                  {GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.map((option) => {
                     return (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}

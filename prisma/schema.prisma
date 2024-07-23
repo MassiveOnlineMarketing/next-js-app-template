@@ -114,7 +114,10 @@ model GoogleSearchProject {
   projectName      String
   domainUrl        String
   language         String
+  languageCode     String
   country          String
+  location         String?
+  locationCode     String
   gscUrl           String?
   createdAt        DateTime                       @default(now())
   updatedAt        DateTime                       @updatedAt
@@ -210,6 +213,7 @@ model GoogleSearchResult {
 
   relatedSearches Json?
   peopleAlsoAsk   Json?
+  sitelinks       Json?
 
   keyword GoogleSearchKeyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
 }

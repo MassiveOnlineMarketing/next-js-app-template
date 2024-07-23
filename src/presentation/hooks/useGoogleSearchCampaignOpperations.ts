@@ -15,6 +15,8 @@ import { deleteCompetitorsFromGoogleSearchCampaign } from "@/application/useCase
 import { deleteGoogleSearchCampaign } from "@/application/useCases/googleSearchCampaign/deleteGoogleSearchCampaign";
 
 
+import { GoogleSearchLocation } from "@/domain/models/serperApi";
+
 /**
  * Custom hook for handling Google search campaign operations.
  * Provides functions for creating, updating, and deleting Google search campaigns.
@@ -37,6 +39,7 @@ function useGoogleSearchCampaignOpperations() {
    * Handles the creation of a Google search campaign with toasts.
    * 
    * @param googleSearchCampaignData - The data for the Google search campaign.
+   * @param location - The location for the Google search campaign.
    * @param websiteId - The ID of the website.
    * @param domainUrl - The domain URL of the website.
    * @param addCompetitors - An optional array of competitor URLs to add.
@@ -44,9 +47,10 @@ function useGoogleSearchCampaignOpperations() {
    */
   const handleCreateCampaign = async (
     googleSearchCampaignData: GoogleSearchCampaignSchemaType,
+    location: GoogleSearchLocation | null,
     websiteId?: string,
     domainUrl?: string,
-    addCompetitors?: string[]
+    addCompetitors?: string[],
   ) => {
     setIsLoading(true);
 
@@ -57,7 +61,7 @@ function useGoogleSearchCampaignOpperations() {
     }
 
     try {
-      const response = await createGoogleSearchCampaign(googleSearchCampaignData, websiteId, domainUrl, addCompetitors);
+      const response = await createGoogleSearchCampaign(googleSearchCampaignData, websiteId, domainUrl, location, addCompetitors);
 
       if (response.success) {
         if (response.data) {
