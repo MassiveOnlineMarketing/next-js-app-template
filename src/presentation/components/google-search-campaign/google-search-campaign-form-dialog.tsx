@@ -77,7 +77,18 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
     if (open && googleSearchCampaign) {
       setValue("projectName", googleSearchCampaign.projectName);
       setValue("language", googleSearchCampaign.language);
+      // setValue("specificDaysOfWeek", googleSearchCampaign.specificDaysOfWeek);
       setValue("country", googleSearchCampaign.country);
+
+      console.log('googleSearchCampaign', googleSearchCampaign);
+      if (googleSearchCampaign.location ) {
+        const location = LOCATIONS.find((location: GoogleSearchLocation) => location.canonicalName === googleSearchCampaign.location);
+        const updatedLocation = location || null;
+        console.log('location', updatedLocation);
+        
+        setSelectedLocation(updatedLocation);
+      }
+
 
       const fetchData = async () => {
         if (!googleSearchCampaign) return;
@@ -229,7 +240,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
           {errors.language && <ErrorField error={"* Language is Required"} />}
 
           <p className="mt-7">Location</p>
-          <LocationSearchBar placeholder='Select Location' width={444} data={LOCATIONS} onLocationSelect={handleLocationSelect} onWordChange={handleWordChangeFromChild} />
+          <LocationSearchBar placeholder='Select Location' width={444} data={LOCATIONS} initialLocation={selectedLocation?.canonicalName || ''} onLocationSelect={handleLocationSelect} onWordChange={handleWordChangeFromChild} />
 
           <p className="mt-7">County</p>
           <Controller
@@ -273,7 +284,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
                         type="checkbox"
                         {...restField}
                         value={day.value}
-                        checked={value?.includes(day.value)}
+                        checked={!value || value.includes(day.value)}
                         onChange={(e) => {
                           const dayValue: DayOfWeek = e.target.value as DayOfWeek; // Cast to DayOfWeek
                           // Ensure value is treated as an array, defaulting to an empty array if undefined

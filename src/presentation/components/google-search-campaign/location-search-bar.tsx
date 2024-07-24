@@ -12,11 +12,12 @@ interface SearchBarProps {
   onLocationSelect: (location: GoogleSearchLocation) => void;
   width: number;
   onWordChange: (word: string) => void;
+  initialLocation: string;
 }
 
-function LocationSearchBar({ placeholder, data, onLocationSelect, width, onWordChange }: SearchBarProps) {
+function LocationSearchBar({ placeholder, data, onLocationSelect, width, onWordChange, initialLocation }: SearchBarProps) {
   const [filteredData, setFilteredData] = useState<GoogleSearchLocation[]>([]);
-  const [wordEntered, setWordEntered] = useState("");
+  const [wordEntered, setWordEntered] = useState(initialLocation || "");
 
   const handleFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchWord = event.target.value;

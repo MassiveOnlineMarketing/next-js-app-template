@@ -15,6 +15,7 @@ export const GoogleSearchCampaignSchema = z.object({
     .length(2),
   gscSite: z.string().optional(),
   keywords: z.string().optional(),
+  
 });
 
 

@@ -55,6 +55,7 @@ const SecondarySidebar = () => {
 
 
       <div className="mt-auto">
+        <Link href="/app/search/test" className='text-gray-500 hover:bg-gray-100 hover:text-gray-700 px-4 py-2 block'>go to test page</Link>
         <button onClick={() => setOpen(true)} className="text-black bg-green-500">+ Open</button>
         <GoogleSearchProjectFormDialog open={open} setOpen={setOpen} website={currentWebsite} />
       </div>

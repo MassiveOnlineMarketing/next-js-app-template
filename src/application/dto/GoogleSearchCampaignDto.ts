@@ -10,7 +10,7 @@ export interface CreateGoogleSearchCampaignDto {
   projectName: string;
   language: string;
   country: string;
-  specificDaysOfWeek?: ("MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY")[] | undefined;
+  specificDaysOfWeek?: ("MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY")[];
   gscSite: string | null;
   keywords: string | null;
 }
@@ -22,7 +22,7 @@ export interface UpdateGoogleSearchCampaignDto {
   projectName: string;
   language: string;
   country: string;
-  specificDaysOfWeek?: ("MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY")[] | undefined;
+  specificDaysOfWeek?: ("MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY")[];
   gscSite?: string | undefined;
   keywords?: string | undefined;
 }

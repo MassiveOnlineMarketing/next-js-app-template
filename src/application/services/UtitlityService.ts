@@ -11,4 +11,15 @@ export class utilityService {
       return v.toString(16);
     });
   }
+
+  /**
+   * Returns the day of the week for a given date.
+   * @param date - The date for which to get the day of the week.
+   * @returns The day of the week as a string.
+   */
+  getDayOfTheWeek(date: Date): string {
+    const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SUNDAY'];
+    const dayIndex = date.getDay();
+    return daysOfWeek[dayIndex];
+  }
 }
