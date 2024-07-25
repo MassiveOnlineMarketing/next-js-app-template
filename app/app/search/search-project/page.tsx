@@ -53,7 +53,7 @@ const CampaingTable = ({ campaigns }: {campaigns: GoogleSearchCampaign[]}) => {
           <h1>{campaign.id}</h1>
           <p>{campaign.country}</p>
           <p>{campaign.domainUrl}</p>
-          <p>{campaign.projectName}</p>
+          <p>{campaign.campaignName}</p>
           <p>{campaign.language}</p>
         </div>
       ))}

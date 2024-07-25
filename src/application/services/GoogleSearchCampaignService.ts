@@ -67,7 +67,9 @@ export class GoogleSearchCampaignService {
       throw new GoogleSearchError(403, 'Campaing does not belong to user');
     }
 
-    return this.campaignRepository.update(id, data);
+    const dataToUpdate = GoogleSearchCampaign.fromUpdateDto(data, campaign);
+
+    return this.campaignRepository.update(dataToUpdate, data.competitors);
   }
 
   /**

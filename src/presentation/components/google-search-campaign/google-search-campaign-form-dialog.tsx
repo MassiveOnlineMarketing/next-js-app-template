@@ -1,31 +1,29 @@
 "use client";
 
 // External libraries
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter } from "next/navigation";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Internal types
-import { GoogleSearchCampaignSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
-import { GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, DayOfWeek, DAYS_OF_WEEK, GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS } from "./form-options";
+import { GoogleSearchCampaignSchema, GoogleSearchCampaignSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
+import { LOCATIONS } from "./location-constant";
+import { GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, DayOfWeek, GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS, GoogleSearchLanguage, GoogleSearchCountry } from "./form-options";
 import { Website } from "@/domain/_entities/Website";
 import { GoogleSearchLocation } from "@/domain/models/serperApi";
 
-
 import useGoogleSearchCampaignOpperations from "@/presentation/hooks/useGoogleSearchCampaignOpperations";
-import { getCompetitorsByGoogleSearchCampaignId } from "@/application/useCases/googleSearchCampaign/getCompetitorsByGoogleSearchCampaignId";
 
 // Components
 import { Dialog, DialogContent, DialogHeader } from "@/presentation/components/common/dialog";
-import { InputFieldApp, TestInput, TextareaApp } from "@/presentation/components/ui/inputFields";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/presentation/components/ui/select";
+import { InputFieldApp, TextareaApp } from "@/presentation/components/ui/inputFields";
 
-import { PlusIcon } from "@heroicons/react/24/outline";
 
-// Location search bar
-import LocationSearchBar from "./location-search-bar";
-import { LOCATIONS } from "./location-constant";
+import Search from './fields/Search';
+import CompetitorsField from './fields/CompetitorField';
+import DaysOfWeekField from './fields/DaysOfWeekField';
 
 
 interface GoogleSearchProjectFormDialogProps {
@@ -61,68 +59,36 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
   const router = useRouter();
   const path = usePathname();
 
-  const currentWebsite = website;
   const { handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign } = useGoogleSearchCampaignOpperations();
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<GoogleSearchCampaignSchemaType>({});
+  const { handleSubmit, control, setValue, watch, register, reset, formState: { errors } } = useForm<GoogleSearchCampaignSchemaType>({
+    resolver: zodResolver(GoogleSearchCampaignSchema),
+  });
 
   useEffect(() => {
-    if (open && googleSearchCampaign) {
-      setValue("projectName", googleSearchCampaign.projectName);
-      setValue("language", googleSearchCampaign.language);
-      // setValue("specificDaysOfWeek", googleSearchCampaign.specificDaysOfWeek);
-      setValue("country", googleSearchCampaign.country);
-
-      console.log('googleSearchCampaign', googleSearchCampaign);
-      if (googleSearchCampaign.location ) {
-        const location = LOCATIONS.find((location: GoogleSearchLocation) => location.canonicalName === googleSearchCampaign.location);
-        const updatedLocation = location || null;
-        console.log('location', updatedLocation);
-        
-        setSelectedLocation(updatedLocation);
-      }
-
-
-      const fetchData = async () => {
-        if (!googleSearchCampaign) return;
-        const res = await getCompetitorsByGoogleSearchCampaignId(googleSearchCampaign.id);
-        if (!res || !res.data) return;
-        setFetchedCompetitors(res.data.map(competitor => competitor.domainUrl));
-      };
-
-      fetchData();
+    if (googleSearchCampaign) {
+      setValue('campaignName', googleSearchCampaign.campaignName);
+      setValue('specificDaysOfWeek', googleSearchCampaign.refreshDays as DayOfWeek[]);
     }
-  }, [open]);
+  }, [googleSearchCampaign]);
+  const languageInitialValues = googleSearchCampaign ? GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS.find(option => option.googleId.toString() === googleSearchCampaign.languageCode) as GoogleSearchLanguage : undefined;
+  const locationInitialValues = googleSearchCampaign ? LOCATIONS.find(option => option.canonicalName === googleSearchCampaign.location) as GoogleSearchLocation : undefined;
+  const countryInitialValues = googleSearchCampaign ? GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.find(option => option.countryCode === googleSearchCampaign.country) as GoogleSearchCountry : undefined;
 
-  // TODO: Create reset function
+
+
+
   const onSubmit: SubmitHandler<GoogleSearchCampaignSchemaType> = async (data) => {
     if (!googleSearchCampaign) {
-      // TODO: handle no current website there
-      if (!currentWebsite) return;
-      const res = await handleCreateCampaign(data, selectedLocation, currentWebsite.id, currentWebsite?.domainUrl, addedCompetitors);
+      const res = await handleCreateCampaign(data, website?.id, website?.domainUrl, addedCompetitors);
       if (res?.success) {
-        reset();
-        setAddedCompetitors([]);
-        setWordFromChild('');
-        // Send user to the campaign route
+        resetForm();
         router.push(`/app/search/google-search/${res.campaignId}`);
-        setOpen(false);
       }
     } else {
-      const res = await handleUpdateCampaign(data, googleSearchCampaign?.id, addedCompetitors, removedCompetitors);
+      const res = await handleUpdateCampaign(data, googleSearchCampaign.id, addedCompetitors, removedCompetitors);
       if (res?.success) {
-        setAddedCompetitors([]);
-        setWordFromChild('');
-        setRemovedCompetitors([]);
-        reset();
-        setOpen(false);
+        resetForm();
       }
     }
   };
@@ -135,54 +101,54 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
       if (path.includes(googleSearchCampaign?.id)) {
         router.push("/app/search");
       }
-      reset();
-      setWordFromChild('');
-      setRemovedCompetitors([])
-      setAddedCompetitors([]);
-      setOpen(false);
+      resetForm();
     }
   }
 
+  function resetForm() {
+    reset();
+    resetCompetitors();
+    setOpen(false);
+  }
 
-  // Stuff for location
-  const [wordFromChild, setWordFromChild] = React.useState("");
-  const handleWordChangeFromChild = (word: string) => {
-    setWordFromChild(word);
-  };
-  console.log('wordFromChild', wordFromChild);
-  const [selectedLocation, setSelectedLocation] = React.useState<GoogleSearchLocation | null>(null);
-  // Callback function to update the selected location
-  const handleLocationSelect = (location: GoogleSearchLocation) => {
-    setSelectedLocation(location);
-    setValue("country", location.countryCode);
-  };
 
-  
-  // Stuff for competitors 
-  const [domainInput, setDomainInput] = React.useState('');
-  const [fetchedCompetitors, setFetchedCompetitors] = React.useState<string[]>([]);
-  const [addedCompetitors, setAddedCompetitors] = React.useState<string[]>([]);
-  const [removedCompetitors, setRemovedCompetitors] = React.useState<string[]>([]);
-
-  const handleAddCompetitor = () => {
-    setAddedCompetitors(prev => [...prev, domainInput]);
-    setRemovedCompetitors(prev => prev.filter(domain => domain !== domainInput));
-    setDomainInput('');
-  };
-
-  const handleRemoveCompetitor = (domain: string) => {
-    if (fetchedCompetitors.includes(domain)) {
-      setRemovedCompetitors(prev => [...prev, domain]);
-    } else {
-      setAddedCompetitors(prev => prev.filter(d => d !== domain));
+  // Stuff for location anc country
+  const location = watch('location') as GoogleSearchLocation;
+  const [disabledCountry, setDisabledCountry] = useState(false);
+  const [query, setQuery] = useState('');
+  // Set country if location is set
+  useEffect(() => {
+    if (location && location.countryCode) {
+      const country = GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.find(
+        (option) => option.countryCode === location.countryCode
+      );
+      if (country) {
+        setValue('country', country, { shouldValidate: true });
+      }
     }
-  };
+  }, [location, setValue]);
 
-  // Combine and filter competitors
-  const currentCompetitors = React.useMemo(() => {
-    const combinedCompetitors = [...fetchedCompetitors, ...addedCompetitors];
-    return combinedCompetitors.filter(domain => !removedCompetitors.includes(domain));
-  }, [fetchedCompetitors, addedCompetitors, removedCompetitors]);
+  useEffect(() => {
+    if (location) {
+      if (Object.keys(location).length === 0) {
+        setDisabledCountry(false);
+      } else {
+        setQuery(GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.find((option) => option.countryCode === location.countryCode)?.name as string);
+        setDisabledCountry(true);
+      }
+    }
+  }, [location]);
+
+
+  // Stuff for competitors
+  const [addedCompetitors, setAddedCompetitors] = useState<string[]>([]);
+  const [removedCompetitors, setRemovedCompetitors] = useState<string[]>([]);
+
+  const resetCompetitors = () => {
+    setAddedCompetitors([]);
+    setRemovedCompetitors([]);
+  }
+
 
   return (
     <Dialog open={open} onOpenChange={setOpen} >
@@ -190,7 +156,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
         <DialogHeader>
           <h2 className="font-medium text-2xl text-gray-800">
             {googleSearchCampaign
-              ? `Update ${googleSearchCampaign.projectName}`
+              ? `Update ${googleSearchCampaign.campaignName}`
               : "Setup Google Search Campaign"}
           </h2>
           <p className="font-medium text-base text-gray-500 pt-[4px]">
@@ -198,131 +164,65 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
           </p>
         </DialogHeader>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mt-4 text-gray-800 font-medium"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className='text-gray-800'>
           <p>Campaign Name</p>
           <InputFieldApp
             type="text"
             placeholder="Google Search DE"
             // required
-            {...register("projectName", { required: true })}
+            {...register("campaignName")}
           />
-          {errors.projectName && <ErrorField error={"* A Name is Required"} />}
+          {errors.campaignName && <p className="text-sm font-medium text-red-500 dark:text-red-900">{errors.campaignName.message}</p>}
 
           <p className="mt-7">Language</p>
-          <Controller
-            name="language"
+          <Search
+            items={GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS}
             control={control}
-            defaultValue=""
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder="Select a language"
-                    className="placeholder-gray-400 text-gray-400"
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS.map((option) => {
-                    return (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-            )}
+            setValue={setValue}
+            displayField="name"
+            fieldName="language"
+            placeholder="Search language..."
+            initialValues={languageInitialValues}
           />
-          {errors.language && <ErrorField error={"* Language is Required"} />}
+          {errors.language && <p className="text-sm font-medium text-red-500 dark:text-red-900">{errors.language.message}</p>}
+
 
           <p className="mt-7">Location</p>
-          <LocationSearchBar placeholder='Select Location' width={444} data={LOCATIONS} initialLocation={selectedLocation?.canonicalName || ''} onLocationSelect={handleLocationSelect} onWordChange={handleWordChangeFromChild} />
-
-          <p className="mt-7">County</p>
-          <Controller
-            name="country"
+          <Search
+            items={LOCATIONS}
             control={control}
-            defaultValue=""
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value} disabled={wordFromChild ? true : false}>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder="Select a country"
-                    className="placeholder-gray-400 text-gray-400"
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.map((option) => {
-                    return (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-            )}
+            setValue={setValue}
+            displayField="name"
+            fieldName="location"
+            placeholder="Search location..."
+            initialValues={locationInitialValues}
           />
-          {errors.country && <ErrorField error={"* Location is Required"} />}
+          {errors.location && <p className="text-sm font-medium text-red-500 dark:text-red-900">{errors.location.message}</p>}
 
-          <p className="mt-7">Days we check the results</p>
-          <div className="space-y-2 mt-2">
-            <Controller
-              name="specificDaysOfWeek"
-              control={control}
-              render={({ field: { onChange, value, ...restField } }) => (
-                <>
-                  {DAYS_OF_WEEK.map((day) => (
-                    <>
-                      <input
-                        key={day.value}
-                        type="checkbox"
-                        {...restField}
-                        value={day.value}
-                        checked={!value || value.includes(day.value)}
-                        onChange={(e) => {
-                          const dayValue: DayOfWeek = e.target.value as DayOfWeek; // Cast to DayOfWeek
-                          // Ensure value is treated as an array, defaulting to an empty array if undefined
-                          const currentValue = value || [];
-                          const updatedValue = e.target.checked
-                            ? [...currentValue, dayValue] // Use currentValue here
-                            : currentValue.filter((v) => v !== dayValue); // And here
-                          onChange(updatedValue); // Update the form state
-                        }}
-                      />
-                      <label htmlFor={day.value}>{day.label}</label>
-                    </>
-                  ))}
-                </>
-              )}
-            />
-          </div>
-
+          <p className="mt-7">Country</p>
+          <Search
+            items={GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS}
+            control={control}
+            setValue={setValue}
+            displayField="name"
+            fieldName="country"
+            placeholder="Search country..."
+            disabled={disabledCountry}
+            displayValue={query}
+            initialValues={countryInitialValues}
+          />
+          {errors.country && <p className="text-sm font-medium text-red-500 dark:text-red-900">{errors.country.message}</p>}
 
           <p className="mt-7">Competitors</p>
-          <div className="flex gap-2">
-            <InputFieldApp
-              type="text"
-              value={domainInput}
-              onChange={(e) => setDomainInput(e.target.value)}
-              placeholder="https://www.example.com"
-            />
-            <button onClick={handleAddCompetitor} type="button" className="p-4 mt-3 rounded-xl border border-primary-100 h-fit"><PlusIcon className="w-6 h-6 text-gray-400 " /></button>
-          </div>
-          <div className="p-2 space-y-2">
-            {currentCompetitors.map((domain, index) => (
-              <div key={index} className="flex justify-between items-center">
-                <p>{domain}</p>
-                {/* TODO: Set styles */}
-                <button type="button" onClick={() => handleRemoveCompetitor(domain)}>Remove</button>
-              </div>
-            ))}
-          </div>
+          <CompetitorsField
+            addedCompetitors={addedCompetitors}
+            removedCompetitors={removedCompetitors}
+            setAddedCompetitors={setAddedCompetitors}
+            setRemovedCompetitors={setRemovedCompetitors}
+          />
+
+          <p className="mt-7">Refresh</p>
+          <DaysOfWeekField control={control} fieldName='specificDaysOfWeek' />
 
           {!googleSearchCampaign && (
             <>
@@ -335,6 +235,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
             </>
           )}
 
+          {/* TODO: Button styling */}
           <div className="flex justify-between mt-8">
             {googleSearchCampaign && (
               <button

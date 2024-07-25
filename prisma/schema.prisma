@@ -14,6 +14,16 @@ enum UserRole {
   USER
 }
 
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model User {
   id                    String                 @id @default(cuid())
   name                  String?
@@ -29,12 +39,12 @@ model User {
   refreshToken          String?                @db.Text
   credits               Int                    @default(10)
 
-  stripeCustomerId       String?               @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?               @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?               @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime?             @map(name: "stripe_current_period_end")
+  stripeCustomerId       String?                @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?                @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?                @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime?              @map(name: "stripe_current_period_end")
   website                Website[]
-  googleSearchProject    GoogleSearchProject[]
+  GoogleSearchCampaign   GoogleSearchCampaign[]
 }
 
 model Account {
@@ -102,28 +112,29 @@ model Website {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  googleResultFilter  GoogleResultFilter[]
-  googleSearchProject GoogleSearchProject[]
-  user                User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  googleResultFilter   GoogleResultFilter[]
+  googleSearchCampaign GoogleSearchCampaign[]
+  user                 User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model GoogleSearchProject {
-  id               String                         @id @default(cuid())
-  userId           String
-  websiteId        String
-  projectName      String
-  domainUrl        String
-  language         String
-  languageCode     String
-  country          String
-  location         String?
-  locationCode     String
-  gscUrl           String?
-  createdAt        DateTime                       @default(now())
-  updatedAt        DateTime                       @updatedAt
-  keyword          GoogleSearchKeyword[]
-  results          GoogleSearchProjectResult[]
-  competitor       GoogleSearchCompetitor[]
+model GoogleSearchCampaign {
+  id           String                      @id @default(cuid())
+  userId       String
+  websiteId    String
+  campaignName String
+  domainUrl    String
+  language     String
+  languageCode String
+  country      String
+  location     String?
+  locationCode String
+  gscUrl       String?
+  refreshDays  DayOfWeek[]
+  createdAt    DateTime                    @default(now())
+  updatedAt    DateTime                    @updatedAt
+  keyword      GoogleSearchKeyword[]
+  results      GoogleSearchProjectResult[]
+  competitor   GoogleSearchCompetitor[]
 
   website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -132,14 +143,14 @@ model GoogleSearchProject {
 }
 
 model GoogleSearchCompetitor {
-  id                    String   @id @default(cuid())
-  googleSearchProjectId String
-  domainUrl             String
+  id                     String   @id @default(cuid())
+  googleSearchCampaignId String
+  domainUrl              String
   // competitorName        String
-  createdAt             DateTime @default(now())
+  createdAt              DateTime @default(now())
 
-  googleSearchProject          GoogleSearchProject            @relation(fields: [googleSearchProjectId], references: [id], onDelete: Cascade)
-  GoogleSearchCompetitorResult GoogleSearchCompetitorResult[]
+  googleSearchCampaign         GoogleSearchCampaign           @relation(fields: [googleSearchCampaignId], references: [id], onDelete: Cascade)
+  googleSearchCompetitorResult GoogleSearchCompetitorResult[]
 }
 
 model GoogleSearchCompetitorResult {
@@ -151,39 +162,39 @@ model GoogleSearchCompetitorResult {
   metaTitle                String?
   metaDescription          String?
   createdAt                DateTime @default(now())
-  googleSearchProjectId    String
+  googleSearchCampaignId   String
 
   googleSearchCompetitor GoogleSearchCompetitor @relation(fields: [googleSearchCompetitorId], references: [id], onDelete: Cascade)
 }
 
 model GoogleSearchProjectResult {
-  id                    String   @id @default(cuid())
-  googleSearchProjectId String
-  improved              Int
-  worsened              Int
-  total                 Int
-  topThree              Int
-  topTen                Int
-  topHundred            Int
-  noChange              Int
-  notFound              Int
-  averagePosition       Int
-  createdAt             DateTime @default(now())
+  id                     String   @id @default(cuid())
+  googleSearchCampaignId String
+  improved               Int
+  worsened               Int
+  total                  Int
+  topThree               Int
+  topTen                 Int
+  topHundred             Int
+  noChange               Int
+  notFound               Int
+  averagePosition        Int
+  createdAt              DateTime @default(now())
 
-  googleSearchProject GoogleSearchProject @relation(fields: [googleSearchProjectId], references: [id], onDelete: Cascade)
+  googleSearchCampaign GoogleSearchCampaign @relation(fields: [googleSearchCampaignId], references: [id], onDelete: Cascade)
 }
 
 model GoogleSearchKeyword {
-  id                    String   @id @default(cuid())
-  googleSearchProjectId String
-  keyword               String
-  createdAt             DateTime @default(now())
+  id                     String   @id @default(cuid())
+  googleSearchCampaignId String
+  keyword                String
+  createdAt              DateTime @default(now())
 
-  googleSearchProject          GoogleSearchProject            @relation(fields: [googleSearchProjectId], references: [id], onDelete: Cascade)
-  googleSerpResult             GoogleSearchSerpResult[]
-  Result                       GoogleSearchResult[]
-  tags                         GoogleSearchKeywordTag[]
-  keywordMetrics               GoogleAdsKeywordMetrics[]  
+  googleSearchCampaign GoogleSearchCampaign      @relation(fields: [googleSearchCampaignId], references: [id], onDelete: Cascade)
+  googleSerpResult     GoogleSearchSerpResult[]
+  Result               GoogleSearchResult[]
+  tags                 GoogleSearchKeywordTag[]
+  keywordMetrics       GoogleAdsKeywordMetrics[]
 }
 
 model GoogleSearchSerpResult {
@@ -225,16 +236,16 @@ model GoogleSearchKeywordTag {
 }
 
 model GoogleAdsKeywordMetrics {
-  id                    String   @id @default(cuid())
+  id                    String @id @default(cuid())
   googleSearchKeywordId String
 
-  avgMonthlySearches     String?
-  competition            String?
-  competitionIndex       String?
-  highTopOfPageBid       String?
-  lowTopOfPageBid        String?
+  avgMonthlySearches String?
+  competition        String?
+  competitionIndex   String?
+  highTopOfPageBid   String?
+  lowTopOfPageBid    String?
 
-  createdAt              DateTime @default(now())
+  createdAt DateTime @default(now())
 
   keyword GoogleSearchKeyword @relation(fields: [googleSearchKeywordId], references: [id], onDelete: Cascade)
 }

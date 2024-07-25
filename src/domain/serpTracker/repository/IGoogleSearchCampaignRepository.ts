@@ -1,5 +1,3 @@
-// src/domain/googleSearchConsole/repositories/IGoogleSearchProjectRepository.ts
-
 import { CreateGoogleSearchCampaignDto, UpdateGoogleSearchCampaignDto } from "@/application/dto/GoogleSearchCampaignDto";
 import { GoogleSearchCampaign } from "../enitities/GoogleSearchCampaign";
 import { GoogleSearchCompetitor } from "@prisma/client";
@@ -12,17 +10,18 @@ export interface IGoogleSearchCampaignRepository {
   /**
    * Creates a new Google Search Campaign.
    * @param campaign - The campaign data.
+   * @param competitors - An array of competitor URLs.
    * @returns A promise that resolves to the created GoogleSearchCampaign object.
    */
   create(campaign: GoogleSearchCampaign, competitors: string[] | null): Promise<GoogleSearchCampaign>;
 
   /**
    * Updates an existing Google Search Campaign.
-   * @param id - The ID of the campaign to update.
    * @param campaign - The updated campaign data.
+   * @param competitors - An array of competitor URLs.
    * @returns A promise that resolves to the updated GoogleSearchCampaign object.
    */
-  update(id: string, campaign: UpdateGoogleSearchCampaignDto): Promise<GoogleSearchCampaign>;
+  update(campaign: GoogleSearchCampaign, competitors: string[] | null): Promise<GoogleSearchCampaign>;
 
   /**
    * Deletes a Google Search Campaign.

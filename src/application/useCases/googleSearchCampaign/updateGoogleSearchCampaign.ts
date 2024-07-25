@@ -5,8 +5,10 @@ import { auth, AuthService } from "@/application/services/AuthService";
 import { GoogleSearchCampaignService } from "@/application/services/GoogleSearchCampaignService";
 import googleSearchCampaignRepository from "@/infrastructure/repositories/GoogleSearchCampaignRepository";
 
+// Schemas
 import { GoogleSearchError } from "@/domain/errors/googleSearchErrors";
 import { GoogleSearchCampaignSchema, GoogleSearchCampaignSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
+import { UpdateGoogleSearchCampaignDto } from "@/application/dto/GoogleSearchCampaignDto";
 
 /**
  * Updates a Google Search Campaign.
@@ -22,7 +24,7 @@ export async function updateGoogleSearchCampaign(
 ) {
   const validateFields = GoogleSearchCampaignSchema.safeParse(values);
   if (!validateFields.success) {
-    return { success: false, error: 'Invalid fields!' };
+    return { success: false, error: validateFields.error?.message[0] };
   }
 
   if (!campaignId) {
@@ -34,10 +36,12 @@ export async function updateGoogleSearchCampaign(
     return { success: false, error: 'User not authenticated or session expired' };
   }
 
-  const campaignData = {
+  const campaignData: UpdateGoogleSearchCampaignDto = {
     ...values,
     userId: session.user.id,
-    competitors: competitors ?? undefined,
+    campaignId: campaignId,
+    competitors: competitors ?? null,
+    gscSite: null
   };
 
   const googleSearchCampaignService = new GoogleSearchCampaignService(googleSearchCampaignRepository, new AuthService);

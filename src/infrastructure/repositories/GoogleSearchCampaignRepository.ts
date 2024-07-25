@@ -1,15 +1,12 @@
-// Import interfaces and entities
+import { db } from '../db/prisma';
+
 import { IGoogleSearchCampaignRepository } from '@/domain/serpTracker/repository/IGoogleSearchCampaignRepository';
 import { GoogleSearchCampaign } from '@/domain/serpTracker/enitities/GoogleSearchCampaign';
-import { db } from '../db/prisma';
-import { CreateGoogleSearchCampaignDto, UpdateGoogleSearchCampaignDto } from '@/application/dto/GoogleSearchCampaignDto';
-// Import the database model
-// import { GoogleSearchConsoleModel } from '../db/models/GoogleSearchConsoleModel';
 
 class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository {
 
   create(campaign: GoogleSearchCampaign, competitors: string[] | null): Promise<GoogleSearchCampaign> {
-    const newCampaign = db.googleSearchProject.create({
+    const newCampaign = db.googleSearchCampaign.create({
       data: {
         ...campaign,
         competitor: {
@@ -18,7 +15,6 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
               return { domainUrl: competitor }
             }) ?? []
           }
-
         }
       }
     })
@@ -26,16 +22,14 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
     return newCampaign;
   }
 
-  update(id: string, campaign: UpdateGoogleSearchCampaignDto): Promise<GoogleSearchCampaign> {
-    const updatedCampaign = db.googleSearchProject.update({
-      where: { id: id },
+  update(campaign: GoogleSearchCampaign, competitors: string[] | null): Promise<GoogleSearchCampaign> {
+    const updatedCampaign = db.googleSearchCampaign.update({
+      where: { id: campaign.id },
       data: {
-        projectName: campaign.projectName,
-        // isMobile: campaign.isMobile,  
-        country: campaign.country,
+        ...campaign,
         competitor: {
           createMany: {
-            data: campaign.competitors?.map(competitor => {
+            data: competitors?.map(competitor => {
               return { domainUrl: competitor }
             }) ?? []
           }
@@ -47,7 +41,7 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
   }
 
   delete(id: string): Promise<boolean> {
-    const deletedCampaign = db.googleSearchProject.delete({
+    const deletedCampaign = db.googleSearchCampaign.delete({
       where: { id: id }
     })
 
@@ -55,7 +49,7 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
   }
 
   getById(id: string): Promise<GoogleSearchCampaign | null> {
-    const campaign = db.googleSearchProject.findUnique({
+    const campaign = db.googleSearchCampaign.findUnique({
       where: { id: id }
     })
 
@@ -63,7 +57,7 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
   }
 
   getByUserId(id: string): Promise<GoogleSearchCampaign[]> {
-    const campaigns = db.googleSearchProject.findMany({
+    const campaigns = db.googleSearchCampaign.findMany({
       where: { userId: id }
     });
 
@@ -71,7 +65,7 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
   }
 
   getByWebsiteId(id: string): Promise<GoogleSearchCampaign[]> {
-    const campaigns = db.googleSearchProject.findMany({
+    const campaigns = db.googleSearchCampaign.findMany({
       where: { websiteId: id }
     });
 
@@ -79,7 +73,7 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
   }
 
   getAll(): Promise<GoogleSearchCampaign[]> {
-    const campaigns = db.googleSearchProject.findMany();
+    const campaigns = db.googleSearchCampaign.findMany();
 
     return campaigns;
   }
@@ -87,7 +81,7 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
   deleteCompetitors(campaignId: string, competitors: string[]): Promise<boolean> {
     const deletedCompetitors = db.googleSearchCompetitor.deleteMany({
       where: {
-        googleSearchProjectId: campaignId,
+        googleSearchCampaignId: campaignId,
         domainUrl: {
           in: competitors
         }
@@ -100,7 +94,7 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
   getCompetitorsByCampaignId(campaignId: string): Promise<any> {
     const competitors = db.googleSearchCompetitor.findMany({
       where: {
-        googleSearchProjectId: campaignId
+        googleSearchCampaignId: campaignId
       }
     })
 

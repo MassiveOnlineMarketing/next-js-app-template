@@ -49,7 +49,7 @@ const SecondarySidebar = () => {
       <p>Campaigns</p>
       {googleSearchCampaigns?.map((campaign) => (
         <Link key={campaign.id} href={`/app/search/google-search/${campaign.id}`} className='text-gray-500 hover:bg-gray-100 hover:text-gray-700 px-4 py-2 block'>
-          {campaign.projectName}
+          {campaign.campaignName}
         </Link>
       ))}
 

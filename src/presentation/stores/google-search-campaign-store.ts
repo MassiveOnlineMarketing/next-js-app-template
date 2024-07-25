@@ -1,6 +1,10 @@
 'use client';
 
+// External dependencies
 import { create } from "zustand";
+
+// Domain
+import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 
 export type GoogleSearchCampaignDetailsActions = {
   setCampaignDetails: (campaignDetails: GoogleSearchCampaign) => void;
@@ -8,19 +12,6 @@ export type GoogleSearchCampaignDetailsActions = {
   addCampaignToList: (campaign: GoogleSearchCampaign) => void;
   updateCampaign: (campaign: GoogleSearchCampaign) => void;
   removeCampaignFromList: (campaignId: string) => void;
-};
-
-export type GoogleSearchCampaign = {
-  id: string;
-  userId: string;
-  projectName: string;
-  domainUrl: string;
-  language: string;
-  country: string;
-  gscUrl: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  websiteId: string;
 };
 
 export type CampaignDetailsState = {

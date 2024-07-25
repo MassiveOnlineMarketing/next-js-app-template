@@ -16,7 +16,7 @@ const page = async () => {
       {userCampaigns.data?.map(campaign => (
         <div key={campaign.id}>
           <p>{campaign.id}</p>
-          <p>{campaign.projectName}</p>
+          <p>{campaign.campaignName}</p>
           <Link href={`/app/search/google-search/${campaign.id}`}>Go to project</Link>
         </div>
         ))}

@@ -12,7 +12,7 @@ class KeywordRepository implements IKeywordRepository {
       return {
         id: keyword.id,
         keyword: keyword.keyword,
-        googleSearchProjectId: keyword.googleSearchCampaignId,
+        googleSearchCampaignId: keyword.googleSearchCampaignId,
         createdAt: keyword.createdAt
       }
     });

@@ -1,8 +1,7 @@
-// src/domain/googleSearchConsole/entities/GoogleSearchProject.ts
-
-import { CreateGoogleSearchCampaignDto } from "@/application/dto/GoogleSearchCampaignDto";
+import { CreateGoogleSearchCampaignDto, UpdateGoogleSearchCampaignDto } from "@/application/dto/GoogleSearchCampaignDto";
 import { utilityService } from "@/application/services/UtitlityService";
-import { GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS } from "@/presentation/components/google-search-campaign/form-options";
+import { DayOfWeek, GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS } from "@/presentation/components/google-search-campaign/form-options";
+
 
 
   /**
@@ -15,7 +14,7 @@ import { GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, GOOGLE_SEARCH_CAMPAIGN_LANGUAG
 export class GoogleSearchCampaign {
   id: string;
   userId: string;
-  projectName: string;
+  campaignName: string;
   domainUrl: string;
   language: string;
   languageCode: string;
@@ -23,6 +22,7 @@ export class GoogleSearchCampaign {
   location: string | null;
   locationCode: string
   gscUrl: string | null;
+  refreshDays: DayOfWeek[];
   createdAt: Date;
   updatedAt: Date;
   websiteId: string;
@@ -30,7 +30,7 @@ export class GoogleSearchCampaign {
   constructor(
     id: string,
     userId: string,
-    projectName: string,
+    campaignName: string,
     domainUrl: string,
     language: string,
     languageCode: string,
@@ -38,13 +38,14 @@ export class GoogleSearchCampaign {
     location: string | null,
     locationCode: string,
     gscUrl: string | null,
+    refreshDays: DayOfWeek[],
     createdAt: Date,
     updatedAt: Date,
     websiteId: string,
   ){
     this.id = id;
     this.userId = userId;
-    this.projectName = projectName;
+    this.campaignName = campaignName;
     this.domainUrl = domainUrl;
     this.language = language;
     this.languageCode = languageCode;
@@ -52,32 +53,61 @@ export class GoogleSearchCampaign {
     this.location = location;
     this.locationCode = locationCode;
     this.gscUrl = gscUrl;
+    this.refreshDays = refreshDays;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.websiteId = websiteId;
   }
 
-  // Business methods and behaviors, like validation or update logic
 
-
+  /**
+   * Creates a new instance of GoogleSearchCampaign from a DTO object.
+   * @param campaignDto - The DTO object containing the campaign data.
+   * @returns A new instance of GoogleSearchCampaign.
+   */
   static fromDto(campaignDto: CreateGoogleSearchCampaignDto): GoogleSearchCampaign {
     const UtilityService = new utilityService();
-    console.log('Creating Google Search dto:', campaignDto);
-    console.log(GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS.find(option => option.value === campaignDto.language)?.criterionId);
+
     return new GoogleSearchCampaign(
       UtilityService.genereateUUID(),
       campaignDto.userId,
-      campaignDto.projectName,
+      campaignDto.campaignName,
       campaignDto.domainUrl,
-      campaignDto.language,
-      GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS.find(option => option.value === campaignDto.language)?.criterionId.toString() as string,
-      campaignDto.country,
+      campaignDto.language.countryCode,
+      GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS.find(option => option.countryCode === campaignDto.language.countryCode)?.googleId.toString() as string,
+      campaignDto.country.countryCode,
       campaignDto.location?.canonicalName || null,
-      campaignDto.location?.googleId.toString() || GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.find(option => option.value === campaignDto.country)?.criterionId.toString() as string, 
+      campaignDto.location?.googleId.toString() || GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.find(option => option.countryCode === campaignDto.country.countryCode)?.googleId.toString() as string, 
       campaignDto.gscSite,
+      campaignDto.specificDaysOfWeek ?? [],
       new Date(),
       new Date(),
       campaignDto.websiteId,
+    );
+  }
+
+  /**
+   * Creates a new instance of `GoogleSearchCampaign` by updating an existing campaign with the provided DTO.
+   * @param campaignDto - The DTO containing the updated campaign data.
+   * @param existingCampaign - The existing campaign to be updated.
+   * @returns A new instance of `GoogleSearchCampaign` with the updated data.
+   */
+  static fromUpdateDto(campaignDto: UpdateGoogleSearchCampaignDto, existingCampaign: GoogleSearchCampaign): GoogleSearchCampaign {
+    return new GoogleSearchCampaign(
+      existingCampaign.id,
+      campaignDto.userId,
+      campaignDto.campaignName,
+      existingCampaign.domainUrl,
+      campaignDto.language.countryCode,
+      GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS.find(option => option.countryCode === campaignDto.language.countryCode)?.googleId.toString() as string,
+      campaignDto.country.countryCode,
+      campaignDto.location?.canonicalName || null,
+      campaignDto.location?.googleId.toString() || GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.find(option => option.countryCode === campaignDto.country.countryCode)?.googleId.toString() as string, 
+      existingCampaign.gscUrl,
+      campaignDto.specificDaysOfWeek ?? [],
+      existingCampaign.createdAt,
+      new Date(),
+      existingCampaign.websiteId,
     );
   }
 }

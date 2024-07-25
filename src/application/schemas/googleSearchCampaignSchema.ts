@@ -1,40 +1,45 @@
 import * as z from 'zod';
+import { GoogleSearchLocation } from '@/domain/models/serperApi';
+import { LOCATIONS } from '@/presentation/components/google-search-campaign/location-constant';
+import { GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS, GoogleSearchCountry, GoogleSearchLanguage } from '@/presentation/components/google-search-campaign/form-options';
 
 
 export type GoogleSearchCampaignSchemaType = z.infer<typeof GoogleSearchCampaignSchema>;
 
-export const GoogleSearchCampaignSchema = z.object({
-  projectName: z.string(),
-  specificDaysOfWeek: z.array(z.enum(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'])).optional(),
-  // language should max be 2 characters and min 2 characters, also needs to be one of the following: nl, en, de, fr
-  language: z
-    .string()
-    .length(2),
-  country: z
-    .string()
-    .length(2),
-  gscSite: z.string().optional(),
+const locationValidator = z.custom((location: GoogleSearchLocation) => {
+  if (!location) return true;
+  return LOCATIONS.some(loc => 
+    loc.name === location.name &&
+    loc.canonicalName === location.canonicalName &&
+    loc.googleId === location.googleId &&
+    loc.countryCode === location.countryCode &&
+    loc.targetType === location.targetType
+  );
+}, { message: "Location object does not match any object in the LOCATIONS array" });
+
+const languageValidator = z.custom((language: GoogleSearchLanguage) => {
+  if (!language) return false;
+  return GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS.some(lang => 
+    lang.countryCode === language.countryCode &&
+    lang.name === language.name &&
+    lang.googleId === language.googleId
+  );
+}, { message: "Please (re) select a language" });
+
+const countryValidator = z.custom((country: GoogleSearchCountry) => {
+  if (!country) return false;
+  return GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS.some(c => 
+    c.countryCode === country.countryCode &&
+    c.name === country.name &&
+    c.googleId === country.googleId
+  );
+}, { message: "Please (re) select a country" });
+
+export const GoogleSearchCampaignSchema= z.object({
+  campaignName: z.string().min(1, { message: "Campaign name is required" }),
+  language: languageValidator as z.ZodType<GoogleSearchLanguage, any, any>,
+  location: locationValidator.optional() as z.ZodType<GoogleSearchLocation, any, any>,
+  country: countryValidator as z.ZodType<GoogleSearchCountry, any, any>,
+  specificDaysOfWeek: z.array(z.enum(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'])),
   keywords: z.string().optional(),
-  
 });
-
-
-
-// const IntervalType = z.enum(['DAILY', 'EVERY_X_DAYS', 'SPECIFIC_DAYS_OF_WEEK']);
-
-// const googleSearchCampaignSchema = z.object({
-//   // Other fields...
-//   intervalType: IntervalType,
-//   intervalDays: z.number().optional(), // Used if intervalType is EVERY_X_DAYS
-//   specificDaysOfWeek: z.array(z.enum(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'])).optional(), // Used if intervalType is SPECIFIC_DAYS_OF_WEEK
-// });
-
-// // Example of conditional validation
-// const validateIntervalDetails = (data: any) => {
-//   if (data.intervalType === 'EVERY_X_DAYS' && (data.intervalDays === undefined || data.intervalDays < 1)) {
-//     throw new Error('Interval days must be provided and greater than 0 for EVERY_X_DAYS option.');
-//   }
-//   if (data.intervalType === 'SPECIFIC_DAYS_OF_WEEK' && (!data.specificDaysOfWeek || data.specificDaysOfWeek.length === 0)) {
-//     throw new Error('At least one day of the week must be selected for SPECIFIC_DAYS_OF_WEEK option.');
-//   }
-// };
