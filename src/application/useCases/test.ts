@@ -16,6 +16,7 @@ import googleSearchSerpResultRepository from "@/infrastructure/repositories/Goog
 
 // User
 import userRepository from "@/infrastructure/repositories/UserRepository";
+import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
 
 type TestUseCaseProps = {
   projectId: string;
@@ -48,11 +49,13 @@ export async function testUseCase({ projectId, keywordNames, country, language, 
   // TODO: get the latestResultWithTags from the database
   const latestResults = await googleSearchSerpResultRepository.getLatestResults(successfullInserts.userResultKeywordIds);
 
+  const responseResults = GoogleSearchLatestKeywordResult.fromDbQuery(latestResults);
+
   const decrementUserCredits = await userRepository.decrementUserCredits(userId, successfullInserts.successfullUserInserts);
   if (!decrementUserCredits) {
     throw new Error('Failed to decrement user credits');
   }
   
 
-  return {success: true, data: latestResults};
+  return {success: true, data: responseResults};
 }

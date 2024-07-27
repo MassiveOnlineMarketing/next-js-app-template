@@ -80,12 +80,12 @@
 // }
 
 // export type SuccessfulSerpApiFetches = {
-//   organic: SerpApiResult[];
+//   organic: SerperApiResult[];
 //   peopleAlsoAsk?: SerpApiPeopleAsloAsk[];
 //   relatedSearches?: SerpApiRelatedSearches[];
 // };
 // // FetchItem and SuccessfulFetches types
-// export type SerpApiResult = {
+// export type SerperApiResult = {
 //   title: string;
 //   link: string;
 //   snippet: string;

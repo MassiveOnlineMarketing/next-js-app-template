@@ -20,6 +20,7 @@ import { UpdateGoogleSearchCampaignDto } from "@/application/dto/GoogleSearchCam
 export async function updateGoogleSearchCampaign(
   values: GoogleSearchCampaignSchemaType,
   campaignId: string,
+  gscUrl?: string | null,
   competitors?: string[],
 ) {
   const validateFields = GoogleSearchCampaignSchema.safeParse(values);
@@ -41,7 +42,7 @@ export async function updateGoogleSearchCampaign(
     userId: session.user.id,
     campaignId: campaignId,
     competitors: competitors ?? null,
-    gscSite: null
+    gscSite: gscUrl
   };
 
   const googleSearchCampaignService = new GoogleSearchCampaignService(googleSearchCampaignRepository, new AuthService);

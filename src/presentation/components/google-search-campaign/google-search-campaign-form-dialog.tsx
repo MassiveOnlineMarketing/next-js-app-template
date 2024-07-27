@@ -59,7 +59,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
   const router = useRouter();
   const path = usePathname();
 
-  const { handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign } = useGoogleSearchCampaignOpperations();
+  const { isLoading, handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign } = useGoogleSearchCampaignOpperations();
 
   const { handleSubmit, control, setValue, watch, register, reset, formState: { errors } } = useForm<GoogleSearchCampaignSchemaType>({
     resolver: zodResolver(GoogleSearchCampaignSchema),
@@ -80,13 +80,13 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
 
   const onSubmit: SubmitHandler<GoogleSearchCampaignSchemaType> = async (data) => {
     if (!googleSearchCampaign) {
-      const res = await handleCreateCampaign(data, website?.id, website?.domainUrl, addedCompetitors);
+      const res = await handleCreateCampaign(data, website?.id, website?.gscUrl, website?.domainUrl, addedCompetitors);
       if (res?.success) {
         resetForm();
         router.push(`/app/search/google-search/${res.campaignId}`);
       }
     } else {
-      const res = await handleUpdateCampaign(data, googleSearchCampaign.id, addedCompetitors, removedCompetitors);
+      const res = await handleUpdateCampaign(data, googleSearchCampaign.id, website?.gscUrl, addedCompetitors, removedCompetitors);
       if (res?.success) {
         resetForm();
       }
@@ -239,6 +239,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
           <div className="flex justify-between mt-8">
             {googleSearchCampaign && (
               <button
+                disabled={isLoading}
                 type="button"
                 className="px-6 py-2 w-fit flex mx-auto rounded-lg text-lg font-semibold"
                 onClick={onDelete}
@@ -247,6 +248,7 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
               </button>
             )}
             <button
+              disabled={isLoading}
               type="submit"
               className="px-6 py-2 w-fit flex mx-auto rounded-lg text-lg font-semibold"
             >

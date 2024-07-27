@@ -24,6 +24,7 @@ export async function createGoogleSearchCampaign(
   values: GoogleSearchCampaignSchemaType,
   websiteId: string,
   domainUrl: string,
+  gscUrl?: string | null,
   competitors?: string[],
 ) {
 
@@ -47,7 +48,7 @@ export async function createGoogleSearchCampaign(
     country: values.country,
     competitors: competitors ?? null,
     specificDaysOfWeek: values.specificDaysOfWeek,
-    gscSite: domainUrl || null,
+    gscSite: gscUrl || null,
     keywords: values.keywords || null,
   };
 

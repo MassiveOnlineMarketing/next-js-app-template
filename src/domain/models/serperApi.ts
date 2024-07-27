@@ -1,10 +1,10 @@
 export type SuccessfulSerpApiFetches = {
-  organic: SerpApiResult[];
+  organic: SerperApiSerpResult[];
   peopleAlsoAsk?: SerpApiPeopleAsloAsk[];
   relatedSearches?: SerpApiRelatedSearches[];
 };
 // FetchItem and SuccessfulFetches types
-export type SerpApiResult = {
+export type SerperApiSerpResult = {
   title: string;
   link: string;
   snippet: string;

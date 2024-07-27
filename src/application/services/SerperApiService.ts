@@ -3,8 +3,8 @@ import { ISerperApiRepository } from "@/domain/serpTracker/repository/ISerperApi
 
 import { IGoogleSearchSerpResultRepository } from "@/domain/serpTracker/repository/IGoogleSearchSerpResultRepository";
 import { SuccessfulSerpApiFetches } from "@/domain/models/serperApi";
-import { SerpUserResult } from "@/domain/serpTracker/enitities/SerpUserResult";
-import { SerpResult } from "@/domain/serpTracker/enitities/SerpResult";
+import { SerperApiUserResult } from "@/domain/serpTracker/enitities/SerperApiUserResult";
+import { SerperApiResult } from "@/domain/serpTracker/enitities/SerperApiResult";
 
 
 export class SerperApiService {
@@ -38,19 +38,19 @@ export class SerperApiService {
     return { userResultKeywordIds: keywordIds, successfullUserInserts };
   }
 
-  handleTopTenResults(serperApiResponse: SuccessfulSerpApiFetches[]): SerpResult[] {
+  handleTopTenResults(serperApiResponse: SuccessfulSerpApiFetches[]): SerperApiResult[] {
     const insertData = [];
     for (const results of serperApiResponse) {
       for (const result of results.organic.slice(0, 10)) {
-        insertData.push(new SerpResult(result));
+        insertData.push(new SerperApiResult(result));
       }
     }
 
     return insertData;
   }
 
-  handleUserResults(serperApiResponse: SuccessfulSerpApiFetches[]): SerpUserResult[] {
-    const newResults: SerpUserResult[] = [];
+  handleUserResults(serperApiResponse: SuccessfulSerpApiFetches[]): SerperApiUserResult[] {
+    const newResults: SerperApiUserResult[] = [];
     console.log("🟡 handle user results");
   
     for (const result of serperApiResponse) {
@@ -67,10 +67,10 @@ export class SerperApiService {
   
       if (filteredResults.length === 0) {
         const item = result.organic[0];
-        newResults.push(new SerpUserResult(item, result, false));
+        newResults.push(new SerperApiUserResult(item, result, false));
       } else {
         const item = filteredResults[0];
-        newResults.push(new SerpUserResult(item, result, true));
+        newResults.push(new SerperApiUserResult(item, result, true));
       }
     }
   

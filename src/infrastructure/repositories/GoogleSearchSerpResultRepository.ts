@@ -1,11 +1,11 @@
 import { db } from "../db/prisma";
 
 import { IGoogleSearchSerpResultRepository } from "@/domain/serpTracker/repository/IGoogleSearchSerpResultRepository";
-import { SerpResult } from "@/domain/serpTracker/enitities/SerpResult";
-import { SerpUserResult } from "@/domain/serpTracker/enitities/SerpUserResult";
+import { SerperApiResult } from "@/domain/serpTracker/enitities/SerperApiResult";
+import { SerperApiUserResult } from "@/domain/serpTracker/enitities/SerperApiUserResult";
 
 class GoogleSearchSerpResultRepository implements IGoogleSearchSerpResultRepository {
-  async insertSerpResults(data: SerpResult[]): Promise<boolean> {
+  async insertSerpResults(data: SerperApiResult[]): Promise<boolean> {
     const resultData = data.map((keyword) => {
       return {
         keywordId: keyword.keywordId,
@@ -23,7 +23,7 @@ class GoogleSearchSerpResultRepository implements IGoogleSearchSerpResultReposit
     return !!resultInsert;
   }
 
-  async insertUserResults(userResultData: SerpUserResult[]): Promise<number> {
+  async insertUserResults(userResultData: SerperApiUserResult[]): Promise<number> {
     const resultData = userResultData.map((keyword) => {
       return {
         keywordId: keyword.keywordId,

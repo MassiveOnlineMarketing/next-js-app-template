@@ -16,6 +16,7 @@ import { deleteGoogleSearchCampaign } from "@/application/useCases/googleSearchC
 
 
 import { GoogleSearchLocation } from "@/domain/models/serperApi";
+import useKeywordOpperations from "./useKeywordOpperations";
 
 
 /**
@@ -35,6 +36,7 @@ function useGoogleSearchCampaignOpperations() {
     removeCampaignFromList: state.removeCampaignFromList,
     addCampaignToList: state.addCampaignToList
   }));
+  const { handleProcessNewKeyword } = useKeywordOpperations();
 
   /**
    * Handles the creation of a Google search campaign with toasts.
@@ -48,6 +50,7 @@ function useGoogleSearchCampaignOpperations() {
   const handleCreateCampaign = async (
     googleSearchCampaignData: GoogleSearchCampaignSchemaType,
     websiteId?: string,
+    gscUrl?: string | null,
     domainUrl?: string,
     addCompetitors?: string[],
   ) => {
@@ -60,7 +63,7 @@ function useGoogleSearchCampaignOpperations() {
     }
 
     try {
-      const response = await createGoogleSearchCampaign(googleSearchCampaignData, websiteId, domainUrl, addCompetitors);
+      const response = await createGoogleSearchCampaign(googleSearchCampaignData, websiteId, domainUrl, gscUrl, addCompetitors);
 
       if (response.success) {
         if (response.data) {
@@ -68,8 +71,11 @@ function useGoogleSearchCampaignOpperations() {
           // Add project to campaign list
           addCampaignToList(response.data);
           showSuccessToast('Google search campaign created successfully!');
+          if (googleSearchCampaignData.keywords){
+            console.log('keywords:', googleSearchCampaignData.keywords);
+            handleProcessNewKeyword(googleSearchCampaignData.keywords, response.data);
+          }
           return { success: true, campaignId: response.data.id };
-          // TODO: Process keywords
         } else {
           showErrorToast(response.error || 'Unknown error');
           return { success: false };
@@ -96,6 +102,7 @@ function useGoogleSearchCampaignOpperations() {
   const handleUpdateCampaign = async (
     googleSearchCampaignData: GoogleSearchCampaignSchemaType, 
     campaignId?: string, 
+    gscUrl?: string | null,
     addCompetitors?: string[],
     removeCompetitors?: string[]
   ) => {
@@ -116,7 +123,7 @@ function useGoogleSearchCampaignOpperations() {
         }
       }
       
-      const response = await updateGoogleSearchCampaign(googleSearchCampaignData, campaignId, addCompetitors);
+      const response = await updateGoogleSearchCampaign(googleSearchCampaignData, campaignId, gscUrl, addCompetitors);
       
       if (response.success && response.data) {
         // Set the updated campaign details
