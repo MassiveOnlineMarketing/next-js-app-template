@@ -2,12 +2,15 @@
 
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 import { IGoogleSearchCampaignRepository } from "@/domain/serpTracker/repository/IGoogleSearchCampaignRepository";
-import { CreateGoogleSearchCampaignDto, UpdateGoogleSearchCampaignDto } from "../dto/GoogleSearchCampaignDto";
+import {
+  CreateGoogleSearchCampaignDto,
+  UpdateGoogleSearchCampaignDto,
+} from "../dto/GoogleSearchCampaignDto";
 import { AuthService } from "./AuthService";
 import { GoogleSearchError } from "@/domain/errors/googleSearchErrors";
 import { GoogleSearchCompetitor } from "@prisma/client";
-
-
+import { ExtendedUser } from "../../../next-auth";
+import { db } from "@/infrastructure/db/prisma";
 
 /**
  * Service class for managing Google Search campaigns.
@@ -26,45 +29,50 @@ export class GoogleSearchCampaignService {
 
   /**
    * Creates a Google Search campaign.
-   * 
+   *
    * @param data - The data for creating the campaign.
    * @returns A promise that resolves to the created GoogleSearchCampaign.
    * @throws {GoogleSearchError} If the user is unauthorized.
    */
-  async createCampaign(data: CreateGoogleSearchCampaignDto): Promise<GoogleSearchCampaign> {
+  async createCampaign(
+    data: CreateGoogleSearchCampaignDto
+  ): Promise<GoogleSearchCampaign> {
     const user = await this.authService.currentUser();
     if (!user?.id) {
-      throw new GoogleSearchError(401, 'Unauthorized');
+      throw new GoogleSearchError(401, "Unauthorized");
     }
 
     const competitors = data.competitors;
     // cosnt campaign = data.
     const campaign = GoogleSearchCampaign.fromDto(data);
-    console.log('campaign',campaign);
+    console.log("campaign", campaign);
 
     return this.campaignRepository.create(campaign, competitors);
   }
 
   /**
    * Updates a Google Search campaign.
-   * 
+   *
    * @param id - The ID of the campaign to update.
    * @param data - The updated data for the campaign.
    * @returns A Promise that resolves to the updated GoogleSearchCampaign object.
    * @throws {GoogleSearchError} If the user is unauthorized, the campaign is not found, or the campaign does not belong to the user.
    */
-  async updateCampaign(id: string, data: UpdateGoogleSearchCampaignDto): Promise<GoogleSearchCampaign> {
+  async updateCampaign(
+    id: string,
+    data: UpdateGoogleSearchCampaignDto
+  ): Promise<GoogleSearchCampaign> {
     const user = await this.authService.currentUser();
     if (!user?.id) {
-      throw new GoogleSearchError(401, 'Unauthorized');
+      throw new GoogleSearchError(401, "Unauthorized");
     }
-    
+
     const campaign = await this.campaignRepository.getById(id);
     if (!campaign) {
-      throw new GoogleSearchError(404, 'Campaign not found');
+      throw new GoogleSearchError(404, "Campaign not found");
     }
     if (campaign.userId !== user.id) {
-      throw new GoogleSearchError(403, 'Campaing does not belong to user');
+      throw new GoogleSearchError(403, "Campaing does not belong to user");
     }
 
     const dataToUpdate = GoogleSearchCampaign.fromUpdateDto(data, campaign);
@@ -74,23 +82,23 @@ export class GoogleSearchCampaignService {
 
   /**
    * Deletes a campaign by its ID.
-   * 
+   *
    * @param id - The ID of the campaign to delete.
    * @returns A Promise that resolves to a boolean indicating whether the campaign was successfully deleted.
    * @throws {GoogleSearchError} If the user is not authorized, the campaign is not found, or the campaign does not belong to the user.
    */
-  async deleteCampaign (id: string): Promise<boolean> {
+  async deleteCampaign(id: string): Promise<boolean> {
     const user = await this.authService.currentUser();
     if (!user?.id) {
-      throw new GoogleSearchError(401, 'Unauthorized');
+      throw new GoogleSearchError(401, "Unauthorized");
     }
 
     const campaign = await this.campaignRepository.getById(id);
     if (!campaign) {
-      throw new GoogleSearchError(404, 'Campaign not found');
+      throw new GoogleSearchError(404, "Campaign not found");
     }
     if (campaign.userId !== user.id) {
-      throw new GoogleSearchError(403, 'Campaing does not belong to user');
+      throw new GoogleSearchError(403, "Campaing does not belong to user");
     }
 
     return this.campaignRepository.delete(id);
@@ -98,7 +106,7 @@ export class GoogleSearchCampaignService {
 
   /**
    * Retrieves a GoogleSearchCampaign by its ID.
-   * 
+   *
    * @param id - The ID of the GoogleSearchCampaign to retrieve.
    * @returns A Promise that resolves to the retrieved GoogleSearchCampaign, or null if not found.
    * @throws {GoogleSearchError} If the user is unauthorized, the campaign is not found, or the campaign does not belong to the user.
@@ -106,24 +114,24 @@ export class GoogleSearchCampaignService {
   async getById(id: string): Promise<GoogleSearchCampaign | null> {
     const user = await this.authService.currentUser();
     if (!user?.id) {
-      throw new GoogleSearchError(401, 'Unauthorized');
+      throw new GoogleSearchError(401, "Unauthorized");
     }
 
     const campaing = await this.campaignRepository.getById(id);
     if (!campaing) {
-      throw new GoogleSearchError(404, 'Campaign not found');
+      throw new GoogleSearchError(404, "Campaign not found");
     }
 
     if (campaing.userId !== user.id) {
-      throw new GoogleSearchError(403, 'Campaing does not belong to user');
+      throw new GoogleSearchError(403, "Campaing does not belong to user");
     }
-    
+
     return campaing;
   }
 
   /**
    * Retrieves Google search campaigns by user ID.
-   * 
+   *
    * @param userId - The ID of the user.
    * @returns A promise that resolves to an array of GoogleSearchCampaign objects.
    */
@@ -139,18 +147,16 @@ export class GoogleSearchCampaignService {
    */
   async getByWebsiteId(websiteId: string): Promise<GoogleSearchCampaign[]> {
     const user = await this.authService.currentUser();
-    console.log('user',user);
     if (!user?.id) {
-      throw new GoogleSearchError(401, 'Unauthorized');
+      throw new GoogleSearchError(401, "Unauthorized");
     }
 
     const campaigns = await this.campaignRepository.getByWebsiteId(websiteId);
-    console.log('campaigns',campaigns);
     if (!campaigns || campaigns.length === 0) {
-      throw new GoogleSearchError(404, 'Campaigns not found');
+      throw new GoogleSearchError(404, "Campaigns not found");
     }
     if (campaigns[0].userId !== user.id) {
-      throw new GoogleSearchError(403, 'Campaing does not belong to user');
+      throw new GoogleSearchError(403, "Campaing does not belong to user");
     }
 
     return campaigns;
@@ -166,43 +172,81 @@ export class GoogleSearchCampaignService {
 
   /**
    * Deletes competitors from a Google search campaign.
-   * 
+   *
    * @param campaignId - The ID of the campaign.
    * @param competitors - An array of competitor names to be deleted.
    * @returns A promise that resolves to a boolean indicating whether the competitors were successfully deleted.
    * @throws {GoogleSearchError} If the user is unauthorized, the campaign is not found, or the campaign does not belong to the user.
    */
-  async deleteCompetitors(campaignId: string, competitors: string[]): Promise<boolean> {
+  async deleteCompetitors(
+    campaignId: string,
+    competitors: string[]
+  ): Promise<boolean> {
     const user = await this.authService.currentUser();
     if (!user?.id) {
-      throw new GoogleSearchError(401, 'Unauthorized');
+      throw new GoogleSearchError(401, "Unauthorized");
     }
-    
+
     const campaign = await this.campaignRepository.getById(campaignId);
     if (!campaign) {
-      throw new GoogleSearchError(404, 'Campaign not found');
+      throw new GoogleSearchError(404, "Campaign not found");
     }
     if (campaign.userId !== user.id) {
-      throw new GoogleSearchError(403, 'Campaing does not belong to user');
+      throw new GoogleSearchError(403, "Campaing does not belong to user");
     }
 
     return this.campaignRepository.deleteCompetitors(campaignId, competitors);
-  
   }
 
   /**
    * Retrieves the competitors for a given campaign ID.
-   * 
+   *
    * @param campaignId - The ID of the campaign.
    * @returns A promise that resolves to an array of GoogleSearchCompetitor objects.
    * @throws {GoogleSearchError} If the user is unauthorized.
    */
-  async getCompetitorsByCampaignId(campaignId: string): Promise<GoogleSearchCompetitor[]> {
+  async getCompetitorsByCampaignId(
+    campaignId: string
+  ): Promise<GoogleSearchCompetitor[]> {
     const user = await this.authService.currentUser();
     if (!user?.id) {
-      throw new GoogleSearchError(401, 'Unauthorized');
+      throw new GoogleSearchError(401, "Unauthorized");
     }
 
     return this.campaignRepository.getCompetitorsByCampaignId(campaignId);
+  }
+  /**
+   * Checks if the user has enough credits to process a Google Search campaign.
+   * @param googleSearchCampaign - The Google Search campaign to check.
+   * @returns A boolean indicating whether the user has enough credits.
+   */
+  async userHasEnoughCredits(
+    user: ExtendedUser,
+    creditsNeeded: number
+  ): Promise<boolean> {
+    return user.credits >= creditsNeeded;
+  }
+
+  /**
+   * Deducts credits from the user's account.
+   * @param userId - The ID of the user.
+   * @param credits - The number of credits to deduct.
+   * @returns A Promise that resolves to void.
+   */
+  async decrementCredits(userId: string, credits: number): Promise<void> {
+    // TODO: remove db call
+    const res = await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        credits: {
+          decrement: credits,
+        },
+      },
+    });
+    if (res) {
+      console.log("🟢 Credits deducted");
+    }
   }
 }

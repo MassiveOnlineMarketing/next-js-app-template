@@ -1,79 +1,133 @@
-import { TKeyword } from "@/domain/serpTracker/enitities/Keyword";
-import { ISerperApiRepository } from "@/domain/serpTracker/repository/ISerperApiRepository";
-
-import { IGoogleSearchSerpResultRepository } from "@/domain/serpTracker/repository/IGoogleSearchSerpResultRepository";
+import { GoogleSearchCompetitor } from "@prisma/client";
 import { SuccessfulSerpApiFetches } from "@/domain/models/serperApi";
-import { SerperApiUserResult } from "@/domain/serpTracker/enitities/SerperApiUserResult";
+import { GoogleSearchCompetitorResult } from "@/domain/serpTracker/enitities/GoogleSearchCompetitorResult";
 import { SerperApiResult } from "@/domain/serpTracker/enitities/SerperApiResult";
+import { GoogleSearchApiUserResult } from "@/domain/serpTracker/enitities/GoogleSearchApiUserResult";
+
+import googleSearchSerpResultRepository from "../../infrastructure/repositories/GoogleSearchSerpResultRepository";
 
 
+/**
+ * Service class for handling SERP API results.
+ */
 export class SerperApiService {
-  private serperApiRepository: ISerperApiRepository;
-  private googleSearchSerpResultRepository: IGoogleSearchSerpResultRepository;
-
-  constructor(
-    serperApiRepository: ISerperApiRepository,
-    googleSearchSerpResultRepository: IGoogleSearchSerpResultRepository
+  /**
+   * Handles competitor results by inserting them into the database.
+   * If a competitor result is found, it is inserted with the SERP result.
+   * If no competitor result is found, it is inserted without the SERP result.
+   *
+   * @param serperApiResults The SERP API results.
+   * @param competitors The list of competitors.
+   */
+  async handleCompetitorResults(
+    serperApiResults: SuccessfulSerpApiFetches[],
+    competitors: GoogleSearchCompetitor[]
   ) {
-    this.serperApiRepository = serperApiRepository;
-    this.googleSearchSerpResultRepository = googleSearchSerpResultRepository;
-  }
+    const competitorResultsToInsert: GoogleSearchCompetitorResult[] = [];
 
-  async handleGoogleSearchResults(keywords: TKeyword[], language: string, country: string, domainUrl: string, userId: string, projectId: string) {
-    const serperApiResponse = await this.serperApiRepository.fetchResults(keywords, language, country, domainUrl, userId, projectId);
-    if (!serperApiResponse) {
-      throw new Error('Failed to fetch results');
-    }
+    for (const competitor of competitors) {
+      for (const result of serperApiResults) {
+        const competitorResult = result.organic.filter((item) =>
+          item.link.includes(competitor.domainUrl)
+        );
+        const keywordId = result.searchParameters.keywordId;
 
-    // Insert top ten results the data into the database
-    const topTenResultData = this.handleTopTenResults(serperApiResponse);
-    this.googleSearchSerpResultRepository.insertSerpResults(topTenResultData);
-
-    // const userResultData = this.handleUserResults(serperApiResponse);
-    const userResultData = this.handleUserResults(serperApiResponse);
-    const successfullUserInserts = await this.googleSearchSerpResultRepository.insertUserResults(userResultData);
-
-    const keywordIds = userResultData.map(keyword => keyword.keywordId);
-
-    return { userResultKeywordIds: keywordIds, successfullUserInserts };
-  }
-
-  handleTopTenResults(serperApiResponse: SuccessfulSerpApiFetches[]): SerperApiResult[] {
-    const insertData = [];
-    for (const results of serperApiResponse) {
-      for (const result of results.organic.slice(0, 10)) {
-        insertData.push(new SerperApiResult(result));
+        // if no result is found, insert a competitor result with no serp result
+        if (competitorResult.length === 0) {
+          competitorResultsToInsert.push(
+            GoogleSearchCompetitorResult.fromSerperApiNoSerpResult(
+              competitor,
+              keywordId
+            )
+          );
+        } else {
+          // if a result is found, insert a competitor result with serp result
+          competitorResultsToInsert.push(
+            GoogleSearchCompetitorResult.fromSerperApiSerpResult(
+              competitorResult[0],
+              competitor,
+              keywordId
+            )
+          );
+        }
       }
     }
 
-    return insertData;
+    const res = await googleSearchSerpResultRepository.insertCompetitorResults(
+      competitorResultsToInsert
+    );
+
+    if (res) {
+      console.log("🟢 Successfully inserted Competitor results");
+    } else {
+      console.log("🔴 Failed to insert Competitor results");
+    }
   }
 
-  handleUserResults(serperApiResponse: SuccessfulSerpApiFetches[]): SerperApiUserResult[] {
-    const newResults: SerperApiUserResult[] = [];
-    console.log("🟡 handle user results");
-  
-    for (const result of serperApiResponse) {
-      const filteredResults = result.organic.filter(item => {
-        // Normalize the item.link and item.domain for comparison
-        const link = new URL(item.link).hostname.replace('www.', '');
-        const domain = new URL(item.domain).hostname.replace('www.', '');
-      
-        // Check if the normalized link includes the normalized domain
-        return link.includes(domain);
-      });
+  /**
+   * Handles top ten results by inserting them into the database.
+   *
+   * @param serperApiResults The SERP API results.
+   */
+  async handleTopTenResults(serperApiResults: SuccessfulSerpApiFetches[]) {
+    const resultsToInsert: SerperApiResult[] = [];
 
-      // console.log('filteredResults', filteredResults);
-  
-      if (filteredResults.length === 0) {
-        const item = result.organic[0];
-        newResults.push(new SerperApiUserResult(item, result, false));
-      } else {
-        const item = filteredResults[0];
-        newResults.push(new SerperApiUserResult(item, result, true));
+    for (const result of serperApiResults) {
+      const keywordId = result.searchParameters.keywordId;
+      for (const serpResult of result.organic.slice(0, 10)) {
+        resultsToInsert.push(
+          SerperApiResult.fromSerperApiSerpResult(serpResult, keywordId)
+        );
       }
     }
-  
-    return newResults;
+
+    const res = await googleSearchSerpResultRepository.insertSerpResults(
+      resultsToInsert
+    );
+    if (res) {
+      console.log("🟢 Successfully inserted Top Ten results");
+    } else {
+      console.log("🔴 Failed to insert Top Ten results");
+    }
   }
+
+  /**
+   * Handles user results by inserting them into the database.
+   *
+   * @param serperApiResults The SERP API results.
+   * @param domainUrl The domain URL.
+   * @returns The inserted user results.
+   */
+  async handleUserResults(
+    serperApiResults: SuccessfulSerpApiFetches[],
+    domainUrl: string
+  ) {
+    const resultsToInsert: GoogleSearchApiUserResult[] = [];
+    for (const result of serperApiResults) {
+
+      const userResults = result.organic.filter((item) =>
+        item.link.includes(domainUrl)
+      );
+
+      resultsToInsert.push(
+        GoogleSearchApiUserResult.fromSerperApiSerpResult(
+          result,
+          userResults[0],
+        )
+      );
+    }
+
+    const res = await googleSearchSerpResultRepository.insertUserResults(
+      resultsToInsert
+    );
+
+    if (res) {
+      console.log("🟢 Successfully inserted User results");
+    } else {
+      console.log("🔴 Failed to insert User results");
+    }
+
+    return resultsToInsert;
+  }
+
 }

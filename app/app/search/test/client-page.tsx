@@ -5,13 +5,28 @@ import { useGoogleSearchCampaignDetailsStore } from '@/presentation/stores/googl
 import React, { useState } from 'react'
 
 const ClientPage = () => {
-
-  const { handleProcessNewKeyword } = useKeywordOpperations()
   const googleSearchCampaign = useGoogleSearchCampaignDetailsStore(state => state.campaignDetails)
   console.log('googleSearchCampaign', googleSearchCampaign)
 
-  const handleClick = () => {
+  const handleClick = async () => {
     console.log('test')
+    const payload = {
+      campaignId: 'c0c1a2fb-d21c-430c-8a6f-edff631cdcd2',
+      keywordNames: ['eureka mignon specialita']
+    }
+
+    const response = await fetch("/api/serp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const resultResponse = await response.json();
+
+    console.log('response', response)
+    console.log('resultResponse', resultResponse)
   }
 
   return (

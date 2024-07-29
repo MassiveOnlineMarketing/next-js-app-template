@@ -42,7 +42,7 @@ export async function updateGoogleSearchCampaign(
     userId: session.user.id,
     campaignId: campaignId,
     competitors: competitors ?? null,
-    gscSite: gscUrl
+    gscSite: gscUrl ?? null,
   };
 
   const googleSearchCampaignService = new GoogleSearchCampaignService(googleSearchCampaignRepository, new AuthService);

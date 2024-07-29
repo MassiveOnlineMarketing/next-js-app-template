@@ -1,8 +1,10 @@
 import { db } from "../db/prisma";
 
-import { IGoogleSearchSerpResultRepository } from "@/domain/serpTracker/repository/IGoogleSearchSerpResultRepository";
 import { SerperApiResult } from "@/domain/serpTracker/enitities/SerperApiResult";
-import { SerperApiUserResult } from "@/domain/serpTracker/enitities/SerperApiUserResult";
+import { GoogleSearchCompetitorResult } from "@/domain/serpTracker/enitities/GoogleSearchCompetitorResult";
+import { GoogleSearchApiUserResult } from "@/domain/serpTracker/enitities/GoogleSearchApiUserResult";
+
+import { IGoogleSearchSerpResultRepository } from "@/domain/serpTracker/repository/IGoogleSearchSerpResultRepository";
 
 class GoogleSearchSerpResultRepository implements IGoogleSearchSerpResultRepository {
   async insertSerpResults(data: SerperApiResult[]): Promise<boolean> {
@@ -23,27 +25,23 @@ class GoogleSearchSerpResultRepository implements IGoogleSearchSerpResultReposit
     return !!resultInsert;
   }
 
-  async insertUserResults(userResultData: SerperApiUserResult[]): Promise<number> {
-    const resultData = userResultData.map((keyword) => {
-      return {
-        keywordId: keyword.keywordId,
-        keywordName: keyword.resultName,
-        position: keyword.resultPosition,
-        url: keyword.resultURL,
-        metaTitle: keyword.resultTitle,
-        metaDescription: keyword.resultDescription,
-        firstPosition: keyword.resultPosition,
-        bestPosition: keyword.resultPosition,
-        relatedSearches: keyword.relatedSearches,
-        peopleAlsoAsk: keyword.peopleAlsoAsk,
-      };
-    });
-  
-    const res = await db.googleSearchResult.createMany({
-      data: resultData,
+  async insertCompetitorResults(
+    data: GoogleSearchCompetitorResult[]
+  ): Promise<boolean> {
+    const resultInsert = await db.googleSearchCompetitorResult.createMany({
+      data: data,
     });
 
-    return res.count;
+    return !!resultInsert;
+  }
+
+  async insertUserResults(data: GoogleSearchApiUserResult[]): Promise<boolean> {
+    const resultInsert = await db.googleSearchResult.createMany({
+      // @ts-ignore   Happens because of the data types relatedSearches, peopleAlsoAsk and siteLinks, but it's not a problem
+      data: data,
+    });
+
+    return !!resultInsert;
   }
 
   async getLatestResults(keywordIds: string[]) {
@@ -69,6 +67,35 @@ class GoogleSearchSerpResultRepository implements IGoogleSearchSerpResultReposit
           },
         },
       }
+    });
+
+    return results;
+  }
+
+  async getLatestResultsByCampaignId(campaignId: string) {
+    const results = await db.googleSearchCampaign.findFirst({
+      where: {
+        id: campaignId,
+      },
+      include: {
+        keyword: {
+          include: {
+            tags: true,
+            keywordMetrics: {
+              orderBy: {
+                createdAt: "desc",
+              },
+              take: 1,
+            },
+            result: {
+              orderBy: {
+                createdAt: "desc",
+              },
+              take: 1,
+            },
+          }
+        }
+      },
     });
 
     return results;

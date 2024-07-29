@@ -192,7 +192,7 @@ model GoogleSearchKeyword {
 
   googleSearchCampaign GoogleSearchCampaign      @relation(fields: [googleSearchCampaignId], references: [id], onDelete: Cascade)
   googleSerpResult     GoogleSearchSerpResult[]
-  Result               GoogleSearchResult[]
+  result               GoogleSearchResult[]
   tags                 GoogleSearchKeywordTag[]
   keywordMetrics       GoogleAdsKeywordMetrics[]
 }

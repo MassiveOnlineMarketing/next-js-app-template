@@ -4,6 +4,14 @@ import { LOCATIONS } from '@/presentation/components/google-search-campaign/loca
 import { GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, GOOGLE_SEARCH_CAMPAIGN_LANGUAGE_OPTIONS, GoogleSearchCountry, GoogleSearchLanguage } from '@/presentation/components/google-search-campaign/form-options';
 
 
+export type GoogleSearchCampaignKeywordsSchemaType = z.infer<typeof googleSearchCampaignKeywordsSchema>;
+
+export const googleSearchCampaignKeywordsSchema = z.object({
+  keywords: z.string(),
+});
+
+
+
 export type GoogleSearchCampaignSchemaType = z.infer<typeof GoogleSearchCampaignSchema>;
 
 const locationValidator = z.custom((location: GoogleSearchLocation) => {

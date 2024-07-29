@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useToast } from "../components/toast/use-toast";
 
 // Schema
-import { GoogleSearchCampaignSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
+import { GoogleSearchCampaignSchemaType, GoogleSearchCampaignKeywordsSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
 import { useGoogleSearchCampaignDetailsStore } from "../stores/google-search-campaign-store";
 
 
@@ -17,6 +17,7 @@ import { deleteGoogleSearchCampaign } from "@/application/useCases/googleSearchC
 
 import { GoogleSearchLocation } from "@/domain/models/serperApi";
 import useKeywordOpperations from "./useKeywordOpperations";
+import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 
 
 /**
@@ -175,6 +176,36 @@ function useGoogleSearchCampaignOpperations() {
     }
   };
 
+
+
+  /**
+   * Handles the addition of new keywords to a Google Search Campaign.
+   * 
+   * @param keywords - The keywords to be added.
+   * @param googleSearchCampaign - The Google Search Campaign to add the keywords to.
+   * @returns An object indicating the success of the operation.
+   */
+  const handleAddNewKeyword = async (keywords: GoogleSearchCampaignKeywordsSchemaType, googleSearchCampaign: GoogleSearchCampaign) => {
+    setIsLoading(true);
+
+    try {
+      const response = await handleProcessNewKeyword(keywords.keywords, googleSearchCampaign);
+      if (response.success) {
+        showSuccessToast('Keywords added successfully!');
+        return { success: true };
+      } else {
+        return { success: false };
+      }
+    } catch (error: any) {
+      console.error('error adding keywords:', error);
+      showErrorToast('Error adding keywords');
+      return { success: false };
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+
   const showErrorToast = (message: string) => {
     toast({
       description: `Error creating website: ${message}`,
@@ -190,7 +221,7 @@ function useGoogleSearchCampaignOpperations() {
     });
   };
 
-  return { isLoading, handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign };
+  return { isLoading, handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign, handleAddNewKeyword };
 }
 
 export default useGoogleSearchCampaignOpperations;

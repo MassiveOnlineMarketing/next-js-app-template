@@ -1,17 +1,21 @@
 'use client';
 
 import React, { useState } from "react";
-import { useToast } from "../components/toast/use-toast";
-import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
+import { useSession } from "next-auth/react";
+
 import { useCurrentUser } from "../auth/hooks/user-current-user";
-import { testUseCase } from "@/application/useCases/test";
+
+import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
+
 import { splitAndTrimKeywords } from "../lib/utils";
 import { useGoogleSearchKeywordResultStore } from "../stores/google-search-keyword-result-store";
+import { useToast } from "../components/toast/use-toast";
 
 export function useKeywordOpperations() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const user = useCurrentUser()
+  const { update } = useSession();
   const updateKeywordResults = useGoogleSearchKeywordResultStore((state) => state.updateKeywordResults);
 
 
@@ -37,7 +41,7 @@ export function useKeywordOpperations() {
 
     const keywordsArray = splitAndTrimKeywords(keywordsString);
 
-    if (keywordsArray.length >= user.credits) {
+    if (keywordsArray.length > user.credits) {
       const neededCredits = keywordsArray.length - user.credits;
       showErrorToast(`You need ${neededCredits} more credits to add ${keywordsArray.length} keywords`);
       return { success: false };
@@ -51,33 +55,37 @@ export function useKeywordOpperations() {
         const batch = keywordsArray.slice(i, i + BATCH_SIZE);
 
         const payload = {
-          projectId: googleSearchCampaign.id,
+          campaignId: googleSearchCampaign.id,
           keywordNames: batch,
-          country: googleSearchCampaign.country,
-          language: googleSearchCampaign.language,
-          domainUrl: googleSearchCampaign.domainUrl,
-          userId: user.id,
         }
 
-        // TODO: Change to api route
-        const response = await testUseCase(payload);
+
+        const response = await fetch("/api/serp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+    
+        const resultResponse = await response.json();
+
+        if (!resultResponse.success) {
+          setIsLoading(false);
+          return { success: false };
+        }
+
+        const userResults = JSON.parse(resultResponse.data);
         
-        if (response.success) {
-          updateKeywordResults(response.data);
-          // TODO: update user credits
-          showSuccessToast('Keywords added successfully');
-
-          // const updateUserCredits 
-        } else {
-          // TODO: handle error
-          // showErrorToast(response.error || 'Unknown error');
-        }
+        updateKeywordResults(userResults);
+        update({ credits: user.credits - userResults.length });
       }
-
+      setIsLoading(false);
       return { success: true };
     } catch (error: any) {
       console.error('error creating keyword:', error);
-      // showErrorToast('Error creating keyword');
+      showErrorToast('Error creating keyword');
+      setIsLoading(false);
       return { success: false };
     }
   }
