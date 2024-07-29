@@ -1,0 +1,98 @@
+To manage dependencies more effectively and avoid the complexity of manually instantiating services with their dependencies, you can use a Dependency Injection (DI) container. DI containers help manage the lifecycle and resolution of dependencies, making your code cleaner and more maintainable.
+
+Steps to Implement Dependency Injection with a DI Container
+Install a DI Container Library: For TypeScript, a popular choice is inversify.
+
+Define Interfaces: Define interfaces for your services to decouple the implementation from the usage.
+
+Create Inversify Bindings: Set up bindings in an Inversify container.
+
+Inject Dependencies: Use decorators to inject dependencies into your classes.
+
+Example Implementation
+1. Install Inversify
+npm install inversify reflect-metadata
+
+2. Define Interfaces
+// IAuthService.ts
+export interface IAuthService {
+  // Define methods
+}
+
+// IGoogleSearchCampaignService.ts
+export interface IGoogleSearchCampaignService {
+  // Define methods
+}
+
+// ISerperApiService.ts
+export interface ISerperApiService {
+  // Define methods
+}
+
+3. Implement Services
+// AuthService.ts
+import { injectable } from "inversify";
+import { IAuthService } from "./IAuthService";
+
+@injectable()
+export class AuthService implements IAuthService {
+  // Implement methods
+}
+
+// GoogleSearchCampaignService.ts
+import { injectable, inject } from "inversify";
+import { IGoogleSearchCampaignService } from "./IGoogleSearchCampaignService";
+import { IAuthService } from "./IAuthService";
+import { GoogleSearchCampaignRepository } from "./GoogleSearchCampaignRepository";
+
+@injectable()
+export class GoogleSearchCampaignService implements IGoogleSearchCampaignService {
+  constructor(
+    @inject("GoogleSearchCampaignRepository") private repository: GoogleSearchCampaignRepository,
+    @inject("IAuthService") private authService: IAuthService
+  ) {
+    // Implement methods
+  }
+}
+
+// SerperApiService.ts
+import { injectable } from "inversify";
+import { ISerperApiService } from "./ISerperApiService";
+
+@injectable()
+export class SerperApiService implements ISerperApiService {
+  // Implement methods
+}
+
+4. Set Up Inversify Container
+// inversify.config.ts
+import "reflect-metadata";
+import { Container } from "inversify";
+import { IAuthService } from "./IAuthService";
+import { AuthService } from "./AuthService";
+import { IGoogleSearchCampaignService } from "./IGoogleSearchCampaignService";
+import { GoogleSearchCampaignService } from "./GoogleSearchCampaignService";
+import { ISerperApiService } from "./ISerperApiService";
+import { SerperApiService } from "./SerperApiService";
+import { GoogleSearchCampaignRepository } from "./GoogleSearchCampaignRepository";
+
+const container = new Container();
+container.bind<IAuthService>("IAuthService").to(AuthService);
+container.bind<IGoogleSearchCampaignService>("IGoogleSearchCampaignService").to(GoogleSearchCampaignService);
+container.bind<ISerperApiService>("ISerperApiService").to(SerperApiService);
+container.bind<GoogleSearchCampaignRepository>("GoogleSearchCampaignRepository").to(GoogleSearchCampaignRepository);
+
+export { container };
+
+5. Inject Dependencies
+// route.ts
+import { container } from "./inversify.config";
+import { ISerperApiService } from "./ISerperApiService";
+
+const serpApiService = container.get<ISerperApiService>("ISerperApiService");
+
+Benefits
+Scalability: Easily add new dependencies without modifying existing code.
+Maintainability: Centralized configuration of dependencies.
+Testability: Simplifies mocking and testing of dependencies.
+This approach ensures that your code remains clean and manageable as the number of dependencies grows.

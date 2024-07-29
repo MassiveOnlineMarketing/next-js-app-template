@@ -83,15 +83,18 @@ const LoadingAndNoWebsiteButton = ({ isLoading, setWebsiteDialogOpen }: LoadingA
     <Button
       {...(isLoading ? { disabled: true } : {})}
       onClick={() => setWebsiteDialogOpen(true)}
-      variant="glass"
       size="sm"
-      className="w-[350px] justify-start px-3 py-3 text-base leading-6 font-medium"
+      className="w-[350px] justify-start px-3 py-3 flex items-center gap-5 text-base leading-6 font-medium"
     >
-      <CubeTransparentIcon className="h-6 w-6 text-gray-700 " />
-      <span className="text-gray-800">Website: </span>
-      <span className="text-gray-500">
-        {isLoading ? "Loading" : "+ Setup website"}
-      </span>
+      <div className="p-3 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center">
+
+        <CubeTransparentIcon className="h-6 w-6 text-gray-700" />
+
+      </div>
+      <div className="text-left">
+        <p className="text-gray-800">Loading</p>
+        <p className="text-gray-500">...</p>
+      </div>
       <ChevronDownIcon className="ml-auto h-4 w-4 text-gray-400" />
     </Button>
   )
@@ -115,21 +118,29 @@ const WebsiteSelectionButtonn = ({ setSelectedWebsite, setWebsiteDialogOpen, cur
 
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-      <PopoverTrigger asChild>
-        <Button
+      <PopoverTrigger>
+        {/* <Button
           variant="glass"
           size="sm"
           className="w-[350px] justify-start px-3 py-3 text-base leading-6 font-medium"
-        >
-          <CubeTransparentIcon className="h-6 w-6 text-gray-700 " />
-          <span className="text-gray-800">Website: </span>
-          <span className="text-gray-500">
-            {currentWebsite
-              ? currentWebsite.websiteName
-              : "Select website..."}
-          </span>
+        > */}
+        <div className="w-[350px] px-3 py-3 flex items-center justify-start gap-5 text-base leading-6 font-medium">
+          <div className="p-3 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center">
+            {
+              currentWebsite ? (
+                <img src={`${currentWebsite.domainUrl}/favicon.ico`} width={32} height={32} alt='favicon' />
+              ) : (
+                <CubeTransparentIcon className="h-6 w-6 text-gray-700" />
+              )
+            }
+          </div>
+          <div className="text-left">
+            <p className="text-gray-800">{currentWebsite ? currentWebsite.websiteName : 'Website'} </p>
+            <p className="text-gray-500">{currentWebsite ? currentWebsite.domainUrl : "Select website..."}</p>
+          </div>
           <ChevronDownIcon className="ml-auto h-4 w-4 text-gray-400" />
-        </Button>
+        </div>
+        {/* </Button> */}
       </PopoverTrigger>
       <PopoverContent className="w-[350px] bg-primary-50 p-0">
         <Command>

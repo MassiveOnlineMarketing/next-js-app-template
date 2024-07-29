@@ -2,6 +2,7 @@
 
 import useKeywordOpperations from '@/presentation/hooks/useKeywordOpperations';
 import { useGoogleSearchCampaignDetailsStore } from '@/presentation/stores/google-search-campaign-store';
+import Image from 'next/image';
 import React, { useState } from 'react'
 
 const ClientPage = () => {
@@ -31,6 +32,7 @@ const ClientPage = () => {
 
   return (
     <div className=''>
+      <img src='https://www.telegraaf.nl/favicon.ico' width={32} height={32} alt='favicon' />
       <button onClick={handleClick}>test</button>
     </div>
   )
