@@ -20,7 +20,7 @@ const useGoogleToken = (requiredScope: ScopeOption) => {
 
   useEffect(() => {
     if (!accountDetails || !accountDetails.scope) {
-      console.error('AccountDetails not found');
+      console.error('Google token AccountDetails not found');
       setIsLoading(false);
       return;
     }
