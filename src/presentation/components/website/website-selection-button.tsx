@@ -4,26 +4,27 @@ import { useEffect, useState } from "react";
 
 import { Website } from "@/domain/_entities/Website";
 import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-store";
+import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
 // Utils
 import { cn } from "@/presentation/lib/utils";
+import { getGoogleSearchCampaignByWebsiteId } from "@/application/useCases/googleSearchCampaign/getGoogleSearchCampaignByWebsiteId";
 
 // Components
+import CreateWebsiteFormDialog from "./website-form-dialog";
+
 import { Button } from "@/presentation/components/ui/button";
 import { Command, CommandGroup, CommandInput, CommandItem } from "@/presentation/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/presentation/components/ui/popover";
 
 // Assets
-import {
-  ChevronDownIcon,
-  CubeTransparentIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronDownIcon, CubeTransparentIcon } from "@heroicons/react/24/outline";
 
-import CreateWebsiteFormDialog from "./website-form-dialog";
 
 const WebsiteSelectionButton = () => {
   const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
   const setSelectedWebsite = useWebsiteDetailsStore((state) => state.setWebsiteDetails);
+  const setGoogleSearchCampaigns = useGoogleSearchCampaignDetailsStore((state) => state.setCampaigns);
   const websites = useWebsiteDetailsStore((state) => state.websites);
 
   // load website details on mount
@@ -43,6 +44,20 @@ const WebsiteSelectionButton = () => {
       setIsLoading(false);
     }
   }, [websites])
+
+
+
+  // Set the google search campaigns for the current website
+  useEffect(() => {
+    fetchProjects();
+  }, [currentWebsite]);
+
+  const fetchProjects = async () => {
+    if (!currentWebsite) return;
+    const searchProjects = await getGoogleSearchCampaignByWebsiteId(currentWebsite.id);
+    setGoogleSearchCampaigns(searchProjects.data ?? []); 
+  };
+
 
 
   return (
