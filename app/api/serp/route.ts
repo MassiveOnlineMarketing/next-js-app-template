@@ -6,6 +6,11 @@ import { SerpApiService } from "@/application/services/GoogleSerpApiService";
 import { SerperApiService } from "@/application/services/SerperApiService";
 
 import googleSearchCampaignRepository from "@/infrastructure/repositories/GoogleSearchCampaignRepository";
+import { GoogleAdsApiService } from "@/application/services/GoogleAdsApiService";
+
+import googleAdsApi from "@/infrastructure/api/GoogleAdsApi";
+import googleAdsKeywordMetricsRepository from "@/infrastructure/repositories/GoogleAdsKeywordMetricsRepository";
+import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
 
 type Data = {
   campaignId: string;
@@ -37,11 +42,12 @@ export async function POST(req: Request) {
   const serpApiService = new SerpApiService(
     new AuthService(),
     new GoogleSearchCampaignService(googleSearchCampaignRepository,new AuthService()),
-    new SerperApiService()
+    new SerperApiService(),
+    new GoogleAdsApiService(googleAdsApi, googleAdsKeywordMetricsRepository)
   );
 
   try {
-    const userResults = await serpApiService.handleApiRequest(data);
+    const userResults: GoogleSearchLatestKeywordResult[] = await serpApiService.handleApiRequest(data);
 
     return new Response(
       JSON.stringify({ success: true, data: JSON.stringify(userResults) }),

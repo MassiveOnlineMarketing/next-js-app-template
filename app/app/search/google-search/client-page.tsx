@@ -24,6 +24,7 @@ const ClientPage = ({
   const googleSearchKeywordResult = useGoogleSearchKeywordResultStore(
     (state) => state.keywordResults
   );
+  console.log("googleSearchKeywordResult", googleSearchKeywordResult);
   const currentGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore(
     (state) => state.campaignDetails
   );

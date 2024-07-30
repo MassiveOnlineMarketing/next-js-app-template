@@ -10,6 +10,7 @@ import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearc
 import { splitAndTrimKeywords } from "../lib/utils";
 import { useGoogleSearchKeywordResultStore } from "../stores/google-search-keyword-result-store";
 import { useToast } from "../components/toast/use-toast";
+import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
 
 export function useKeywordOpperations() {
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +49,7 @@ export function useKeywordOpperations() {
     }
 
     setIsLoading(true);
-    const BATCH_SIZE = 1;
+    const BATCH_SIZE = 50;
 
     try {
       for (let i = 0; i < keywordsArray.length; i += BATCH_SIZE) {
@@ -75,7 +76,7 @@ export function useKeywordOpperations() {
           return { success: false };
         }
 
-        const userResults = JSON.parse(resultResponse.data);
+        const userResults: GoogleSearchLatestKeywordResult[] = JSON.parse(resultResponse.data);
         
         updateKeywordResults(userResults);
         update({ credits: user.credits - userResults.length });

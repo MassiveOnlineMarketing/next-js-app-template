@@ -9,6 +9,7 @@ export const GoogleSearchKeywordResultStoreProvider = ({ googleSearchLatestSerpR
 
     useEffect(() => {
         console.log('🟢 setting new keyword results');
+        console.log('googleSearchLatestSerpResult', googleSearchLatestSerpResult);
         setGoogleSearchKeywordResult(googleSearchLatestSerpResult);
     }, []);
 

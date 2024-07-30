@@ -1,19 +1,19 @@
 import { KeywordMetricsInput } from "@/domain/models/historicalMetrics";
 import { TKeyword } from "@/domain/serpTracker/enitities/Keyword";
 
-import { IGoogleAdsApiRepository } from "@/domain/repository/IGoogleAdsApiRepository";
-import { IGoogleAdsKeywordMetrics } from "@/domain/serpTracker/repository/IGoogleAdsKeywordMetrics";
+import { IGoogleAdsApi } from "@/domain/api/IGoogleAdsApi";
+import { IGoogleAdsKeywordMetricsRepository } from "@/domain/serpTracker/repository/IGoogleAdsKeywordMetricsRepository";
 
 export class GoogleAdsApiService {
-  private googleAdsApiRepository: IGoogleAdsApiRepository;
-  private googleAdsKeywordMetrics: IGoogleAdsKeywordMetrics;
+  private googleAdsApi: IGoogleAdsApi;
+  private googleAdsKeywordMetricsRepository: IGoogleAdsKeywordMetricsRepository;
 
   constructor(
-    googleAdsApiRepository: IGoogleAdsApiRepository, 
-    googleAdsKeywordMetrics: IGoogleAdsKeywordMetrics
+    googleAdsApi: IGoogleAdsApi, 
+    googleAdsKeywordMetricsRepository: IGoogleAdsKeywordMetricsRepository
   ) {
-    this.googleAdsApiRepository = googleAdsApiRepository;
-    this.googleAdsKeywordMetrics = googleAdsKeywordMetrics;
+    this.googleAdsApi = googleAdsApi;
+    this.googleAdsKeywordMetricsRepository = googleAdsKeywordMetricsRepository;
   }
 
   async handleKeywordsForGoogleAdsApi(keywords: TKeyword[], country: string, language: string) {
@@ -25,7 +25,7 @@ export class GoogleAdsApiService {
     const keywordString = keywords.map(keyword => keyword.keyword);
   
     // Make the API call to get the metrics
-    const keywordMetricsRes = await this.googleAdsApiRepository.generateHistoricalMetrics(country, language, keywordString);
+    const keywordMetricsRes = await this.googleAdsApi.generateHistoricalMetrics(country, language, keywordString);
   
     if (!keywordMetricsRes) {
       return [];
@@ -33,13 +33,16 @@ export class GoogleAdsApiService {
 
 
     // Map the response to include the keyword IDs
-    const resultsWithIds = keywordMetricsRes.data.result.results.map((result: KeywordMetricsInput) => {
+    const resultsWithIds = keywordMetricsRes.data.results.map((result: KeywordMetricsInput) => {
       return {
         ...result,
         id: keywordIdMap[result.text]
       };
     });
 
-    this.googleAdsKeywordMetrics.insertMetrics(resultsWithIds);
+
+    this.googleAdsKeywordMetricsRepository.insertMetrics(resultsWithIds);
+
+    return resultsWithIds;
   }
 }
