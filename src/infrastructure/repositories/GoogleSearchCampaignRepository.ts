@@ -100,6 +100,23 @@ class GoogleSearchCampaignRepository implements IGoogleSearchCampaignRepository 
 
     return competitors;
   }
+
+  getCampaignsWithCampaignResultByUserId(userId: string) {
+    const campaigns = db.googleSearchCampaign.findMany({
+      where: { userId: userId },
+      include: {
+        website: true,
+        results: {
+          orderBy: {
+            createdAt: 'desc'
+          },
+          take: 1
+        },
+      }
+    })
+
+    return campaigns;
+  }
 }
 
 // Assign the instance to a variable

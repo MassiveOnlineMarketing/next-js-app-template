@@ -7,7 +7,7 @@ import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-st
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
 // Utils
-import { cn } from "@/presentation/lib/utils";
+import { cn, getFaviconUrl } from "@/presentation/lib/utils";
 import { getGoogleSearchCampaignByWebsiteId } from "@/application/useCases/googleSearchCampaign/getGoogleSearchCampaignByWebsiteId";
 
 // Components
@@ -143,7 +143,7 @@ const WebsiteSelectionButtonn = ({ setSelectedWebsite, setWebsiteDialogOpen, cur
           <div className="p-3 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center">
             {
               currentWebsite ? (
-                <img src={`${currentWebsite.domainUrl}/favicon.ico`} width={32} height={32} alt='favicon' />
+                <img src={getFaviconUrl(currentWebsite.domainUrl)} width={32} height={32} alt='favicon' />
               ) : (
                 <CubeTransparentIcon className="h-6 w-6 text-gray-700" />
               )
