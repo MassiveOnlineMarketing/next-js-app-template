@@ -11,7 +11,7 @@ import { PythonApiSite } from "@/infrastructure/repositories/GoogleSeachConsoleA
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/presentation/components/ui/select';
 
-function GoogleSearchConsoleSiteSelector({ control }: { control: Control<WebsiteInputSchemaType> }) {
+function GoogleSearchConsoleSiteSelector({ control, setOpen }: { control: Control<WebsiteInputSchemaType>, setOpen: (open: boolean) => void; }) {
   const { hasAccess, refreshToken, isLoading } = useGoogleToken("search-console");
   const [sites, setSites] = useState<PythonApiSite[] | null>(null);
 
@@ -37,6 +37,7 @@ function GoogleSearchConsoleSiteSelector({ control }: { control: Control<Website
           <Link
             href="/app/settings/integrations"
             className="text-primary-500"
+            onClick={() => setOpen(false)}
           >
             Search Console{" "}
           </Link>

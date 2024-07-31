@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { GoogleSearchCampaignKeywordsSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
 
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
-import useGoogleSearchCampaignOpperations from "@/presentation/hooks/useGoogleSearchCampaignOpperations";
+import useGoogleSearchCampaignOpperations from "@/presentation/hooks/serp/useGoogleSearchCampaignOpperations";
 
 // components
 // import {

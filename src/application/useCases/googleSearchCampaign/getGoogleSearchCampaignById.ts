@@ -14,7 +14,6 @@ import { GoogleSearchError } from "@/domain/errors/googleSearchErrors";
  * @returns A promise that resolves to an object containing the success status and the retrieved campaign data, or an error message.
  */
 export async function getGoogleSearchCampaignById(campaignId: string) {
-  console.log('getGoogleSearchCampaignById');
   const session = await auth();
   const currentUserId = session?.user.id;
 

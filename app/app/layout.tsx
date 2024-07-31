@@ -14,7 +14,6 @@ export default async function AuthProvider({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  console.log('re render lauout');
 
   return (
     <SessionProvider session={session}>

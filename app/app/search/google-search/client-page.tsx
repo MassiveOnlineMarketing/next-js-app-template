@@ -21,16 +21,10 @@ const ClientPage = ({
   googleSearchCampaign: GoogleSearchCampaign;
   latestSerpResults: GoogleSearchLatestKeywordResult[];
 }) => {
-  const googleSearchKeywordResult = useGoogleSearchKeywordResultStore(
-    (state) => state.keywordResults
-  );
-  console.log("googleSearchKeywordResult", googleSearchKeywordResult);
-  const currentGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore(
-    (state) => state.campaignDetails
-  );
-  const currentWebsite = useWebsiteDetailsStore(
-    (state) => state.websiteDetails
-  );
+  const googleSearchKeywordResult = useGoogleSearchKeywordResultStore((state) => state.keywordResults);
+  // console.log("googleSearchKeywordResult", googleSearchKeywordResult);
+  const currentGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
+  const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
 
   const [open, setOpen] = React.useState(false);
 

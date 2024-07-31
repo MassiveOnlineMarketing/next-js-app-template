@@ -3,6 +3,7 @@ import { db } from "../db/prisma";
 import { SerperApiResult } from "@/domain/serpTracker/enitities/SerperApiResult";
 import { GoogleSearchCompetitorResult } from "@/domain/serpTracker/enitities/GoogleSearchCompetitorResult";
 import { GoogleSearchApiUserResult } from "@/domain/serpTracker/enitities/GoogleSearchApiUserResult";
+import { GoogleSearchSerpResult } from "@prisma/client";
 
 import { IGoogleSearchSerpResultRepository } from "@/domain/serpTracker/repository/IGoogleSearchSerpResultRepository";
 
@@ -100,6 +101,21 @@ class GoogleSearchSerpResultRepository implements IGoogleSearchSerpResultReposit
 
     return results;
   }
+
+  async getTopTenSerpResults(keywordId: string): Promise<GoogleSearchSerpResult[]> {
+    const results = await db.googleSearchSerpResult.findMany({
+      where: {
+        keywordId: keywordId,
+      },
+      orderBy: {
+        position: "asc",
+      },
+      take: 10,
+    });
+
+    return results;
+  }
+
 }
 
 const googleSearchSerpResultRepository = new GoogleSearchSerpResultRepository();

@@ -28,6 +28,12 @@ export interface AuthInterface {
    */
   currentUser: () => Promise<ExtendedUser | null>;
 
+  getGoogleRefreshToken: () => Promise<string | null>;
+
+  /**
+   * Returns whether the current user is an admin.
+   * @returns A promise that resolves to a boolean indicating whether the user is an admin.
+   */
   isAdmin: () => Promise<boolean>;
 
   /**

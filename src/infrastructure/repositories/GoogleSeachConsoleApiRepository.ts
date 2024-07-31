@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { IGoogleSearchConsoleApiRepository } from "@/domain/repository/IGoogleSeachConsoleApiRepository";
+import { GoogleSearchConsoleKeywordDetailsData } from "@/domain/models/googleSearchConsoleApi";
 
 export type PythonApiSite = {
   premissionLevel: string;
@@ -19,6 +20,20 @@ export default class GoogleSearchConsoleApiRepository implements IGoogleSearchCo
     } catch (error) {
       console.error(error);
       return null
+    }
+  }
+
+  async getKeywordDetailsData(keywordName: string, gscUrl: string, refresh_token: string): Promise<GoogleSearchConsoleKeywordDetailsData | null> {
+    const encodedKeyword = encodeURIComponent(keywordName);
+
+    try {
+      const url = `${process.env.NEXT_PUBLIC_PYTHON_API_URL}/api/keyword_data?keyword=${encodedKeyword}&site_url=${gscUrl}&refresh_token=${refresh_token}`;
+      const res = await axios(url);
+
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
   }
 }

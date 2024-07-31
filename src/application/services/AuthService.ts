@@ -33,6 +33,18 @@ export class AuthService implements AuthInterface {
     return user || null
   }
 
+  async getGoogleRefreshToken(): Promise<string | null> {
+    const session = await auth();
+    const user = session?.user as ExtendedUser;
+    if (!user.id) {
+      // TODO: Auth error
+      return null;
+    }
+    const account = await userRepository.getAccountById(user.id);
+
+    return account?.refresh_token || null; 
+  }
+
   async isAdmin() {
     const session = await auth();
     const user = session?.user as ExtendedUser;

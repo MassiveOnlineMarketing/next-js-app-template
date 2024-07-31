@@ -5,7 +5,6 @@ import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/
 import googleSearchSerpResultRepository from "@/infrastructure/repositories/GoogleSearchSerpResultRepository";
 
 export async function getGoogleSearchLatestSerpResults(campaignId: string) {
-    console.log('getGoogleSearchLatestSerpResults');
     const authService = new AuthService()
 
     const user = await authService.currentUser()

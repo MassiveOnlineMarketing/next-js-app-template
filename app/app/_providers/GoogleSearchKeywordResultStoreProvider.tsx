@@ -4,14 +4,20 @@ import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/
 import { useGoogleSearchKeywordResultStore } from '@/presentation/stores/google-search-keyword-result-store';
 import { useEffect } from 'react';
 
-export const GoogleSearchKeywordResultStoreProvider = ({ googleSearchLatestSerpResult }: {googleSearchLatestSerpResult: GoogleSearchLatestKeywordResult[]}) => {
-    const setGoogleSearchKeywordResult = useGoogleSearchKeywordResultStore((state) => state.setKeywordResults);
+export const GoogleSearchKeywordResultStoreProvider = ({ googleSearchLatestSerpResult }: { googleSearchLatestSerpResult: GoogleSearchLatestKeywordResult[] }) => {
+  const setGoogleSearchKeywordResult = useGoogleSearchKeywordResultStore((state) => state.setKeywordResults);
+  const resetResults = useGoogleSearchKeywordResultStore((state) => state.resetKeywordResults);
+  const resetSelectedTags = useGoogleSearchKeywordResultStore((state) => state.resetSelectedTags);
 
-    useEffect(() => {
-        console.log('🟢 setting new keyword results');
-        console.log('googleSearchLatestSerpResult', googleSearchLatestSerpResult);
-        setGoogleSearchKeywordResult(googleSearchLatestSerpResult);
-    }, []);
+  useEffect(() => {
+    console.log('resetting results');
+    resetResults();
+    resetSelectedTags();
 
-    return null;
+    console.log('🟢 setting new keyword results');
+    console.log('googleSearchLatestSerpResult', googleSearchLatestSerpResult);
+    setGoogleSearchKeywordResult(googleSearchLatestSerpResult);
+  }, []);
+
+  return null;
 }

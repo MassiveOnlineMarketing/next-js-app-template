@@ -1,7 +1,9 @@
 import { getGoogleSearchCampaignById } from '@/application/useCases/googleSearchCampaign/getGoogleSearchCampaignById'
 import React from 'react'
-import ClientPage from '../client-page'
+
 import { getGoogleSearchLatestSerpResults } from '@/application/useCases/googleSearchLatestSerpResults/getGoogleSearchLatestSerpResults'
+import BreadCrumbsSearchKeywords from '../_components/bread-crumbs'
+import ClientPage from '../_components/ClientPage'
 
 const page = async ({
   params: { campaign_id }
@@ -36,14 +38,10 @@ const page = async ({
   // Filter out null values from latestSerpResults.data
   const filteredSerpResults = latestSerpResults.data.filter(result => result !== null);
   
-  // console.log('🟢 filteredSerpResults:', filteredSerpResults);
-  // console.log('🟢 campaign:', campaign);
-  
   return (
-    <div className="px-6 pb-6 w-full h-full">
-      <p>Bread Crumb</p>
+    <div className="w-full h-full">
+      <BreadCrumbsSearchKeywords campaignName={campaign.data.campaignName} />
       <ClientPage googleSearchCampaign={campaign.data} latestSerpResults={filteredSerpResults} />
-      <pre>{JSON.stringify(campaign, null, 2)}</pre>
     </div>
   )
 }

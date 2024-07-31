@@ -1,4 +1,5 @@
 import { PythonApiSite } from "@/infrastructure/repositories/GoogleSeachConsoleApiRepository";
+import { GoogleSearchConsoleKeywordDetailsData } from "../models/googleSearchConsoleApi";
 
 /**
  * Represents a repository for interacting with the Google Search Console API.
@@ -10,4 +11,6 @@ export interface IGoogleSearchConsoleApiRepository {
    * @returns A promise that resolves to an array of PythonApiSite objects or null.
    */
   getConnectedSites(refreshToken: string): Promise<PythonApiSite[] | null>;
+
+  getKeywordDetailsData(keywordName: string, gscUrl: string, refresh_token: string): Promise<GoogleSearchConsoleKeywordDetailsData | null>
 }

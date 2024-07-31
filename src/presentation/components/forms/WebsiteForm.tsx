@@ -93,7 +93,7 @@ const Websiteform: React.FC<WebsiteformProps> = ({
     <ErrorMessage message={errors?.domainUrl?.message} />
     {errors.domainUrl && <p>{errors.domainUrl.message}</p>}
 
-    <GoogleSearchConsoleSiteSelector control={control} />
+    <GoogleSearchConsoleSiteSelector control={control} setOpen={setOpen} />
 
     <div className='mt-8 w-full inline-flex justify-center text-lg font-semibold'>
       {/* TODO: button styles */}

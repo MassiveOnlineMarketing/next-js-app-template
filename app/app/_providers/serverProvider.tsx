@@ -16,9 +16,6 @@ const ServerProvider = async ({
 }: {
   children: React.ReactNode;
 }) => {
-
-  console.log('re render server provider');
-
   const session = await auth();
   const userId = session?.user.id
 

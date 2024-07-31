@@ -14,7 +14,7 @@ import { GOOGLE_SEARCH_CAMPAIGN_CONTRIES_OPTIONS, DayOfWeek, GOOGLE_SEARCH_CAMPA
 import { Website } from "@/domain/_entities/Website";
 import { GoogleSearchLocation } from "@/domain/models/serperApi";
 
-import useGoogleSearchCampaignOpperations from "@/presentation/hooks/useGoogleSearchCampaignOpperations";
+import useGoogleSearchCampaignOpperations from "@/presentation/hooks/serp/useGoogleSearchCampaignOpperations";
 
 // Components
 import { InputFieldApp, TextareaApp } from "@/presentation/components/ui/inputFields";
