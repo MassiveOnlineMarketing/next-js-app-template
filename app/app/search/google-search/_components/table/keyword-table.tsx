@@ -15,9 +15,8 @@ import useColumnOrder from "@/presentation/components/ui/table/useColumnOrder";
 // import KeywordDetailsRow from "./keywords-details-row";
 import DataTablePagination from "@/presentation/components/ui/table/table-pagination";
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
-import useKeywordDetailsSearchConsoleData from "@/presentation/hooks/serp/useKeywordDetailsSearchConsoleData";
-import useGoogleSearchTopTenResults from "@/presentation/hooks/serp/useGoogleSearchTopTenResults";
-import useGoogleSearchCompetitorGraphData from "@/presentation/hooks/serp/useGoogleSearchCompetitorGraphData";
+import TestKeywordDetailsRow from "./TestKeywordDetailsRow";
+
 
 
 interface DataTableProps<TData, TValue> {
@@ -32,13 +31,6 @@ function DataTable<TData, TValue>({
   data,
   googleSearchCampaign,
 }: DataTableProps<TData, TValue>) {
-
-  const { isLoading: GSCDataIsLoading, searchConsoleData } = useKeywordDetailsSearchConsoleData(keywordName, googleSearchCampaign.websiteId);
-  // console.log("searchConsoleData", searchConsoleData, GSCDataIsLoading);  
-  const { isLoading: TopTenSerpResultsIsLoading, topTenSerpResults } = useGoogleSearchTopTenResults("c46043f0-45e4-4950-926b-e50cbb3b5f27");
-  // console.log("topTenSerpResults", topTenSerpResults, TopTenSerpResultsIsLoading);  
-  const { isLoading: CompetitorsDataIsLoading, competitorGraphData } = useGoogleSearchCompetitorGraphData("c46043f0-45e4-4950-926b-e50cbb3b5f27");
-  // console.log("competitorGraphData", competitorGraphData, CompetitorsDataIsLoading);
 
   const [rowSelection, setRowSelection] = useState({});
 
@@ -166,6 +158,10 @@ function DataTable<TData, TValue>({
                     <tr>
                       {keywordData ? (
                         <td className="pt-6" colSpan={numberOfVisibleColumns}>
+                          <TestKeywordDetailsRow
+                            keywordData={keywordData}
+                            googleSearchCampaign={googleSearchCampaign}
+                          />
                           {/* <KeywordDetailsRow
                             keywordData={keywordData}
                             refresh_token={refreshToken}
