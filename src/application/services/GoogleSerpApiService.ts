@@ -1,12 +1,12 @@
 import { SimpleError } from "@/domain/errors/simpleErrors";
-import { Keyword } from "@/domain/serpTracker/enitities/Keyword";
+import { GoogleSearchKeyword } from "@/domain/serpTracker/enitities/GoogleSearchKeyword";
 
 import { AuthService } from "./AuthService";
 import { SerperApiService } from "./SerperApiService";
 import { GoogleSearchCampaignService } from "./GoogleSearchCampaignService";
 import { GoogleAdsApiService } from "./GoogleAdsApiService";
 
-import keywordRepository from "@/infrastructure/repositories/KeywordRepository";
+import googleSearchKeywordRepository from "@/infrastructure/repositories/GoogleSearchKeywordRepository";
 import serperApiRepository from "@/infrastructure/api/SerperApi";
 import { GoogleSearchApiUserResult } from "@/domain/serpTracker/enitities/GoogleSearchApiUserResult";
 import { KeywordMetric } from "@/domain/models/historicalMetrics";
@@ -57,8 +57,8 @@ export class SerpApiService {
     const competitors = await this.googleSearchCampaignService.getCompetitorsByCampaignId(campaignId);
 
     // handle keywords
-    const keywords = Keyword.generateAndFormatKeywords(campaignId, keywordNames);
-    const res = await keywordRepository.createBulk(keywords);
+    const keywords = GoogleSearchKeyword.generateAndFormatKeywords(campaignId, keywordNames);
+    const res = await googleSearchKeywordRepository.createBulk(keywords);
     if (!res) {
       throw new SimpleError(500, "Failed to create keywords");
     }

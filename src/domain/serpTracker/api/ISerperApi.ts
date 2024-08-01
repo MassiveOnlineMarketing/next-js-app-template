@@ -1,6 +1,6 @@
 
 import { GoogleSearchCampaign } from "../enitities/GoogleSearchCampaign";
-import { Keyword } from "../enitities/Keyword";
+import { GoogleSearchKeyword } from "../enitities/GoogleSearchKeyword";
 
 
 /**
@@ -14,5 +14,5 @@ export interface ISerperApiRepository {
      * @param keywordBatch - An array of GoogleSearchKeyword objects representing the keyword batch.
      * @returns The fetched SERP data.
      */
-    fetchSerpData(campaign: GoogleSearchCampaign, keywordBatch: Keyword[]): any;
+    fetchSerpData(campaign: GoogleSearchCampaign, keywordBatch: GoogleSearchKeyword[]): any;
 }

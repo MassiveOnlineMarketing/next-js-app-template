@@ -15,7 +15,7 @@ class GoogleSearchSerpResultRepository implements IGoogleSearchSerpResultReposit
         position: keyword.position,
         url: keyword.url,
         metaTitle: keyword.metaTitle,
-        metaDescription: keyword.metaDescription || "",
+        metaDescription: keyword.metaDescription,
       };
     });
   
@@ -108,7 +108,7 @@ class GoogleSearchSerpResultRepository implements IGoogleSearchSerpResultReposit
         keywordId: keywordId,
       },
       orderBy: {
-        position: "asc",
+        createdAt: "desc",
       },
       take: 10,
     });

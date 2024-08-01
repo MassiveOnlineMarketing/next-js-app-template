@@ -1,5 +1,5 @@
 import { KeywordMetricsInput } from "@/domain/models/historicalMetrics";
-import { TKeyword } from "@/domain/serpTracker/enitities/Keyword";
+import { TKeyword } from "@/domain/serpTracker/enitities/GoogleSearchKeyword";
 
 import { IGoogleAdsApi } from "@/domain/api/IGoogleAdsApi";
 import { IGoogleAdsKeywordMetricsRepository } from "@/domain/serpTracker/repository/IGoogleAdsKeywordMetricsRepository";

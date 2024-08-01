@@ -1,20 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
+import useColumnOrder from "@/presentation/components/ui/table/useColumnOrder";
 
-import useGoogleToken from "@/presentation/hooks/useGoogleRefreshToken";
 import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
+import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 
 // Components
 import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/presentation/components/ui/table/table";
-import useColumnOrder from "@/presentation/components/ui/table/useColumnOrder";
-
-// import DataTableTopBar from "./topbar";
-// import KeywordTableHead from "./keyword-table-head";
-// import KeywordDetailsRow from "./keywords-details-row";
 import DataTablePagination from "@/presentation/components/ui/table/table-pagination";
-import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
+
+import DataTableTopBar from "./topbar";
+
 import TestKeywordDetailsRow from "./TestKeywordDetailsRow";
 
 
@@ -25,7 +23,6 @@ interface DataTableProps<TData, TValue> {
   googleSearchCampaign: GoogleSearchCampaign;
 }
 
-const keywordName = "eureka mignon";
 function DataTable<TData, TValue>({
   columns,
   data,
@@ -100,16 +97,15 @@ function DataTable<TData, TValue>({
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-8 mt-8">
-      {/* <KeywordTableHead /> */}
 
       {/* Top bar */}
-      {/* <DataTableTopBar
+      <DataTableTopBar
         table={table}
         data={data}
         deselectAllRows={() => setRowSelection({})}
         sorting={sorting}
         setSorting={setSorting}
-      /> */}
+      />
 
       {/* Keywords Table */}
       <div className="rounded-md mt-3">
@@ -120,7 +116,6 @@ function DataTable<TData, TValue>({
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
-                      className="border border-red-900"
                       key={header.id}
                       draggable
                       onDragStart={(e) => handleDragStart(e, header.id)}

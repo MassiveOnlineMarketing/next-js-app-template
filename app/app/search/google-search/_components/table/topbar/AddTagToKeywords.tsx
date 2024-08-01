@@ -2,15 +2,16 @@
 
 import React from "react";
 
+import { GoogleSearchKeywordTag } from "@/domain/serpTracker/models/GoogleSearchKeywordTag";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
+
 import {
   DropdownMenuItem,
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuSubContent,
-} from "@/components/ui/dropdown-menu";
-import { GoogleSearchKeywordTag } from "@prisma/client";
-import { useTags } from "@/dashboard/google-search/hooks/useTags";
+} from "@/presentation/components/ui/dropdown-menu";
 
 const AddTagToKeywords = ({
   selectedRows,
@@ -19,15 +20,14 @@ const AddTagToKeywords = ({
   selectedRows: any;
   onActionFinished: () => void;
 }) => {
-  const { addTagAndToast, uniqueTags } = useTags();
+  const { addTag, uniqueTags } = useGoogleSearchKeywordTagOpperations();
 
   const keywordIds = selectedRows.rows.map(
     (row: any) => row.original.keywordId,
   );
 
   const handleAddClick = async (tag: GoogleSearchKeywordTag) => {
-    console.log("label", tag);
-    await addTagAndToast(tag, keywordIds);
+    await addTag(tag, keywordIds);
     onActionFinished();
   };
 

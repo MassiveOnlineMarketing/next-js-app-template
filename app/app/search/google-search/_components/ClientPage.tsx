@@ -13,10 +13,12 @@ import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearc
 import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
 
 import GoogleSearchProjectFormDialog from "@/presentation/components/google-search-campaign/google-search-campaign-form-dialog";
-import AddKeywordsFrom from "@/presentation/components/google-search-campaign/add-keywords-form";
+import AddKeywordsFrom from "@/presentation/components/forms/AddKeywordsForm";
 import CampaignStats from "@/presentation/components/google-search-campaign/campaign-stats/CampaignStats";
 import DataTable from "./table/keyword-table";
 import { columns } from "./table/columns";
+import useFilteredKeywordResults from "@/presentation/hooks/serp/useFilteredKeywordResults";
+import KeywordTableHead from "./table/KeywordTableHead";
 
 
 const ClientPage = ({
@@ -26,8 +28,8 @@ const ClientPage = ({
   googleSearchCampaign: GoogleSearchCampaign;
   latestSerpResults: GoogleSearchLatestKeywordResult[];
 }) => {
-  const googleSearchKeywordResult = useGoogleSearchKeywordResultStore((state) => state.keywordResults);
-  console.log("googleSearchKeywordResult", googleSearchKeywordResult);
+  const filteredResults = useFilteredKeywordResults();
+  console.log("filtered google search results", filteredResults);
   const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
 
   const [open, setOpen] = React.useState(false);
@@ -45,9 +47,10 @@ const ClientPage = ({
       <GoogleSearchCampaignDetailsStoreProvider
         googleSearchCampaignDetails={googleSearchCampaign}
       />
-    
-      <CampaignStats filteredResults={googleSearchKeywordResult} />
-      <DataTable columns={columns()} data={googleSearchKeywordResult} googleSearchCampaign={googleSearchCampaign} />
+
+      <KeywordTableHead />
+      <CampaignStats filteredResults={filteredResults} />
+      <DataTable columns={columns()} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
     </>
   );
 };

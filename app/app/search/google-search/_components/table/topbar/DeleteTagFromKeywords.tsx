@@ -8,8 +8,8 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuSubContent,
-} from "@/components/ui/dropdown-menu";
-import { useTags } from "@/dashboard/google-search/hooks/useTags";
+} from "@/presentation/components/ui/dropdown-menu";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
 
 const DeleteTagFromKeyword = ({
   selectedRows,
@@ -18,7 +18,7 @@ const DeleteTagFromKeyword = ({
   selectedRows: any;
   onActionFinished: () => void;
 }) => {
-  const { deleteTagAndToast } = useTags();
+  const { deleteTag } = useGoogleSearchKeywordTagOpperations();
 
   const keywordIds = selectedRows.rows.map(
     (row: any) => row.original.keywordId,
@@ -33,7 +33,7 @@ const DeleteTagFromKeyword = ({
 
   const handleDeleteClick = async (label: string) => {
     try {
-      deleteTagAndToast(label, keywordIds);
+      deleteTag(label, keywordIds);
       onActionFinished();
     } catch (error) {
       console.error("Failed to delete tag from keywords:", error);

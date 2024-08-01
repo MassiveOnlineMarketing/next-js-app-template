@@ -1,14 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-
-import { useTags } from "@/dashboard/google-search/hooks/useTags";
-import {
-  createNewTag,
-  getTagsByName,
-} from "@/dashboard/google-search/data/google-search-keyword-tag";
-import { useToast } from "@/website/features/toast/use-toast";
-import { cn } from "@/lib/utils";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
+import { cn } from "@/presentation/lib/utils";
 
 const AddNewTagInput = ({
   selectedRows,
@@ -22,38 +16,15 @@ const AddNewTagInput = ({
   );
 
   const [inputValue, setInputValue] = useState("");
-  const { addTagAndToast } = useTags();
-  const { toast } = useToast();
+  const { createNewTag } = useGoogleSearchKeywordTagOpperations();
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    if (inputValue === "") {
-      toast({
-        description: "Tag name cannot be empty",
-        variant: "destructive",
-        icon: "destructive",
-      });
-      return;
+    const res = await createNewTag(inputValue, keywordIds);
+    if (res) {
+      onActionFinished();
+      setInputValue("");
     }
-
-    try {
-      console.log("Adding tag:", inputValue);
-      const response = await getTagsByName(inputValue);
-
-      if (response === null) {
-        const createTagResponse = await createNewTag(inputValue);
-
-        addTagAndToast(createTagResponse, keywordIds);
-        onActionFinished();
-      } else {
-
-        addTagAndToast(response, keywordIds);
-        onActionFinished();
-      }
-    } catch (error) {
-      console.error("Failed to add tag to keywords:", error);
-    }
-    setInputValue("");
   };
 
   return (

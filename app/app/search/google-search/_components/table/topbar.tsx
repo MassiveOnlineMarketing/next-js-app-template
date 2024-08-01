@@ -1,15 +1,13 @@
-import { useState } from "react";
-
 import { SortingState, Table } from "@tanstack/react-table";
 
 // Components
-import { OutlinedButton } from "@/components/ui/button";
+import { OutlinedButton } from "@/presentation/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/presentation/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu";
-import { OutlinedTextButton } from "@/components/ui/text-button";
+} from "@/presentation/components/ui/dropdown-menu";
+import { OutlinedTextButton } from "@/presentation/components/ui/text-button";
 
 // Assets
 import {
@@ -30,18 +28,16 @@ import {
 import { PlusIcon } from "@heroicons/react/20/solid";
 
 // Topbar components
-import AddTagToKeywords from "@/app/(protected)/app/search/google-search/_components/table/topbar/add-tag-to-keyword";
-import DeleteTagFromKeyword from "@/app/(protected)/app/search/google-search/_components/table/topbar/delete-tag-from-keyword";
-import AddNewTagInput from "@/app/(protected)/app/search/google-search/_components/table/topbar/add-new-tag-input";
-import TagSelection from "./topbar/tag-selection";
+import AddTagToKeywords from "./topbar/AddTagToKeywords";
+import DeleteTagFromKeyword from "./topbar/DeleteTagFromKeywords";
+import AddNewTagInput from "./topbar/AddNewTagInput";
+import TagSelection from "./topbar/TagSelection";
+import GoogleSearchAddKeywordsFormDialog from "@/presentation/components/google-search-campaign/google-search-add-keywords-form-dialog";
+import downloadKeywordsToExcel from "@/presentation/lib/xlsx";
 
-import DeleteKeywordSelectedRowButton from "@/app/(protected)/app/search/google-search/_components/table/topbar/delete-keyword-selected-row-button";
 
-import AddKeywordsFrom from "@/app/(protected)/app/search/google-search/_components/table/topbar/add-keywords-form";
-import downloadToExcel from "@/dashboard/google-search/lib/xlsx";
 
-// import { SortingRows } from "./topbar/row-sorting";
-// import AddCompetitorDialog from "@/dashboard/google-search/components/add-competitor-dialog";
+
 
 interface TopBarProps<TData> {
   table: Table<TData>;
@@ -115,12 +111,13 @@ function DataTableTopBar<TData>({
         )}
       </div>
       <div className="mr-auto ml-2">
-        {table.getSelectedRowModel().rows.length > 0 && (
+        DeleteKeywordSelectedRowButton
+        {/* {table.getSelectedRowModel().rows.length > 0 && (
           <DeleteKeywordSelectedRowButton
             selectedRows={table.getSelectedRowModel()}
             onActionFinished={deselectAllRows}
           />
-        )}
+        )} */}
       </div>
 
       {/* Tag selection */}
@@ -136,9 +133,9 @@ function DataTableTopBar<TData>({
         <Tooltip>
           <TooltipTrigger>
             <div className=" ml-2 relative w-fit h-fit m-1 group">
-              <AddKeywordsFrom buttonClassName=" h-[36px] w-[36px] px-2 rounded-lg  inline-flex items-center justify-center whitespace-nowrap shadow-base bg-white z-40 rounded-lg relative">
+              <GoogleSearchAddKeywordsFormDialog buttonClassName=" h-[36px] w-[36px] px-2 rounded-lg  inline-flex items-center justify-center whitespace-nowrap shadow-base bg-white z-40 rounded-lg relative">
                 <PlusIcon className="w-5 h-5 text-gray-500 group-hover:text-green-500" />
-              </AddKeywordsFrom>
+              </GoogleSearchAddKeywordsFormDialog>
               <div className="absolute top-0 left-0 w-full h-full rounded-[8px] outline outline-4 outline-primary-50 bg-primary-50 group-hover:outline-green-50 group-hover:bg-green-50 z-30"></div>
             </div>
           </TooltipTrigger>
@@ -154,7 +151,7 @@ function DataTableTopBar<TData>({
               className="ml-2"
               size="smD"
               buttonClassName="px-2"
-              onClick={() => downloadToExcel(data)}
+              onClick={() => downloadKeywordsToExcel(data)}
             >
               <ArrowDownTrayIcon className="w-5 h-5 text-gray-500" />
             </OutlinedTextButton>

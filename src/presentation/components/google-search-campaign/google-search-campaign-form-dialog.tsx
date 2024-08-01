@@ -1,8 +1,8 @@
 "use client";
 
 // External libraries
-import React
-  from "react";
+import React from "react";
+
 // Internal types
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 import { Website } from "@/domain/_entities/Website";
@@ -25,7 +25,6 @@ const GoogleSearchProjectFormDialog: React.FC<GoogleSearchProjectFormDialogProps
   googleSearchCampaign,
   website
 }) => {
-
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

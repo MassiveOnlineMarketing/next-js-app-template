@@ -1,32 +1,30 @@
 import React from "react";
-import { useTags } from "@/dashboard/google-search/hooks/useTags";
 
-import { useKeywordResultsStore } from "@/lib/zustand/keyword-results-store";
-import { cn } from "@/lib/utils";
+import { useGoogleSearchKeywordResultStore } from "@/presentation/stores/google-search-keyword-result-store";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
 
 import {
   Command,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
+} from "@/presentation/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/presentation/components/ui/popover";
 
-import { OutlinedButton } from "@/components/ui/button";
+import { OutlinedButton } from "@/presentation/components/ui/button";
 
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { cn } from "@/presentation/lib/utils";
 
 const TagSelection = () => {
-  const { uniqueTags } = useTags();
+  const { uniqueTags } = useGoogleSearchKeywordTagOpperations();
 
-  const updateSelectedTags = useKeywordResultsStore(
-    (state) => state.setSelectedTags,
-  );
-  const selectedTags = useKeywordResultsStore((state) => state.selectedTags);
+  const updateSelectedTags = useGoogleSearchKeywordResultStore((state) => state.setSelectedTags);
+  const selectedTags = useGoogleSearchKeywordResultStore((state) => state.selectedTags);
 
   const [tagPopoverOpen, setTagPopoverOpen] = React.useState(false);
 
@@ -103,18 +101,3 @@ const TagSelection = () => {
 };
 
 export default TagSelection;
-
-{
-  /* <div className="flex flex-col">
-{SORTING_IDS.map((element) => (
-  <button
-    className="inline-flex items-center gap-1 "
-    key={element.id}
-    onClick={() => toggleSort(element.id)}
-  >
-    {element.label}
-    {sorting[0]?.id === element.id && (sorting[0]?.desc ? <ChevronDownIcon className="w-4 h-4 text-gray-500" /> : <ChevronUpIcon className="w-4 h-4 text-gray-500" />)}
-  </button>
-))}
-</div> */
-}
