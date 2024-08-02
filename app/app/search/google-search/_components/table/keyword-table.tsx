@@ -103,8 +103,6 @@ function DataTable<TData, TValue>({
         table={table}
         data={data}
         deselectAllRows={() => setRowSelection({})}
-        sorting={sorting}
-        setSorting={setSorting}
       />
 
       {/* Keywords Table */}

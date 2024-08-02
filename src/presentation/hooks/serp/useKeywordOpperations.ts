@@ -1,24 +1,74 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-
 import { useCurrentUser } from "../../auth/hooks/user-current-user";
+import { useToast } from "@/presentation/components/toast/use-toast";
+
+import { useGoogleSearchKeywordResultStore } from "@/presentation/stores/google-search-keyword-result-store";
+import { deleteGoogleSearchKeywordByIds } from "@/application/useCases/googleSearchKeyword/deleteGoogleSearchKeywordByIds";
 
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
+import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
+import { GoogleSearchCampaignKeywordsSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
 
 import { splitAndTrimKeywords } from "@/presentation/lib/utils";
-import { useGoogleSearchKeywordResultStore } from "@/presentation/stores/google-search-keyword-result-store";
-import { useToast } from "@/presentation/components/toast/use-toast";
-import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
+
 
 export function useKeywordOpperations() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const user = useCurrentUser()
   const { update } = useSession();
-  const updateKeywordResults = useGoogleSearchKeywordResultStore((state) => state.updateKeywordResults);
+  const user = useCurrentUser()
 
+  const updateKeywordResults = useGoogleSearchKeywordResultStore((state) => state.updateKeywordResults);
+  const setKeywordResults = useGoogleSearchKeywordResultStore((state) => state.setKeywordResults);
+  const results = useGoogleSearchKeywordResultStore((state) => state.keywordResults);
+
+  const resetResults = useGoogleSearchKeywordResultStore((state) => state.resetKeywordResults);
+  const resetSelectedTags = useGoogleSearchKeywordResultStore((state) => state.resetSelectedTags);
+
+  /**
+   * Sets the initial state of the keyword operations.
+   * 
+   * @param serpResults - The latest keyword results from Google search.
+   */
+  const setInitialStateSerpResults = (serpResults: GoogleSearchLatestKeywordResult[]) => {
+    console.log('resetting results');
+    resetResults();
+    resetSelectedTags();
+
+    console.log('🟢 setting new keyword results');
+    console.log('googleSearchLatestSerpResult', serpResults);
+    setKeywordResults(serpResults);;
+  }
+
+  /**
+   * Handles the addition of new keywords to a Google Search Campaign.
+   * 
+   * @param keywords - The keywords to be added.
+   * @param googleSearchCampaign - The Google Search Campaign to add the keywords to.
+   * @returns An object indicating the success of the operation.
+   */
+  const handleAddNewKeyword = async (keywords: GoogleSearchCampaignKeywordsSchemaType, googleSearchCampaign: GoogleSearchCampaign) => {
+    setIsLoading(true);
+
+    try {
+      const response = await handleProcessNewKeyword(keywords.keywords, googleSearchCampaign);
+      if (response.success) {
+        showSuccessToast('Keywords added successfully!');
+        return { success: true };
+      } else {
+        return { success: false };
+      }
+    } catch (error: any) {
+      console.error('error adding keywords:', error);
+      showErrorToast('Error adding keywords');
+      return { success: false };
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   /**
    * Handles the process of adding new keywords to a Google search campaign.
@@ -68,7 +118,7 @@ export function useKeywordOpperations() {
           },
           body: JSON.stringify(payload),
         });
-    
+
         const resultResponse = await response.json();
 
         if (!resultResponse.success) {
@@ -77,7 +127,7 @@ export function useKeywordOpperations() {
         }
 
         const userResults: GoogleSearchLatestKeywordResult[] = JSON.parse(resultResponse.data);
-        
+
         updateKeywordResults(userResults);
         update({ credits: user.credits - userResults.length });
       }
@@ -90,6 +140,42 @@ export function useKeywordOpperations() {
       return { success: false };
     }
   }
+
+
+  // Stuff for deleting a keyword, including the dialog with confirmation
+  const [keywordsToDelete, setKeywordsToDelete] = useState<string[]>([]);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false); // Dialog is located in the [campaign_id] client page
+  const handleDeleteKeyword = async (keywordId: string[]) => {
+    setKeywordsToDelete(keywordId);
+    setIsDeleteDialogOpen(true);
+  }
+
+  const confirmDelete = async () => {
+    if (keywordsToDelete !== null) {
+      const responses = await deleteGoogleSearchKeywordByIds(keywordsToDelete);
+      // if response is only one array show tost else console.log
+      if (keywordsToDelete.length === 1) {
+        showSuccessToast(`The keyword deleted.`);
+      } else if (keywordsToDelete.length > 1) {
+        showSuccessToast(`The keywords are deleted.`);
+      } else {
+        showErrorToast('Failed to delete keyword');
+        console.log("Failed to delete keyword:", responses);
+      }
+
+      const newResults = results.filter(
+        (result: GoogleSearchLatestKeywordResult) =>
+          !keywordsToDelete.includes(result.keywordId),
+      );
+      setKeywordResults(newResults);
+      setIsDeleteDialogOpen(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setKeywordsToDelete([]);
+    setIsDeleteDialogOpen(false);
+  };
 
   const showErrorToast = (message: string) => {
     toast({
@@ -106,7 +192,7 @@ export function useKeywordOpperations() {
     });
   }
 
-  return { isLoading, handleProcessNewKeyword };
+  return { setInitialStateSerpResults, handleAddNewKeyword, isLoading, handleProcessNewKeyword, handleDeleteKeyword, confirmDelete, cancelDelete, isDeleteDialogOpen, setIsDeleteDialogOpen };
 }
 
 export default useKeywordOpperations;

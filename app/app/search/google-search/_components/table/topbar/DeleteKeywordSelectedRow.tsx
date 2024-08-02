@@ -1,23 +1,14 @@
 import React from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogTriggerNoButton,
-} from "@/website/features/dialog/dialog";
-import { useKeywords } from "@/dashboard/google-search/hooks/useKeywords";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
-  DropdownMenuItem,
   DropdownMenuItemEmpty,
-} from "@/components/ui/dropdown-menu";
-import { OutlinedTextButton } from "@/components/ui/text-button";
+} from "@/presentation/components/ui/dropdown-menu";
+import { OutlinedTextButton } from "@/presentation/components/ui/text-button";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
 
 const DeleteKeywordSelectedRowButton = ({
   selectedRows,
@@ -31,17 +22,15 @@ const DeleteKeywordSelectedRowButton = ({
   );
 
   const {
-    deleteKeywords,
+    handleDeleteKeyword,
     confirmDelete,
     cancelDelete,
-    isDialogOpen,
-    setIsDialogOpen,
-  } = useKeywords();
+    setIsDeleteDialogOpen,
+  } = useKeywordOpperations();
 
   const handleDeleteClick = () => {
-    setIsDialogOpen(true);
-    console.log("keywordIds", keywordIds);
-    deleteKeywords(keywordIds);
+    setIsDeleteDialogOpen(true);
+    handleDeleteKeyword(keywordIds);
   };
 
   return (

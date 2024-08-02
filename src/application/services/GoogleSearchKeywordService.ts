@@ -11,6 +11,16 @@ export class GoogleSearchKeywordService{
   ){
     this.googleSearchKeywordRepository = googleSearchKeywordRepository;
   }
+
+  /**
+   * Deletes multiple keywords from the Google Search Keyword Service.
+   * 
+   * @param keywordIds - An array of string representing the IDs of the keywords to be deleted.
+   * @returns A promise that resolves when the keywords are successfully deleted.
+   */
+  async deleteKeywordsByIds(keywordIds: string[]){
+    return this.googleSearchKeywordRepository.deleteBulkById(keywordIds);
+  }
   
   /**
    * Creates a tag with the specified keywords.

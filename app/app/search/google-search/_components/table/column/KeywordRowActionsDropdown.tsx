@@ -19,17 +19,17 @@ import {
 } from "@/presentation/components/ui/dropdown-menu";
 import { Button } from "@/presentation/components/ui/button";
 import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
-import { useKeywords } from "@/dashboard/google-search/hooks/useKeywords";
 import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
-import { useTags } from "@/dashboard/google-search/hooks/useTags";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
+import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
 
 type Props = {
   keyword: GoogleSearchLatestKeywordResult;
 };
 
-const KeywordRowActionDropdown = ({ keyword }: Props) => {
+const KeywordRowActionsDropdown = ({ keyword }: Props) => {
   // * Remove Tags
-  const { deleteTagAndToast, addTagAndToast, uniqueTags } = useTags();
+  const { deleteTag, addTag, uniqueTags } = useGoogleSearchKeywordTagOpperations();
 
   const selectedTags = keyword.tags;
   const allSelectedTags = selectedTags?.flat();
@@ -39,7 +39,7 @@ const KeywordRowActionDropdown = ({ keyword }: Props) => {
 
   const handleDeleteTag = async (label: string) => {
     try {
-      deleteTagAndToast(label, keyword.keywordId);
+      deleteTag(label, keyword.keywordId);
     } catch (error) {
       console.error("Failed to delete tag from keywords:", error);
     }
@@ -48,21 +48,21 @@ const KeywordRowActionDropdown = ({ keyword }: Props) => {
   // * Add Tags
   const handleAddTag = async (tag: GoogleSearchKeywordTag) => {
     // console.log("label", tag);
-    await addTagAndToast(tag, keyword.keywordId);
+    await addTag(tag, keyword.keywordId);
   };
 
   // * Delete Keywords
-  const { deleteKeywords, confirmDelete, isDialogOpen } = useKeywords();
+  const { handleDeleteKeyword, confirmDelete, isDeleteDialogOpen } = useKeywordOpperations();
 
   const handleKeywordsDelete = async (keywordId: string) => {
     // console.log("delete", keywordId);
-    deleteKeywords([keywordId]);
+    handleDeleteKeyword([keywordId]);
   };
   useEffect(() => {
-    if (isDialogOpen) {
+    if (isDeleteDialogOpen) {
       confirmDelete();
     }
-  }, [isDialogOpen]);
+  }, [isDeleteDialogOpen]);
 
   return (
     <DropdownMenu>
@@ -149,4 +149,4 @@ const KeywordRowActionDropdown = ({ keyword }: Props) => {
   );
 };
 
-export default KeywordRowActionDropdown;
+export default KeywordRowActionsDropdown;

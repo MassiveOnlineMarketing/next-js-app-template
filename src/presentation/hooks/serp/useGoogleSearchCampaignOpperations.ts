@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useToast } from "@/presentation/components/toast/use-toast";
 
 // Schema
-import { GoogleSearchCampaignSchemaType, GoogleSearchCampaignKeywordsSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
+import { GoogleSearchCampaignSchemaType } from "@/application/schemas/googleSearchCampaignSchema";
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
 
@@ -37,6 +37,17 @@ function useGoogleSearchCampaignOpperations() {
     addCampaignToList: state.addCampaignToList
   }));
   const { handleProcessNewKeyword } = useKeywordOpperations();
+
+  /**
+   * Sets the initial state of the Google Search Campaign.
+   * 
+   * @param googleSearchCampaignDetails - The details of the Google Search Campaign.
+   */
+  const setGoogleSearchCampaignInitialState = (googleSearchCampaignDetails: GoogleSearchCampaign) => {
+    console.log('🟢 setting new campaign details');
+    setGoogleSearchCampaignDetails(googleSearchCampaignDetails);
+  }
+
 
   /**
    * Handles the creation of a Google search campaign with toasts.
@@ -176,35 +187,6 @@ function useGoogleSearchCampaignOpperations() {
   };
 
 
-
-  /**
-   * Handles the addition of new keywords to a Google Search Campaign.
-   * 
-   * @param keywords - The keywords to be added.
-   * @param googleSearchCampaign - The Google Search Campaign to add the keywords to.
-   * @returns An object indicating the success of the operation.
-   */
-  const handleAddNewKeyword = async (keywords: GoogleSearchCampaignKeywordsSchemaType, googleSearchCampaign: GoogleSearchCampaign) => {
-    setIsLoading(true);
-
-    try {
-      const response = await handleProcessNewKeyword(keywords.keywords, googleSearchCampaign);
-      if (response.success) {
-        showSuccessToast('Keywords added successfully!');
-        return { success: true };
-      } else {
-        return { success: false };
-      }
-    } catch (error: any) {
-      console.error('error adding keywords:', error);
-      showErrorToast('Error adding keywords');
-      return { success: false };
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-
   const showErrorToast = (message: string) => {
     toast({
       description: `Error creating website: ${message}`,
@@ -220,7 +202,7 @@ function useGoogleSearchCampaignOpperations() {
     });
   };
 
-  return { isLoading, handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign, handleAddNewKeyword };
+  return { setGoogleSearchCampaignInitialState, isLoading, handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign };
 }
 
 export default useGoogleSearchCampaignOpperations;

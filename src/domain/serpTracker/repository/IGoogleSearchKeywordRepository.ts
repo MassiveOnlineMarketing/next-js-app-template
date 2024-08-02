@@ -13,6 +13,13 @@ export interface IGoogleSearchKeywordRepository {
   createBulk(keywords: TKeyword[]): Promise<boolean>;
 
   /**
+   * Deletes multiple keywords in bulk.
+   * @param keywordIds - The IDs of the keywords to delete.
+   * @returns A promise that resolves to a boolean indicating the success of the operation.
+   */
+  deleteBulkById(keywordIds: string[]): Promise<boolean>;
+
+  /**
    * Retrieves a keyword tag by its name.
    * @param tag - The name of the tag to retrieve.
    * @returns A promise that resolves to the retrieved tag or null if not found.

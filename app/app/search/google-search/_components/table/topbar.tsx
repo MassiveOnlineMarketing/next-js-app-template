@@ -1,4 +1,4 @@
-import { SortingState, Table } from "@tanstack/react-table";
+import { Table } from "@tanstack/react-table";
 
 // Components
 import { OutlinedButton } from "@/presentation/components/ui/button";
@@ -34,8 +34,7 @@ import AddNewTagInput from "./topbar/AddNewTagInput";
 import TagSelection from "./topbar/TagSelection";
 import GoogleSearchAddKeywordsFormDialog from "@/presentation/components/google-search-campaign/google-search-add-keywords-form-dialog";
 import downloadKeywordsToExcel from "@/presentation/lib/xlsx";
-
-
+import DeleteKeywordSelectedRowButton from "./topbar/DeleteKeywordSelectedRow";
 
 
 
@@ -44,16 +43,14 @@ interface TopBarProps<TData> {
   data: TData[];
   deselectAllRows: () => void;
 
-  sorting: SortingState;
-  setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
+  // sorting: SortingState;
+  // setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
 }
 
 function DataTableTopBar<TData>({
   table,
   data,
-  deselectAllRows,
-  sorting,
-  setSorting,
+  deselectAllRows
 }: TopBarProps<TData>) {
   return (
     <div className="flex items-center">
@@ -76,8 +73,6 @@ function DataTableTopBar<TData>({
           className="block w-full min-w-[245px] rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6"
         />
       </div>
-
-      {/* <AddCompetitorDialog /> */}
 
       {/* Selected rows */}
       <div className="ml-2">
@@ -111,22 +106,16 @@ function DataTableTopBar<TData>({
         )}
       </div>
       <div className="mr-auto ml-2">
-        DeleteKeywordSelectedRowButton
-        {/* {table.getSelectedRowModel().rows.length > 0 && (
+        {table.getSelectedRowModel().rows.length > 0 && (
           <DeleteKeywordSelectedRowButton
             selectedRows={table.getSelectedRowModel()}
             onActionFinished={deselectAllRows}
           />
-        )} */}
+        )}
       </div>
 
       {/* Tag selection */}
       <TagSelection />
-
-      {/* Sorting */}
-      {/* <div className="ml-2">
-        <SortingRows sorting={sorting} setSorting={setSorting} />
-      </div> */}
 
       <TooltipProvider delayDuration={0}>
         {/* Add keyword */}
@@ -200,13 +189,6 @@ function DataTableTopBar<TData>({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-
-      {/* Get selected row info */}
-      {/* <div>
-                {table.getSelectedRowModel().rows.map((row) => (
-                    <div key={row.id}>{JSON.stringify(row)}</div>
-                ))}
-            </div> */}
     </div>
   );
 }

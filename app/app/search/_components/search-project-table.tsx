@@ -91,10 +91,10 @@ function DataTable<TData, TValue>({
           <input
             placeholder="Search campaign name..."
             value={
-              (table.getColumn("projectName")?.getFilterValue() as string) ?? ""
+              (table.getColumn("campaignName")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
-              table.getColumn("projectName")?.setFilterValue(event.target.value)
+              table.getColumn("campaignName")?.setFilterValue(event.target.value)
             }
             className="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6"
           />

@@ -27,6 +27,18 @@ class GoogleSearchKeywordRepository implements IGoogleSearchKeywordRepository {
     return !!res;
   }
 
+  async deleteBulkById(keywordIds: string[]): Promise<boolean> {
+    const res = await db.googleSearchKeyword.deleteMany({
+      where: {
+        id: {
+          in: keywordIds
+        }
+      }
+    });
+
+    return !!res;
+  }
+
   async getTagByName(tag: string): Promise<GoogleSearchKeywordTag | null> {
     const res = await db.googleSearchKeywordTag.findFirst({
       where: {

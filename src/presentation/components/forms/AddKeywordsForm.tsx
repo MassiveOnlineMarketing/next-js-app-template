@@ -9,6 +9,7 @@ import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/googl
 import useGoogleSearchCampaignOpperations from "@/presentation/hooks/serp/useGoogleSearchCampaignOpperations";
 
 import { TextareaApp } from "@/presentation/components/ui/inputFields";
+import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
 
 /**
  * Component for adding keywords to a Google search campaign.
@@ -24,7 +25,7 @@ const AddKeywordsFrom = ({
 }) => {
 
   const currentGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
-  const { handleAddNewKeyword, isLoading } = useGoogleSearchCampaignOpperations();
+  const { handleAddNewKeyword, isLoading } = useKeywordOpperations();
   const {
     register,
     handleSubmit,

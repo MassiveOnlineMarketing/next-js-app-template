@@ -6,8 +6,8 @@ import { ColumnDef, Row, SortingFn } from "@tanstack/react-table";
 import { DateRowCell, StandardHeaderCell, StandardRowCell, TrendingIndicatorRowCell, UrlRowCell } from "@/presentation/components/ui/table";
 
 import { Checkbox } from "@/presentation/components/ui/checkbox";
+import KeywordRowActionsDropdown from "./column/KeywordRowActionsDropdown";
 
-// import KeywordRowActionDropdown from "./column/keyword-row-action-dropdown";
 
 
 const urlSortingFn: SortingFn<GoogleSearchLatestKeywordResult> = (
@@ -235,16 +235,16 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
       <DateRowCell value={createdAt} />
     )
   },
-  // // * Actions
-  // {
-  //   accessorKey: "actions",
-  //   id: "actions",
-  //   header: ({ column }) => (
-  //     <p className="font-medium text-gray-600">Actions</p>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const keyword = row.original;
-  //     return <KeywordRowActionDropdown keyword={keyword} />;
-  //   },
-  // },
+  // * Actions
+  {
+    accessorKey: "actions",
+    id: "actions",
+    header: ({ column }) => (
+      <p className="font-medium text-gray-600">Actions</p>
+    ),
+    cell: ({ row }) => {
+      const keyword = row.original;
+      return <KeywordRowActionsDropdown keyword={keyword} />;
+    },
+  },
 ];
