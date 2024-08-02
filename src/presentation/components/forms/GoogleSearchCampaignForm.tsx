@@ -184,6 +184,7 @@ const GoogleSearchCampaignForm: React.FC<GoogleSearchProjectFormDialogProps> = (
 
           <p className="mt-7">Competitors</p>
           <CompetitorsField
+            campaignId={googleSearchCampaign?.id}
             addedCompetitors={addedCompetitors}
             removedCompetitors={removedCompetitors}
             setAddedCompetitors={setAddedCompetitors}

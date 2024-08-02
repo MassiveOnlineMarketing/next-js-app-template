@@ -5,8 +5,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { InputFieldApp } from "@/presentation/components/ui/inputFields";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { getCompetitorsByGoogleSearchCampaignId } from '@/application/useCases/googleSearchCampaign/getCompetitorsByGoogleSearchCampaignId';
 
 interface CompetitorsFieldProps {
+  campaignId?: string;
   addedCompetitors: string[];
   removedCompetitors: string[];
   setAddedCompetitors: React.Dispatch<React.SetStateAction<string[]>>;
@@ -29,6 +31,7 @@ interface CompetitorsFieldProps {
  * );
  */
 const CompetitorsField: React.FC<CompetitorsFieldProps> = ({
+  campaignId,
   addedCompetitors,
   removedCompetitors,
   setAddedCompetitors,
@@ -36,8 +39,14 @@ const CompetitorsField: React.FC<CompetitorsFieldProps> = ({
 }) => {
 
   useEffect(() => {
-    // TODO: Fetch competitors
-    console.log('useEffect CompetitorsField')
+    if (!campaignId) return;
+
+    const fetchCompetitors = async () => {
+      const competitors = await getCompetitorsByGoogleSearchCampaignId(campaignId);
+      if (!competitors.success) return;
+      setFetchedCompetitors(competitors.data?.map(competitor => competitor.domainUrl) || []);
+    }
+    fetchCompetitors();
   },[])
 
   const [domainInput, setDomainInput] = useState('');

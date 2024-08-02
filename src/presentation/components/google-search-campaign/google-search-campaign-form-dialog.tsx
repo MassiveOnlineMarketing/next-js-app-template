@@ -9,7 +9,7 @@ import { Website } from "@/domain/_entities/Website";
 
 // Components
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/presentation/components/common/dialog";
-import GoogleSearchCampaignForm from "../forms/GoogleSearchCampaignFrom";
+import GoogleSearchCampaignForm from "../forms/GoogleSearchCampaignForm";
 
 
 interface GoogleSearchProjectFormDialogProps {
