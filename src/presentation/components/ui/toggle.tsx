@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Switch } from "@headlessui/react";
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 
 interface ToggleWithIconProps {
   checked: boolean;

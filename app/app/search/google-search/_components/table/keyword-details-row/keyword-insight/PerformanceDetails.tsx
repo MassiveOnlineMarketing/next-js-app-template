@@ -1,9 +1,12 @@
-import { Pill } from '@/components/ui/pill'
-import { LatestResultsDTO } from '@/dashboard/google-search/serp-types'
-import { FlagIcon } from '@heroicons/react/24/outline'
+
 import React from 'react'
 
-const PerformanceDetails = ({ keywordData }: { keywordData: LatestResultsDTO }) => {
+import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult'
+
+import { Pill } from '@/presentation/components/ui/pill'
+import { FlagIcon } from '@heroicons/react/24/outline'
+
+const PerformanceDetails = ({ keywordData }: { keywordData: GoogleSearchLatestKeywordResult }) => {
 
   return (
     <div className="w-[285px] px-5 mt-14">

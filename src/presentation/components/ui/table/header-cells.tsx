@@ -1,6 +1,6 @@
-import { Column, Row, SortDirection } from "@tanstack/react-table";
+import { Column, SortDirection } from "@tanstack/react-table";
 
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 
 import { SortDataTableIcon } from ".";
 

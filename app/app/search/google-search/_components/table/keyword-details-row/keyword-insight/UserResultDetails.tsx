@@ -1,15 +1,15 @@
-import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
+'use client';
 
-import { Pill } from "@/presentation/components/ui/pill";
+import React from 'react'
 
-// charts
+import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult';
+
 import { Cell, Pie, PieChart } from "recharts";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/presentation/components/ui/tooltip";
-import { urlWithoutDomain } from "@/presentation/lib/utils";
+import { Pill } from '@/presentation/components/ui/pill';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/presentation/components/ui/tooltip';
+import { urlWithoutDomain } from '@/presentation/lib/utils';
 
-const MAX_URL_LENGTH = 52;
 type PillColor = "red" | "yellow" | "green";
-
 const CONFIG = {
   metaTitle: [
     { min: 0, max: 35, color: "red", text: "Poor", activePieColor: "#ef4444", pieColor: "#ef444440" },
@@ -30,18 +30,20 @@ const CONFIG = {
   ],
 };
 
-const UserResultDetails = ({
-  keywordData,
-  domainUrl,
-}: {
-  keywordData: GoogleSearchLatestKeywordResult;
-  domainUrl: string | undefined;
+const UserResultDetails = ({ keywordData, domainUrl }: {
+  keywordData: GoogleSearchLatestKeywordResult
+  domainUrl: string
 }) => {
 
   const copyUrlToClipboard = (url: string | null) => {
     if (!url) return;
 
     navigator.clipboard.writeText(url);
+  }
+
+  // TODO: add not found component
+  if (!keywordData.position) {
+    return <div>Position not found</div>
   }
 
   return (
@@ -65,12 +67,12 @@ const UserResultDetails = ({
             <Pill color="primary" variant="text" onClick={() => copyUrlToClipboard(keywordData.url)}>
               {
                 domainUrl && keywordData.url ? (
-                  (keywordData.url as string).length > MAX_URL_LENGTH
-                    ? urlWithoutDomain(keywordData.url as string, domainUrl).substring(0, MAX_URL_LENGTH) + "..."
+                  (keywordData.url as string).length > 52
+                    ? urlWithoutDomain(keywordData.url as string, domainUrl).substring(0, 52) + "..."
                     : urlWithoutDomain(keywordData.url as string, domainUrl)
                 ) : (
-                  (keywordData.url as string).length > MAX_URL_LENGTH
-                    ? (keywordData.url as string).substring(0, MAX_URL_LENGTH) + "..."
+                  (keywordData.url as string).length > 52
+                    ? (keywordData.url as string).substring(0, 52) + "..."
                     : keywordData.url
                 )
               }
@@ -315,28 +317,3 @@ const getColorAndText = (
   }
   return { color: "yellow", text: "Moderate" };
 };
-
-// const getPieChartData = (value: number, config: any[]): { activePieColor: string, pieColor: string, data: { name: string, value: number }[] } => {
-//     for (let item of config) {
-//         if (value >= item.min && value <= item.max) {
-//             return {
-//                 activePieColor: item.activePieColor,
-//                 pieColor: item.pieColor,
-//                 data: value === item.max
-//                     ? [{ name: item.text, value: value }]
-//                     : [
-//                         { name: item.text, value: value },
-//                         { name: 'Good', value: item.max - value }
-//                       ]
-//             };
-//         }
-//     }
-//     return {
-//         activePieColor: '#059669',
-//         pieColor: '#05966940',
-//         data: [
-//             { name: 'Good', value: META_TITLE_LIMIT },
-//             { name: 'Good', value: META_TITLE_LIMIT }
-//         ]
-//     };
-// }

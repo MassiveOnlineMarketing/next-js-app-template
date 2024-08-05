@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 
 import { useWebsiteDetailsStore } from '../../stores/website-details-store';
 import WebsiteFormDialog from './website-form-dialog';
-import { cn } from '../../lib/utils';
+import { cn } from "@/presentation/components/utils";
 
 type UpdateWebsiteButtonProps = {
   children: React.ReactNode;

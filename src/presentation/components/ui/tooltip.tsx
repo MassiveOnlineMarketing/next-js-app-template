@@ -3,8 +3,7 @@
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
-
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 import { styles } from "@/presentation/styles/styles";
 
 

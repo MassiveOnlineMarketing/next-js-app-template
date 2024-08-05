@@ -7,7 +7,8 @@ import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-st
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
 // Utils
-import { cn, getFaviconUrl } from "@/presentation/lib/utils";
+import { getFaviconUrl } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 import { getGoogleSearchCampaignByWebsiteId } from "@/application/useCases/googleSearchCampaign/getGoogleSearchCampaignByWebsiteId";
 
 // Components

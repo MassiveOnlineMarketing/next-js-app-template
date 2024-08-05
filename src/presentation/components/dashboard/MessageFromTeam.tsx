@@ -1,5 +1,5 @@
 
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 
 type MessageFromTeamProps = {

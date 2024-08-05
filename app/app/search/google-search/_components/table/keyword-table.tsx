@@ -12,8 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import DataTablePagination from "@/presentation/components/ui/table/table-pagination";
 
 import DataTableTopBar from "./topbar";
-
-import TestKeywordDetailsRow from "./TestKeywordDetailsRow";
+import KeywordDetailsRow from "./KeywordDetailsRow";
 
 
 
@@ -151,15 +150,10 @@ function DataTable<TData, TValue>({
                     <tr>
                       {keywordData ? (
                         <td className="pt-6" colSpan={numberOfVisibleColumns}>
-                          <TestKeywordDetailsRow
+                          <KeywordDetailsRow
                             keywordData={keywordData}
                             googleSearchCampaign={googleSearchCampaign}
                           />
-                          {/* <KeywordDetailsRow
-                            keywordData={keywordData}
-                            refresh_token={refreshToken}
-                          /> */}
-                          <p>kw details row</p>
                         </td>
                       ) : (
                         <td colSpan={numberOfVisibleColumns}>Loading...</td>

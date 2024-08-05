@@ -1,7 +1,7 @@
 import { VariantProps } from "class-variance-authority";
 import React from "react";
 import { buttonVariants } from "./button";
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 
 interface props
   extends React.AnchorHTMLAttributes<HTMLParagraphElement>,

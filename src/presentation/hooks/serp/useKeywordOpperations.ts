@@ -78,7 +78,7 @@ export function useKeywordOpperations() {
    * @returns An object indicating the success of the operation.
    */
   const handleProcessNewKeyword = async (
-    keywordsString: string,
+    keywordsString: string | string[],
     googleSearchCampaign: GoogleSearchCampaign
   ) => {
     if (!googleSearchCampaign) {
@@ -90,7 +90,12 @@ export function useKeywordOpperations() {
       return { success: false };
     }
 
-    const keywordsArray = splitAndTrimKeywords(keywordsString);
+    let keywordsArray: string[] = [];
+    if (typeof keywordsString === 'string') {
+      keywordsArray = splitAndTrimKeywords(keywordsString);
+    } else {
+      keywordsArray = keywordsString;
+    }
 
     if (keywordsArray.length > user.credits) {
       const neededCredits = keywordsArray.length - user.credits;

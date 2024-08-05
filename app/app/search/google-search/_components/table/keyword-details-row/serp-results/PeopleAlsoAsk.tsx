@@ -1,11 +1,11 @@
+import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
 import React from "react";
 
-import { LatestResultsDTO } from "@/dashboard/google-search/serp-types";
 
 const PeopleAlsoAsk = ({
   keywordData,
 }: {
-  keywordData: LatestResultsDTO;
+  keywordData: GoogleSearchLatestKeywordResult;
 }) => {
   return (
     <div>

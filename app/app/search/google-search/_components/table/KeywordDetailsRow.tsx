@@ -8,7 +8,7 @@ import KeywordInsight from "./keyword-details-row/KeywordInsight";
 import PositionInsight from "./keyword-details-row/PositionInsight";
 import GoogleSerpData from "./keyword-details-row/GoogleSerpData";
 
-const TestKeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
+const KeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
   keywordData: GoogleSearchLatestKeywordResult,
   googleSearchCampaign: GoogleSearchCampaign
 }) => {
@@ -24,4 +24,4 @@ const TestKeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
 }
 
 
-export default TestKeywordDetailsRow;
+export default KeywordDetailsRow;

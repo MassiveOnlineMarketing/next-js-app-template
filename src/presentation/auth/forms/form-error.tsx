@@ -1,4 +1,4 @@
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 interface FormErrorProps {

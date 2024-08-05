@@ -1,4 +1,4 @@
-import { GlobeAltIcon } from "@heroicons/react/24/outline";
+import { getFaviconUrl } from "@/presentation/lib/utils";
 import { GoogleSearchSerpResult } from "@prisma/client";
 
 const SerpResultCard = ({ result }: { result: GoogleSearchSerpResult }) => {
@@ -8,6 +8,7 @@ const SerpResultCard = ({ result }: { result: GoogleSearchSerpResult }) => {
     .split(".")
     .slice(0, -1)
     .join(".");
+  const domainUrl = url.hostname
 
   const { metaTitle, metaDescription } = result;
 
@@ -16,7 +17,7 @@ const SerpResultCard = ({ result }: { result: GoogleSearchSerpResult }) => {
       <a href={result.url || ""} target="_blank" rel="noopener noreferrer">
         <div className="mb-1 flex gap-[6px] items-center">
           <div className="w-8 h-8 flex items-center justify-center bg-primary-50 rounded-full">
-            <GlobeAltIcon className="h-5 w-5 text-gray-400" />
+            <img src={getFaviconUrl(domainUrl)} width={20} height={20} alt={`favicon ${domainUrl}`} />
           </div>
           <div>
             <p className="text-gray-800">{domainName}</p>

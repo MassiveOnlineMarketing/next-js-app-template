@@ -2,15 +2,15 @@
 
 import React, { useState } from "react";
 
-import { LatestResultsDTO } from "@/dashboard/google-search/serp-types";
+import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
 
 // Hooks and Store
-import { useGoogleSearchProjectDetailsStore } from "@/lib/zustand/google-search-details-store";
-import { useProcessNewKeywords } from "@/dashboard/google-search/hooks/useProcessNewKeywords";
-import { useToast } from "@/website/features/toast/use-toast";
+import { useToast } from "@/presentation/components/toast/use-toast";
+import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
+import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
 // Components
-import { Button } from "@/components/ui/button";
+import { Button } from "@/presentation/components/ui/button";
 
 // Assets
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -18,14 +18,12 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 const RelatedSearchesComponent = ({
   keywordData,
 }: {
-  keywordData: LatestResultsDTO;
+  keywordData: GoogleSearchLatestKeywordResult;
 }) => {
-  const currentProject = useGoogleSearchProjectDetailsStore(
-    (state) => state.ProjectDetails,
-  );
+  const currentProject = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
 
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
-  const { processNewKeywords, isLoading } = useProcessNewKeywords();
+  const { handleProcessNewKeyword, isLoading } = useKeywordOpperations();
   const { toast } = useToast();
 
   // Function to handle checkbox selection
@@ -44,12 +42,15 @@ const RelatedSearchesComponent = ({
       return;
     }
     try {
-      await processNewKeywords(selectedSearches, currentProject);
-      toast({
-        description: "Keywords added",
-        icon: "success",
-        variant: "success",
-      });
+      const res = await handleProcessNewKeyword(selectedSearches, currentProject);
+
+      if (res.success) {
+        toast({
+          description: "Keywords added",
+          icon: "success",
+          variant: "success",
+        });
+      }
     } catch (error) {
       toast({
         description: "Failed to add keywords",

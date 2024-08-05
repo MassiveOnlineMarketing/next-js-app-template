@@ -27,6 +27,7 @@
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@svgr/webpack": "^8.1.0",
+    "@tanstack/react-query": "^5.51.21",
     "@tanstack/react-table": "^8.19.3",
     "@tanstack/react-virtual": "^3.8.3",
     "axios": "^1.7.2",
@@ -43,7 +44,6 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",
-    "react-query": "^3.39.3",
     "react-spinners": "^0.14.1",
     "react-window": "^1.8.10",
     "recharts": "^2.13.0-alpha.4",
@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
+    "@tanstack/eslint-plugin-query": "^5.51.15",
     "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.12",
     "@types/node": "^20",

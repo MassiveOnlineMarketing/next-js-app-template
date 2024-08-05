@@ -23,6 +23,7 @@ export async function getGoogleSearchCompetitorGraphData(keywordId: string) {
     return { success: false, error: 'Unauthorized' };
   }
 
+  console.log('getGoogleSearchCompetitorGraphData', keywordId);
 
   try {
     const sevenDaysAgo = subDays(new Date(), 7);

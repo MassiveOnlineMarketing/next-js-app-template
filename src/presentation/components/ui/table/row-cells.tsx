@@ -1,5 +1,5 @@
 import { urlWithoutDomain } from "@/presentation/lib/utils";
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from "@heroicons/react/20/solid";
 import { format, parseISO, isValid } from 'date-fns';

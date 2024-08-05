@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 import {
   CaretSortIcon,
   CheckIcon,

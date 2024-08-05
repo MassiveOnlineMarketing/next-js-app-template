@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 
 const AddNewTagInput = ({
   selectedRows,

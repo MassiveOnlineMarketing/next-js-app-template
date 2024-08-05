@@ -18,7 +18,7 @@ import {
 import { OutlinedButton } from "@/presentation/components/ui/button";
 
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 
 const TagSelection = () => {
   const { uniqueTags } = useGoogleSearchKeywordTagOpperations();

@@ -3,8 +3,8 @@
 import { auth } from "@/application/services/AuthService";
 import { SessionProvider } from "next-auth/react";
 
+import ReactQueryProvider from "./_providers/reactQueryProvider";
 import ServerProvider from "./_providers/serverProvider";
-
 import DashboardLayout from "./_dash-layout/layout";
 
 
@@ -17,13 +17,15 @@ export default async function AuthProvider({
 
   return (
     <SessionProvider session={session}>
-      <ServerProvider>
-        <DashboardLayout>
+      <ReactQueryProvider>
+        <ServerProvider>
+          <DashboardLayout>
 
-        {children}
+            {children}
 
-        </DashboardLayout>
-      </ServerProvider>
+          </DashboardLayout>
+        </ServerProvider>
+      </ReactQueryProvider>
     </SessionProvider>
   );
 }

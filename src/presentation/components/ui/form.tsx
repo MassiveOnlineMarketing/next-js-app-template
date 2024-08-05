@@ -12,7 +12,7 @@ import {
 
 
 import { Label } from "@/presentation/components/ui/label";
-import { cn } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 
 const Form = FormProvider;
 

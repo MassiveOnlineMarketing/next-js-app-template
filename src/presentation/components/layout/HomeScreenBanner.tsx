@@ -3,7 +3,8 @@ import React from "react";
 import { ExtendedUser } from "../../../../next-auth";
 
 import Credits from "@/presentation/components/dashboard/credits";
-import { cn, getGreeting } from "@/presentation/lib/utils";
+import { getGreeting } from "@/presentation/lib/utils";
+import { cn } from "@/presentation/components/utils";
 import { constants } from "@/presentation/styles/styles";
 
 import { Button } from "@/presentation/components/ui/button";
