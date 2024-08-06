@@ -45,4 +45,14 @@ export class GoogleAdsApiService {
 
     return resultsWithIds;
   }
+
+  async getKeywordMetrics(keywords: string[], country: string, language: string) {
+    const keywordMetricsRes = await this.googleAdsApi.generateHistoricalMetrics(country, language, keywords);
+
+    if (!keywordMetricsRes) {
+      return [];
+    }
+
+    return keywordMetricsRes.data.results;
+  }
 }

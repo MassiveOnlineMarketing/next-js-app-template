@@ -14,6 +14,9 @@ import { Button } from "@/presentation/components/ui/button";
 
 // Assets
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
+import useRelatedSearchesWithSearchVolume from "@/presentation/hooks/serp/fetching/useRelatedSearchesWithSearchVolume";
+import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
 
 const RelatedSearchesComponent = ({
   keywordData,
@@ -21,7 +24,12 @@ const RelatedSearchesComponent = ({
   keywordData: GoogleSearchLatestKeywordResult;
 }) => {
   const currentProject = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
+  
+  const keywords = keywordData.relatedSearches?.map((relatedSearch: any) => relatedSearch.query);
+  // TODO: add loading state
+  const { isLoading: searchVolumeIsLoading, data } = useRelatedSearchesWithSearchVolume(keywords, currentProject);
 
+  // const [querriesWithSearchVolume, setQuerriesWithSearchVolume] = useState<string[]>([]);
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
   const { handleProcessNewKeyword, isLoading } = useKeywordOpperations();
   const { toast } = useToast();
@@ -74,28 +82,34 @@ const RelatedSearchesComponent = ({
             type="submit"
             variant="appWhite"
           >
-            <PlusIcon className="w-4 h-4" />
+            {isLoading ? (
+              <LoadingSpinnerSmall className="w-4 h-4" />
+            ) :
+              (
+                <PlusIcon className="w-4 h-4" />
+              )}
             Add
           </Button>
         </div>
-        {Array.isArray(keywordData.relatedSearches) &&
-        keywordData.relatedSearches.length > 0 ? (
+        {Array.isArray(data?.data) &&
+          data.data.length > 0 ? (
           <>
-            {keywordData.relatedSearches.map((relatedSearch: any) => (
+            {data.data.map((relatedSearch: KeywordMetricsApiResponse ) => (
               <label
                 className="flex items-center gap-[10px]"
-                key={relatedSearch.query}
+                key={relatedSearch.text}
               >
                 <input
                   type="checkbox"
-                  name={relatedSearch.query}
+                  name={relatedSearch.text}
                   className="h-4 w-4 my-auto rounded border-gray-300 accent-primary-500 focus:accent-primary-500"
-                  value={relatedSearch.query}
-                  checked={selectedSearches.includes(relatedSearch.query)}
-                  onChange={() => handleCheckboxChange(relatedSearch.query)}
+                  value={relatedSearch.text}
+                  checked={selectedSearches.includes(relatedSearch.text)}
+                  onChange={() => handleCheckboxChange(relatedSearch.text)}
                 />
-                <p className="text-base leading-6 font-normal text-gray-800">
-                  {relatedSearch.query}
+                <p className="w-full flex justify-between text-base leading-6 font-normal text-gray-800">
+                  <span>{relatedSearch.text}</span>
+                  <span className="ml-auto">{relatedSearch.keyword_metrics.avg_monthly_searches}</span>
                 </p>
               </label>
             ))}

@@ -14,7 +14,7 @@ const PositionInsight = ({ keywordId }: {
   keywordId: string
 }) => {
   const { isLoading, data: res } = useGoogleSearchCompetitorGraphData(keywordId);
-  console.log('google search competitor graph data', res);
+  // console.log('google search competitor graph data', res);
 
   // TODO: States
   if (isLoading) {

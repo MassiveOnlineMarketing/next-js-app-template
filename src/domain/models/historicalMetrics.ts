@@ -1,4 +1,4 @@
-type KeywordMetrics = {
+export type KeywordMetrics = {
   googleSearchKeywordId: string
   avg_monthly_searches: string | null
   competition: string | null
