@@ -1,5 +1,7 @@
 import { Session } from "next-auth";
 import { ExtendedUser } from "../../../next-auth";
+import { User } from "@/domain/_entities/User";
+
 
 type SucessResponse = {
   success: string;
@@ -8,8 +10,20 @@ type SucessResponse = {
 
 type ErrorResponse = {
   error: string;
-    success?: undefined;
+  success?: undefined;
 }
+
+
+type SuccessResponseUpdateUserDetails = {
+  success: boolean;
+  data: User | null;
+  message: string;
+}
+
+type ErrorResponseUpdateUserDetails = {
+  success: boolean;
+  error: string;
+} 
 
 /**
  * Represents the interface for authentication operations.
@@ -91,5 +105,5 @@ export interface AuthInterface {
     passwordConfirmation: string | undefined,
     email: string | null,
     name: string | null
-  ): Promise<SucessResponse | ErrorResponse | undefined>;
+  ): Promise<SuccessResponseUpdateUserDetails | ErrorResponseUpdateUserDetails | undefined>;
 }

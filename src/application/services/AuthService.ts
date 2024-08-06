@@ -179,12 +179,12 @@ export class AuthService implements AuthInterface {
     const session = await auth();
     const user = session?.user;
     if (!user) {
-      return { error: "Unauthorized" };
+      return { success: false, error: "Unauthorized" };
     }
 
     const currentUser = await userRepository.getById(user.id as string);
     if (!currentUser) {
-      return { error: "Unauthorized" };
+      return { success: false, error: "Unauthorized" };
     }
 
     let data = {
@@ -197,13 +197,13 @@ export class AuthService implements AuthInterface {
     if (email && email !== currentUser.email) {
       const existingUser = await userRepository.getByEmail(email);
       if (existingUser && existingUser.id !== user.id) {
-        return { error: "Email is already in use" };
+        return { success: false, error: "Email is already in use" };
       }
 
       const verificationToken = await new TokenService().generateVerificationToken(email, user.id);
       const h = new EmailRepository().sendVerificationEmail(email, verificationToken.token);
 
-      return { success: "Verification email sent!" };
+      return { success: true, data: null, message: "Confirmation email sent!" };
     }
 
     if (
@@ -217,7 +217,7 @@ export class AuthService implements AuthInterface {
       const isNewPasswordValid = password === passwordConfirmation
 
       if (!isNewPasswordValid) {
-        return { error: "Password and password confirmation do not match." };
+        return { success: false, error: "Password and password confirmation do not match." };
       }
 
       const doesCurrentPasswordMatch = await bcrypt.compare(
@@ -226,7 +226,7 @@ export class AuthService implements AuthInterface {
       );
 
       if (!doesCurrentPasswordMatch) {
-        return { error: "Current password is incorrect." };
+        return { success: false, error: "Current password is incorrect." };
       }
 
       data.password = await bcrypt.hash(password, 10);
@@ -234,7 +234,7 @@ export class AuthService implements AuthInterface {
     
     const updatedUser = await userRepository.update(data, user.id as string);
 
-    return { success: "User details updated!", data: updatedUser };
+    return { success: true, data: updatedUser, message: "User details updated!"};
   }
 }
 

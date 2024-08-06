@@ -1,9 +1,18 @@
-import React from 'react'
+"use client";
 
-const page = () => {
+import React from "react";
+import GeneralUserSettingsForm from "./_components/general-user-settings-from";
+
+const Page = () => {
   return (
-    <div>page</div>
-  )
-}
+    <>
+      <div className="w-full pb-12 border-b border-gray-200">
+        <div className="max-w-[650px] mx-auto ">
+          <GeneralUserSettingsForm />
+        </div>
+      </div>
+    </>
+  );
+};
 
-export default page
+export default Page;

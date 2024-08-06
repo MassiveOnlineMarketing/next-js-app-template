@@ -9,7 +9,7 @@ export const updateUserDetails = async (values: z.infer<typeof GeneralUserSettin
   const validatedFields = GeneralUserSettingsSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
+    return { success: false, error: "Invalid fields!" };
   }
 
   const { email, password, name, currentPassword, passwordConfirmation } = validatedFields.data;
