@@ -10,6 +10,15 @@ const nextConfig = {
     return config;
   },
 
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/app/search",
+        permanent: true,
+      },
+    ]
+  },
 
   experimental: {
     missingSuspenseWithCSRBailout: false,
