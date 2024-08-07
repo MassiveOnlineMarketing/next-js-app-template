@@ -11,17 +11,7 @@ export const publicRoutes = ["/", "/auth/new-verification", "/404"];
  * @type {string[]}
  */
 export const publicDynamicRoutes = [
-  "/test",
-  "/contact",
-  "/over-ons",
-  "/blog",
-  "/zakelijke-website-laten-maken",
-  "/professionele-webshop-laten-maken",
-  "/search-engine-optimization",
-  '/tools',
   "/api/webhooks",
-
-  "/vragenlijst",
 ];
 
 /**
@@ -54,7 +44,6 @@ export const DEFAULT_LOGIN_REDIRECT = "/app/search";
  * The default route for multi-step form
  * @type {string}
  */
-export const DEFAULT_MULTISTEP_FORM_ROUTE = "/vragenlijst";
 export const DEFAULT_APP_SETTING_PAGE = "/app/settings/profile";
 
 /**
