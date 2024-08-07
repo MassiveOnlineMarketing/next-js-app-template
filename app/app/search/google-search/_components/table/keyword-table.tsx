@@ -95,19 +95,25 @@ function DataTable<TData, TValue>({
   const numberOfVisibleColumns = table.getVisibleFlatColumns().length;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-8 mt-8">
+    // dit weg
+    <div className="bg-white rounded-2xl shadow-sm p-8 mt-8           max-h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar">
 
-      {/* Top bar */}
-      <DataTableTopBar
-        table={table}
-        data={data}
-        deselectAllRows={() => setRowSelection({})}
-      />
+      {/* Dit we */}
+      <div className="sticky top-0 bg-green-100">
+        {/* Top bar */}
+        <DataTableTopBar
+          table={table}
+          data={data}
+          deselectAllRows={() => setRowSelection({})}
+        />
+      </div>
 
       {/* Keywords Table */}
       <div className="rounded-md mt-3">
-        <Table>
-          <TableHeader className="rouded-md overflow-hidden bg-primary-50">
+        {/* Dit naar Table */}
+        <table>
+          {/* Weg , overflow hidden*/}
+          <TableHeader className="sticky top-[56px] z-10       rouded-md  bg-primary-50 ">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className=" rounded-lg shadow-sm">
                 {headerGroup.headers.map((header) => {
@@ -126,7 +132,7 @@ function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="overflow-y-auto">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
                 <React.Fragment key={row.id}>
@@ -173,7 +179,7 @@ function DataTable<TData, TValue>({
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </table>
       </div>
       <DataTablePagination table={table} />
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
