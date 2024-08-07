@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 
 
 import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-store";
+import { GoogleSearchCampaignWithResult } from "@/application/dto/GoogleSearchCampaignWithResult";
+import GoogleSearchProjectFormDialog from "@/presentation/components/google-search-campaign/google-search-campaign-form-dialog";
 
 // Components
 import { ColumnDef, ColumnFiltersState, Row, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
@@ -15,8 +17,7 @@ import { OutlinedTextButton } from "@/presentation/components/ui/text-button";
 
 // Icons
 import { MagnifyingGlassIcon, ViewColumnsIcon } from "@heroicons/react/24/outline";
-import { GoogleSearchCampaignWithResult } from "@/application/dto/GoogleSearchCampaignWithResult";
-
+import { PlusIcon } from "@heroicons/react/20/solid";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -77,6 +78,8 @@ function DataTable<TData, TValue>({
     router.push(`/app/search/google-search/${campaign.id}`);
   };
 
+  const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
+  const [ openAddCampaignDialog, setOpenAddCampaignDialog ] = React.useState(false);
   return (
     <>
       <div className="w-full pb-8 flex items-center">
@@ -100,6 +103,17 @@ function DataTable<TData, TValue>({
           />
         </div>
 
+
+        <OutlinedTextButton
+          size="smD"
+          className="ml-auto"
+          buttonClassName="px-2"
+          onClick={() => setOpenAddCampaignDialog(true)}
+        >
+          <PlusIcon className="w-5 h-5 text-gray-500 group-hover:text-green-500" />
+        </OutlinedTextButton>
+        <GoogleSearchProjectFormDialog open={openAddCampaignDialog} setOpen={setOpenAddCampaignDialog} website={currentWebsite}/>
+
         {/* Toggle visable colums */}
         <Tooltip>
           <TooltipTrigger>
@@ -107,7 +121,7 @@ function DataTable<TData, TValue>({
               <DropdownMenuTrigger asChild>
                 <OutlinedTextButton
                   size="smD"
-                  className="ml-auto"
+                  className="ml-2"
                   buttonClassName="px-2"
                 >
                   <ViewColumnsIcon className="w-5 h-5 text-gray-500" />
@@ -154,7 +168,7 @@ function DataTable<TData, TValue>({
                         header.column.getIndex() === 0
                           ? "rounded-l-md overflow-hidden "
                           : header.column.getIndex() ===
-                              numberOfVisibleColumns - 1
+                            numberOfVisibleColumns - 1
                             ? "rounded-r-md "
                             : ""
                       }
@@ -163,9 +177,9 @@ function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     </TableHead>
                   );
                 })}
