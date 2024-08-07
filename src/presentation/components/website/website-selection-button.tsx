@@ -20,6 +20,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/presentation/componen
 
 // Assets
 import { ChevronDownIcon, CubeTransparentIcon } from "@heroicons/react/24/outline";
+import { LoadingSpinner } from "@/presentation/components/ui/loading-spinner";
 
 
 const WebsiteSelectionButton = () => {
@@ -56,27 +57,37 @@ const WebsiteSelectionButton = () => {
   const fetchProjects = async () => {
     if (!currentWebsite) return;
     const searchProjects = await getGoogleSearchCampaignByWebsiteId(currentWebsite.id);
-    setGoogleSearchCampaigns(searchProjects.data ?? []); 
+    setGoogleSearchCampaigns(searchProjects.data ?? []);
   };
 
 
+  if (isLoading === true) {
+    return (
+      <Loading setWebsiteDialogOpen={setWebsiteDialogOpen} />
+    )
+  }
+
+  if (!websites || websites.length === 0) {
+    return (
+      <>
+        <NoWebsite setWebsiteDialogOpen={setWebsiteDialogOpen} />
+
+        <CreateWebsiteFormDialog
+          open={websiteDialogOpen}
+          setOpen={setWebsiteDialogOpen}
+        />
+      </>
+    )
+  }
 
   return (
     <>
-      {(!websites || isLoading === true || websites.length === 0) && (
-        <LoadingAndNoWebsiteButton
-          isLoading={isLoading}
-          setWebsiteDialogOpen={setWebsiteDialogOpen}
-        />
-      )}
-      {websites && websites.length > 0 && (
-        <WebsiteSelectionButtonn
-          setSelectedWebsite={setSelectedWebsite}
-          setWebsiteDialogOpen={setWebsiteDialogOpen}
-          currentWebsite={currentWebsite}
-          websiteList={websites}
-        />
-      )}
+      <WebsiteSelectionButtonn
+        setSelectedWebsite={setSelectedWebsite}
+        setWebsiteDialogOpen={setWebsiteDialogOpen}
+        currentWebsite={currentWebsite}
+        websiteList={websites}
+      />
 
       <CreateWebsiteFormDialog
         open={websiteDialogOpen}
@@ -90,14 +101,34 @@ export default WebsiteSelectionButton;
 
 
 type LoadingAndNoWebsiteButtonProps = {
-  isLoading: boolean;
   setWebsiteDialogOpen: (value: boolean) => void;
 }
 
-const LoadingAndNoWebsiteButton = ({ isLoading, setWebsiteDialogOpen }: LoadingAndNoWebsiteButtonProps) => {
+const Loading = ({ setWebsiteDialogOpen }: LoadingAndNoWebsiteButtonProps) => {
   return (
     <Button
-      {...(isLoading ? { disabled: true } : {})}
+      {...({ disabled: true })}
+      onClick={() => setWebsiteDialogOpen(true)}
+      size="sm"
+      className="w-[350px] justify-start px-3 py-3 flex items-center gap-5 text-base leading-6 font-medium"
+    >
+      <div className="p-3 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center">
+
+        <LoadingSpinner className="h-6 w-6 text-gray-700 flex items-center justify-center" />
+
+      </div>
+      <div className="text-left">
+        <p className="text-gray-800">Loading</p>
+        <p className="text-gray-500">...</p>
+      </div>
+      <ChevronDownIcon className="ml-auto h-4 w-4 text-gray-400" />
+    </Button>
+  )
+}
+
+const NoWebsite = ({ setWebsiteDialogOpen }: LoadingAndNoWebsiteButtonProps) => {
+  return (
+    <Button
       onClick={() => setWebsiteDialogOpen(true)}
       size="sm"
       className="w-[350px] justify-start px-3 py-3 flex items-center gap-5 text-base leading-6 font-medium"
@@ -108,7 +139,7 @@ const LoadingAndNoWebsiteButton = ({ isLoading, setWebsiteDialogOpen }: LoadingA
 
       </div>
       <div className="text-left">
-        <p className="text-gray-800">Loading</p>
+        <p className="text-gray-800">Add new website</p>
         <p className="text-gray-500">...</p>
       </div>
       <ChevronDownIcon className="ml-auto h-4 w-4 text-gray-400" />
@@ -135,11 +166,6 @@ const WebsiteSelectionButtonn = ({ setSelectedWebsite, setWebsiteDialogOpen, cur
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger>
-        {/* <Button
-          variant="glass"
-          size="sm"
-          className="w-[350px] justify-start px-3 py-3 text-base leading-6 font-medium"
-        > */}
         <div className="w-[350px] px-3 py-3 flex items-center justify-start gap-5 text-base leading-6 font-medium">
           <div className="p-3 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center">
             {
@@ -156,7 +182,6 @@ const WebsiteSelectionButtonn = ({ setSelectedWebsite, setWebsiteDialogOpen, cur
           </div>
           <ChevronDownIcon className="ml-auto h-4 w-4 text-gray-400" />
         </div>
-        {/* </Button> */}
       </PopoverTrigger>
       <PopoverContent className="w-[350px] bg-primary-50 p-0">
         <Command>
@@ -186,5 +211,4 @@ const WebsiteSelectionButtonn = ({ setSelectedWebsite, setWebsiteDialogOpen, cur
       </PopoverContent>
     </Popover>
   )
-
 }
