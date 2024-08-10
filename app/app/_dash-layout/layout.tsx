@@ -6,29 +6,30 @@ import TopBar from './topbar'
 import PrimarySidebar from './primary-sidebar';
 
 import { TooltipProvider } from '@/presentation/components/ui/tooltip';
+import { ThemeProvider } from 'next-themes';
 
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
-    <div className='h-full'>
+    <div className='h-full bg-primary-50  dark:bg-p-1100'>
       <TooltipProvider>
-        <TopBar setMobileSidebarOpen={setMobileSidebarOpen} />
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+          {/* <TopBar setMobileSidebarOpen={setMobileSidebarOpen} /> */}
 
-        <div className="flex flex-row h-[calc(100vh-64px)]">
-          <PrimarySidebar />
+          <div className="flex flex-row h-screen pt-6 pr-6">
+            <PrimarySidebar />
 
-          <div className="w-full h-full p-[8px] relative ">
-            <div className="absolute inset-0 bg-transparent box-content inner-shadow lg:rounded-tl-3xl border-2 overflow-hidden flex">
-              <div className="h-full w-full overflow-y-auto bg-primary-50">
-                <div className='p-6 h-full'>
+            <div className="w-full h-full relative  ">
+              <div className="absolute inset-0 bg-transparent box-content lg:rounded-t-3xl overflow-hidden dark:border dark:border-[#DFE5FA]/10">
+                <div className="h-full w-full overflow-y-hidden  ">
                   {children}
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </ThemeProvider>
       </TooltipProvider>
     </div>
   )

@@ -2,7 +2,7 @@
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
+  darkMode: 'selector',
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -45,6 +45,22 @@ module.exports = {
         "gray-1000": "#141520",
         "gray-1100": "#0B0C14",
         "gray-1200": "#04050C",
+
+        'p-25': '#F8F8FF',
+        'p-50': '#E9EAFF',
+        'p-100': '#DADCFF',
+        'p-200': '#B4B9FF',
+        'p-300': '#9C97FF',
+        'p-400': '#907EFE',
+        'p-500': '#7857FE',
+        'p-600': '#6947DB',
+        'p-700': '#422693',
+        'p-800': '#201755',
+        'p-900': '#170E31',
+        'p-1000': '#0A0118',
+        'p-1100': '#070114',
+
+        'p-1200': '#04010D',
       },
       zIndex: {
         "-90": "-90",
@@ -53,6 +69,8 @@ module.exports = {
         "4xl": "32px",
       },
       boxShadow: {
+        'CardAccordion':'inset 0 0 0 1px rgba(225, 223, 250, 0.1)',
+
         base: "0px 1px 2px 0px rgba(0, 0, 0, 0.06), 0px 1px 3px 0px rgba(0, 0, 0, 0.10)",
         md: "0px 2px 4px -1px rgba(21, 23, 77, 0.06), 0px 4px 6px -1px rgba(27, 35, 64, 0.10)",
         "custom-lg":
@@ -87,5 +105,6 @@ module.exports = {
       }
     },
   },
+  plugins: [require("@tailwindcss/forms")],
   variants: {},
 };

@@ -66,11 +66,11 @@ const KeywordRowActionsDropdown = ({ keyword }: Props) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="dashboard">
+      <DropdownMenuTrigger >
+        <div className="p-2 bg-white dark:bg-[rgba(223,229,250,0.02)] rounded-lg">
           <span className="sr-only">Open menu</span>
-          <EllipsisHorizontalIcon className="w-4 h-4" />
-        </Button>
+          <EllipsisHorizontalIcon className="w-4 h-4 dark:text-[#DFE5FA]/35" />
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="relative">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>

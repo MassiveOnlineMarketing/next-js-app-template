@@ -33,7 +33,7 @@ const PositionInsight = ({ keywordId }: {
 
   return (
     <Card className="mt-6">
-      <CardTitle heading="Position Insight" />
+      <CardTitle title="Position Insight" />
       <div className="grid grid-flow-col">
 
         <div style={{ width: '100%', height: '265px' }}><ResponsiveContainer>

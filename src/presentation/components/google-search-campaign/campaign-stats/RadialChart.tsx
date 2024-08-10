@@ -10,13 +10,14 @@ import {
 
 
 import { ChartConfig, ChartContainer } from "@/presentation/components/ui/chart"
+import { useTheme } from "next-themes"
 
-export function RadialChart({value, total}: {value: number, total: number}) {
+export function RadialChart({ value, total }: { value: number, total: number }) {
   const dataValue = value ? value : 0
   const chartData = [
     { browser: "safari", visitors: dataValue, fill: "#7857FE" },
   ]
-  
+
   const chartConfig = {
     visitors: {
       label: "Visitors",
@@ -27,7 +28,8 @@ export function RadialChart({value, total}: {value: number, total: number}) {
     }
   } satisfies ChartConfig
 
-
+  const { theme } = useTheme()
+  console.log('theme',theme)
 
   const startingAngle = 0
   const endingAngle = calculateEndingAngle(value, total)
@@ -77,6 +79,9 @@ export function RadialChart({value, total}: {value: number, total: number}) {
                       x={viewBox.cx}
                       y={viewBox.cy}
                       className="fill-foreground text-xl font-bold"
+                      fill={
+                        theme === 'dark' ? "#DFE5FA" : "#7857FE"
+                      }
                     >
                       {chartData[0].visitors.toLocaleString()}
                     </tspan>

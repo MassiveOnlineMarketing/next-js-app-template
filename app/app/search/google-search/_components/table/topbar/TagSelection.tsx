@@ -44,21 +44,20 @@ const TagSelection = () => {
 
   return (
     <Popover open={tagPopoverOpen} onOpenChange={setTagPopoverOpen}>
-      <PopoverTrigger asChild>
-        <OutlinedButton
-          role="combobox"
-          aria-expanded={tagPopoverOpen}
-          size="smD"
-          buttonClassName="w-[250px]  text-sm text-left"
-        >
-          <span className="text-gray-400 ">Tags:</span>
+      <PopoverTrigger role="combobox" aria-expanded={tagPopoverOpen}
+        className={cn(
+          "w-[250px]  text-sm text-left",
+          'h-11 p-[2px] rounded-[10px] bg-white dark:bg-[rgba(223,229,250,0.02)]'
+        )}>
+        <div className="px-[18px] flex items-center h-10 rounded-lg border border-gray-200 dark:border-[#DFE5FA]/10">
+          <span className="text-gray-400 dark:text-[#DFE5FA]/50 mr-[6px]">Tags:</span>
           {tagSting ? (
-            <span className="text-gray-800">{tagSting}</span>
+            <span className="text-gray-800 dark:text-[#DFE5FA]/90">{tagSting}</span>
           ) : (
-            <span className="text-gray-800">All Keywords</span>
+            <span className="text-gray-800 dark:text-[#DFE5FA]/90">All Keywords</span>
           )}
           <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-        </OutlinedButton>
+        </div>
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-0">
         <Command>

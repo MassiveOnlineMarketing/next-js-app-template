@@ -16,6 +16,7 @@ import { ChevronDownIcon, LockClosedIcon } from "@heroicons/react/20/solid";
 import { HomeIcon, PresentationChartLineIcon, Cog6ToothIcon, CreditCardIcon } from "@heroicons/react/24/outline";
 import UpdateWebsiteButton from "@/presentation/components/website/update-website-button";
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 
 type NavigationProps = {
@@ -68,8 +69,11 @@ const PrimarySidebar = () => {
   };
 
   return (
-    <nav className="lg:block hidden h-full w-fit bg-white-50 relative z-10 bg-white">
+    <nav className="lg:block hidden h-full w-fit bg-white-50 relative z-10 bg-primary-50 dark:bg-p-1100">
       <ul className="flex flex-col min-h-full">
+      <li>
+        <ThemeSwitcher />
+      </li>
         <li className="p-3">
           <WebsiteSelectionButton />
         </li>

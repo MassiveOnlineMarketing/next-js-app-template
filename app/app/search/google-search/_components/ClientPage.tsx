@@ -47,9 +47,11 @@ const ClientPage = ({
 
   return (
     <>
-      <KeywordTableHead />
+      {/* <KeywordTableHead /> */}
       <CampaignStats filteredResults={filteredResults} />
-      <DataTable columns={columns(currentWebsite.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
+      <div className="relative">
+        <DataTable columns={columns(currentWebsite.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
+      </div>
 
       {/* Dialog for deleting keyword */}
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>

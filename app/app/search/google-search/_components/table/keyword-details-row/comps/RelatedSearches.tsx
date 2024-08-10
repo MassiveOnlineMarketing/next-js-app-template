@@ -17,14 +17,15 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
 import useRelatedSearchesWithSearchVolume from "@/presentation/hooks/serp/fetching/useRelatedSearchesWithSearchVolume";
 import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
+import { Card, CardTitle, CardRowInput } from "../Card";
 
-const RelatedSearchesComponent = ({
+const RelatedSearches = ({
   keywordData,
 }: {
   keywordData: GoogleSearchLatestKeywordResult;
 }) => {
   const currentProject = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
-  
+
   const keywords = keywordData.relatedSearches?.map((relatedSearch: any) => relatedSearch.query);
   // TODO: add loading state
   const { isLoading: searchVolumeIsLoading, data } = useRelatedSearchesWithSearchVolume(keywords, currentProject);
@@ -69,13 +70,13 @@ const RelatedSearchesComponent = ({
     setSelectedSearches([]);
   };
 
+
+  if (!data?.data) return null;
+
   return (
-    <div className="mb-6 min-h-24">
+    <Card>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3 flex justify-between items-end">
-          <p className="text-lg leading-7 font-medium text-gray-800">
-            Related Searches
-          </p>
+        <CardTitle title='Related Searches'>
           <Button
             disabled={isLoading || selectedSearches.length === 0}
             size="sm"
@@ -90,38 +91,15 @@ const RelatedSearchesComponent = ({
               )}
             Add
           </Button>
+        </CardTitle>
+        <div className='space-y-[6px]'>
+          {data?.data.map((item) => (
+            <CardRowInput item={item} selectedSearches={selectedSearches} handleCheckboxChange={handleCheckboxChange} key={item.text} />
+          ))}
         </div>
-        {Array.isArray(data?.data) &&
-          data.data.length > 0 ? (
-          <>
-            {data.data.map((relatedSearch: KeywordMetricsApiResponse ) => (
-              <label
-                className="flex items-center gap-[10px]"
-                key={relatedSearch.text}
-              >
-                <input
-                  type="checkbox"
-                  name={relatedSearch.text}
-                  className="h-4 w-4 my-auto rounded border-gray-300 accent-primary-500 focus:accent-primary-500"
-                  value={relatedSearch.text}
-                  checked={selectedSearches.includes(relatedSearch.text)}
-                  onChange={() => handleCheckboxChange(relatedSearch.text)}
-                />
-                <p className="w-full flex justify-between text-base leading-6 font-normal text-gray-800">
-                  <span>{relatedSearch.text}</span>
-                  <span className="ml-auto">{relatedSearch.keyword_metrics.avg_monthly_searches}</span>
-                </p>
-              </label>
-            ))}
-          </>
-        ) : (
-          <p className="text-base leading-6 font-normal text-gray-800">
-            No related searches
-          </p>
-        )}
       </form>
-    </div>
+    </Card>
   );
 };
 
-export default RelatedSearchesComponent;
+export default RelatedSearches;

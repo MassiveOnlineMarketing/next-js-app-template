@@ -96,10 +96,12 @@ function DataTable<TData, TValue>({
 
   return (
     // dit weg
-    <div className="bg-white rounded-2xl shadow-sm p-8 mt-8           max-h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar">
+    <div className="p-6 h-[calc(100vh-237px)] overflow-y-auto custom-scrollbar pb-10">
+
+      <div className="bg-primary-50 dark:bg-p-1100  h-[150px] top-0 absolute z-10 w-[98%]"></div>
 
       {/* Dit we */}
-      <div className="sticky top-0 bg-green-100">
+      <div className="sticky top-0 dark:bg-p-1100 z-20" >
         {/* Top bar */}
         <DataTableTopBar
           table={table}
@@ -109,13 +111,13 @@ function DataTable<TData, TValue>({
       </div>
 
       {/* Keywords Table */}
-      <div className="rounded-md mt-3">
+      <div className="rounded-md pt-6">
         {/* Dit naar Table */}
-        <table>
+        <table className="w-full">
           {/* Weg , overflow hidden*/}
-          <TableHeader className="sticky top-[56px] z-10       rouded-md  bg-primary-50 ">
+          <TableHeader className="sticky top-[72px] z-20       rouded-md  bg-white dark:bg-[rgba(223,229,250,0.02)]">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className=" rounded-lg shadow-sm">
+              <TableRow key={headerGroup.id} className=" rounded-lg shadow-sm  dark:bg-[rgba(223,229,250,0.02)]">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
@@ -138,7 +140,7 @@ function DataTable<TData, TValue>({
                 <React.Fragment key={row.id}>
                   <TableRow
                     data-state={row.getIsSelected() && "selected"}
-                    className="border-b border-gray-200 hover:bg-neutral-100/50 cursor-pointer"
+                    className="border-b border-gray-200 dark:border-[#DFE5FA]/10 hover:bg-neutral-100/50 cursor-pointer"
                     // handle click row, open keyword detail
                     onClick={handleClickRow(row.id)}
                   >

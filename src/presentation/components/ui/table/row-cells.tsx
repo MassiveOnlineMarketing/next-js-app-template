@@ -12,8 +12,8 @@ interface ColumnRowCellProps {
 const StandardRowCell: React.FC<ColumnRowCellProps> = ({ value, highlight }) => {
   return (
     <p className={cn(
-      "text-sm leading-5 font-medium",
-      highlight ? 'text-gray-800' : 'text-gray-500'
+      "text-sm leading-5 font-normal",
+      highlight ? 'text-gray-800 dark:text-[#DFE5FA]/90' : 'text-gray-500 dark:text-[#DFE5FA]/50'
     )}>
       {value}
     </p>
@@ -42,7 +42,7 @@ const TrendingIndicatorRowCell: React.FC<TrendingIndicatorProps> = ({ value }) =
   return (
     <div className="flex gap-[2px] items-center">
       <span className={cn(
-        'text-sm leading-5 font-medium text-gray-500',
+        'text-sm leading-5 font-normal text-gray-500 dark:text-[#DFE5FA]/50',
         colorClass
       )}>{value}</span>
       {icon}
@@ -59,7 +59,7 @@ const DateRowCell: React.FC<DateRowCellProps> = ({ value }) => {
     const date = value instanceof Date ? value : parseISO(value.toString());
     if (isValid(date)) {
       return (
-        <p className="text-sm leading-5 font-medium text-gray-500">
+        <p className="text-sm leading-5 font-normal text-gray-500 dark:text-[#DFE5FA]/50">
           {format(date, "MM/dd/yyyy")}
         </p>
       );
@@ -67,7 +67,7 @@ const DateRowCell: React.FC<DateRowCellProps> = ({ value }) => {
   }
 
   return (
-    <p className="text-sm leading-5 font-medium text-gray-500">
+    <p className="text-sm leading-5 font-normal text-gray-500 dark:text-[#DFE5FA]/50">
       Not yet Checked
     </p>
   );
@@ -86,14 +86,14 @@ const UrlRowCell: React.FC<UrlRowCellProps> = ({ value, domainUrl }) => {
 
   if (url === null || url === undefined || url === "") {
     return (
-      <p className="max-auto text-sm leading-5 font-medium text-gray-500">
+      <p className="max-auto text-sm leading-5 font-normal text-gray-500 dark:text-[#DFE5FA]/50">
         No Result Found
       </p>
     );
   }
 
   return (
-    <p className="mx-auto text-sm leading-5 font-medium text-gray-500">
+    <p className="mx-auto text-sm leading-5 font-normal text-gray-500 dark:text-[#DFE5FA]/50">
       {
         domainUrl ? (
           url.length > 52

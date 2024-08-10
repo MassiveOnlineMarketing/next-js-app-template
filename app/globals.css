@@ -7,7 +7,7 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  @apply bg-gray-100;
+  @apply bg-gray-100 rounded-full;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {

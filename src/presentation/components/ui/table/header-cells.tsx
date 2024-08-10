@@ -1,14 +1,14 @@
 import { Column, SortDirection } from "@tanstack/react-table";
 
 import { cn } from "@/presentation/components/utils";
+import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
 
-import { SortDataTableIcon } from ".";
 
 const SortingIndicator = (props: { sorting: false | SortDirection }) => {
   if (props.sorting === "asc") {
-    return <SortDataTableIcon className="w-5 h-5 text-gray-600 ml-3" />
+    return <ArrowsUpDownIcon className="w-5 h-5 text-gray-600 dark:text-[#DFE5FA]/25 ml-3" />
   } else if (props.sorting === "desc") {
-    return <SortDataTableIcon className="w-5 h-5 text-gray-600 ml-3 rotate-180" />
+    return <ArrowsUpDownIcon className="w-5 h-5 text-gray-600 dark:text-[#DFE5FA]/25 ml-3 rotate-180" />
   } else {
     return null;
   }
@@ -27,7 +27,7 @@ const StandardHeaderCell: React.FC<ColumnHeaderProps<any, any>> = ({ column, tit
   return (
     <p
       className={cn(
-        "flex items-center font-medium text-gray-600",
+        "flex items-center text-sm leading-5 font-medium text-gray-600 dark:text-[#DFE5FA]/50",
         sorting && "cursor-pointer",
       )}
       onClick={onClick}
