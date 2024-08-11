@@ -96,9 +96,9 @@ function DataTable<TData, TValue>({
 
   return (
     // dit weg
-    <div className="p-6 h-[calc(100vh-237px)] overflow-y-auto custom-scrollbar pb-10">
+    <div className="p-6 h-[calc(100vh-322px)] overflow-y-auto custom-scrollbar pb-10">
 
-      <div className="bg-primary-50 dark:bg-p-1100  h-[150px] top-0 absolute z-10 w-[98%]"></div>
+      <div className="bg-primary-50 dark:bg-p-1100  h-[150px] top-0 absolute z-10 w-[97%]"></div>
 
       {/* Dit we */}
       <div className="sticky top-0 dark:bg-p-1100 z-20" >
@@ -111,7 +111,7 @@ function DataTable<TData, TValue>({
       </div>
 
       {/* Keywords Table */}
-      <div className="rounded-md pt-6">
+      <div className="pt-6 pb-20">
         {/* Dit naar Table */}
         <table className="w-full">
           {/* Weg , overflow hidden*/}
@@ -182,8 +182,8 @@ function DataTable<TData, TValue>({
             )}
           </TableBody>
         </table>
-      </div>
       <DataTablePagination table={table} />
+      </div>
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </div>
   );

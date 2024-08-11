@@ -355,6 +355,7 @@ export const {
       token.credits = existingUser.credits;
       token.email = existingUser.email;
       token.loginProvider = existingUser.loginProvider;
+      token.name = existingUser.name;
 
       // Add custom fields to the token
       token.customField = "test";

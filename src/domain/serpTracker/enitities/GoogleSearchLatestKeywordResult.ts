@@ -123,7 +123,6 @@ export class GoogleSearchLatestKeywordResult {
       if (!serpResult) {
         return null;
       }
-      // console.log('serpResult:', serpResult);
       const latestKeywordResult = new GoogleSearchLatestKeywordResult(
         serpResult.result[0].id,
         serpResult.result[0].keywordId,
@@ -149,7 +148,7 @@ export class GoogleSearchLatestKeywordResult {
         serpResult.keywordMetrics[0]?.highTopOfPageBid || null,
         serpResult.keywordMetrics[0]?.lowTopOfPageBid || null,
 
-        serpResult.createdAt,
+        serpResult.result[0].createdAt,
       )
 
       return { ...latestKeywordResult }

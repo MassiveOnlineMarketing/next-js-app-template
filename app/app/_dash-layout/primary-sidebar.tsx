@@ -17,6 +17,9 @@ import { HomeIcon, PresentationChartLineIcon, Cog6ToothIcon, CreditCardIcon } fr
 import UpdateWebsiteButton from "@/presentation/components/website/update-website-button";
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 import ThemeSwitcher from "./ThemeSwitcher";
+import { useCurrentUser } from "@/presentation/auth/hooks/user-current-user";
+import { logout } from "@/presentation/auth/actions/logout";
+import { LogOutIcon } from "lucide-react";
 
 
 type NavigationProps = {
@@ -71,9 +74,9 @@ const PrimarySidebar = () => {
   return (
     <nav className="lg:block hidden h-full w-fit bg-white-50 relative z-10 bg-primary-50 dark:bg-p-1100">
       <ul className="flex flex-col min-h-full">
-      <li>
-        <ThemeSwitcher />
-      </li>
+        <li>
+          <ThemeSwitcher />
+        </li>
         <li className="p-3">
           <WebsiteSelectionButton />
         </li>
@@ -95,7 +98,7 @@ const PrimarySidebar = () => {
           ))}
         </li>
 
-        <li className="mt-auto p-3">
+        <li className="mt-auto p-6">
           <UpdateWebsiteButton>
             <Cog6ToothIcon className="w-6 h-6 text-gray-400" />
             <span className="text-gray-500 text-base leading-6 font-medium">
@@ -108,6 +111,7 @@ const PrimarySidebar = () => {
               Help Center
             </span>
           </Link> */}
+          <UserActions />
         </li>
       </ul>
     </nav>
@@ -200,6 +204,40 @@ const NavItemChild = ({ child, pathname, isActive }: NavItemChildProps) => {
         </Tooltip>
       )}
     </Link>
+  )
+}
+
+
+const UserActions = () => {
+  const user = useCurrentUser();
+  console.log(user);
+
+  return (
+    <div className="p-1 border-4 border-white dark:border-[rgba(223,229,250,0.02)]  rounded-md group bg-white dark:bg-p-1100">
+      <div className="h-[54px] p-[6px] border bg-white dark:bg-[rgba(223,229,250,0.02)] dark:border-[#DFE5FA]/10 rounded flex justify-center items-center dark:text-[#DFE5FA]/90 font-medium text-sm">{user?.name}</div>
+      <div className="h-0 group-hover:h-[88px] transition-all duration-300 overflow-hidden dark:text-[#DFE5FA]/50">
+        <div className="px-[6px] py-[10px]  flex items-center gap-2">
+          <Cog6ToothIcon className="w-6 h-6" />
+          <Link
+            className="w-full"
+            href="/app/settings/profile"
+          >
+            Account Settings
+          </Link>
+        </div>
+        <div className="px-[6px] py-[10px] flex items-center gap-2">
+          <LogOutIcon className="w-6 h-6" />
+          <button
+            className="w-full text-left"
+            onClick={() => {
+              logout();
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
 
