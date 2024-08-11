@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardPlainRow, CardTitle } from '../Card'
-import TraficLightIndicator from './TraficLightIndicator'
+import { TraficLight, TraficLightIndicator, TraficLightMinMaxValue } from './TraficLightIndicator'
 
 const MetaDescription = ({ metaDescription }: { metaDescription: string | null }) => {
   if (!metaDescription) {
@@ -9,7 +9,10 @@ const MetaDescription = ({ metaDescription }: { metaDescription: string | null }
   return (
     <Card>
       <CardTitle title='Meta Description'>
-        <TraficLightIndicator maxValue={155} currentValue={metaDescription.length} />
+        <TraficLight>
+          <TraficLightMinMaxValue maxValue={155} currentValue={metaDescription.length} />
+          <TraficLightIndicator maxValue={155} currentValue={metaDescription.length} />
+        </TraficLight>
       </CardTitle>
       <CardPlainRow value={metaDescription} className='dark:bg-p-1100' />
     </Card>

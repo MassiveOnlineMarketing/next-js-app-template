@@ -27,7 +27,7 @@ const StandardHeaderCell: React.FC<ColumnHeaderProps<any, any>> = ({ column, tit
   return (
     <p
       className={cn(
-        "flex items-center text-sm leading-5 font-medium text-gray-600 dark:text-[#DFE5FA]/50",
+        "flex items-center text-sm leading-5 font-medium text-gray-600 dark:text-[#DFE5FA]/50 text-nowrap",
         sorting && "cursor-pointer",
       )}
       onClick={onClick}

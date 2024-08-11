@@ -106,7 +106,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "position",
     id: "position",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Position" />
+      <StandardHeaderCell sorting={true} column={column} title="Pos" />
     ),
     cell: ({ row: { original: { position } } }) => (
       <StandardRowCell value={position} highlight={true} />
@@ -118,7 +118,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "firstPosition",
     id: "firstPosition",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="First Position" />
+      <StandardHeaderCell sorting={true} column={column} title="F Pos" />
     ),
     cell: ({ row: { original: { firstPosition } } }) => (
       <StandardRowCell value={firstPosition} />
@@ -130,7 +130,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "bestPosition",
     id: "bestPosition",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Best Position" />
+      <StandardHeaderCell sorting={true} column={column} title="B Pos" />
     ),
     cell: ({ row: { original: { bestPosition } } }) => (
       <StandardRowCell value={bestPosition} />
@@ -142,7 +142,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "latestChange",
     id: "latestChange",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Latest Change" />
+      <StandardHeaderCell sorting={true} column={column} title="L Change" />
     ),
     cell: ({ row: { original: { latestChange } } }) => (
       <TrendingIndicatorRowCell value={latestChange} />
@@ -154,7 +154,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "avgMonthlySearches",
     id: "avgMonthlySearches",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Avg Monthly Searches" />
+      <StandardHeaderCell sorting={true} column={column} title="Avg Searches" />
     ),
     cell: ({ row: { original: {avgMonthlySearches} } }) => (
       <StandardRowCell value={avgMonthlySearches} />
@@ -185,7 +185,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "competition",
     id: "competition",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Competition" />
+      <StandardHeaderCell sorting={true} column={column} title="Comp" />
     ),
     cell: ({ row: { original: {competition} } }) => (
       <StandardRowCell value={competition} />
@@ -196,7 +196,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "competitionIndex",
     id: "competitionIndex",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Competition Index" />
+      <StandardHeaderCell sorting={true} column={column} title="Comp Index" />
     ),
     cell: ({ row: { original: {competitionIndex} } }) => (
       <StandardRowCell value={competitionIndex} />
@@ -207,7 +207,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "highTopOfBidPage",
     id: "highTopOfBidPage",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="High Top Of Page Bid" />
+      <StandardHeaderCell sorting={true} column={column} title="HTOPB" />
     ),
     cell: ({ row: { original: {highTopOfBidPage} } }) => (
       <StandardRowCell value={highTopOfBidPage} />
@@ -218,7 +218,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "lowTopOfBidPage",
     id: "lowTopOfBidPage",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Low Top Of Page Bid" />
+      <StandardHeaderCell sorting={true} column={column} title="LTOPB" />
     ),
     cell: ({ row: { original: {lowTopOfBidPage} } }) => (
       <StandardRowCell value={lowTopOfBidPage} />
@@ -229,7 +229,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "createdAt",
     id: "createdAt",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Last Updated" />
+      <StandardHeaderCell sorting={true} column={column} title="L Updated" />
     ),
     cell: ({ row: { original: {createdAt}} }) => (
       <DateRowCell value={createdAt} />
@@ -240,7 +240,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "actions",
     id: "actions",
     header: ({ column }) => (
-      <p className="font-medium text-gray-600 dark:text-[#DFE5FA]/50">Actions</p>
+      <p className="text-sm leading-5 font-medium text-gray-600 dark:text-[#DFE5FA]/50">Actions</p>
     ),
     cell: ({ row }) => {
       const keyword = row.original;

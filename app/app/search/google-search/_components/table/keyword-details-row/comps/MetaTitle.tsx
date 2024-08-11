@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, CardPlainRow, CardTitle } from '../Card'
-import TraficLightIndicator from './TraficLightIndicator'
+import { TraficLight, TraficLightIndicator, TraficLightMinMaxValue } from './TraficLightIndicator'
+
 
 const MetaTitle = ({ metaTitle }: { metaTitle: string | null }) => {
   if (!metaTitle) {
@@ -10,7 +11,10 @@ const MetaTitle = ({ metaTitle }: { metaTitle: string | null }) => {
   return (
     <Card>
       <CardTitle title='Meta Title' >
-        <TraficLightIndicator maxValue={60} currentValue={metaTitle.length} />
+        <TraficLight>
+          <TraficLightMinMaxValue maxValue={60} currentValue={metaTitle.length} />
+          <TraficLightIndicator maxValue={60} currentValue={metaTitle.length} />
+        </TraficLight>
       </CardTitle>
       <CardPlainRow value={metaTitle} className='dark:bg-p-1100' />
     </Card>
