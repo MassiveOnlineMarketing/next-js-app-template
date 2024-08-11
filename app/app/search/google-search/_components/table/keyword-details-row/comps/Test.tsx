@@ -19,6 +19,7 @@ const Test = ({ keywordName, websiteId }: {
   const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, hasAccess);
   console.log('data1', searchConsoleKeywordDetails);
 
+
   useEffect(() => {
     if (searchConsoleKeywordDetails?.error) {
       toast({
@@ -46,28 +47,33 @@ const Test = ({ keywordName, websiteId }: {
       title: "Clicks",
       color: "#2563EB",
       dataKey: "clicks",
-      domain: getChartDomain(data, 'clicks')
+      domain: getChartDomain(data, 'clicks'),
+      total: getTotals(data, 'clicks')
     },
     {
       title: "CTR",
       color: "#059669",
       dataKey: "ctr",
-      domain: getChartDomain(data, 'ctr')
+      domain: getChartDomain(data, 'ctr'),
+      total: getCtrAverage(data, 'ctr')
     },
     {
       title: "Position",
       color: "#F59E0B",
       dataKey: "position",
-      domain: getChartDomain(data, 'position')
+      domain: getChartDomain(data, 'position'),
+      total: getPositionAverage(data, 'position')
     },
     {
       title: "Impressions",
       color: "#7857FE",
       dataKey: "impressions",
-      domain: getChartDomain(data, 'impressions')
+      domain: getChartDomain(data, 'impressions'),
+      total: getTotals(data, 'impressions')
     }
   ]
 
+  console.log('chartConfig', chartConfig);
   return (
     <div className='grid grid-cols-4 gap-6 pb-6'>
       {chartConfig.map((config) => (
@@ -75,7 +81,7 @@ const Test = ({ keywordName, websiteId }: {
           <div className='p-6'>
             <p className='dark:text-[#DFE5FA]/90'>{config.title}</p>
             <p className='text-sm dark:text-[#DFE5FA]/50'>description</p>
-            <p className='pt-6 text-4xl font-semibold dark:text-[#DFE5FA]/90'>12.000</p>
+            <p className='pt-6 text-4xl font-semibold dark:text-[#DFE5FA]/90'>{config.title === "CTR" ? `${config.total}%` : config.total}</p>
           </div>
           <div className='h-[250px]'>
             <GoogleSearchConsoleChart
@@ -92,15 +98,28 @@ const Test = ({ keywordName, websiteId }: {
   )
 }
 
+const getTotals = (data: ChartData[], key: keyof ChartData): number => {
+  return data.reduce((acc, item) => acc + (item[key] as number), 0);
+}
+
+const getPositionAverage = (data: ChartData[], key: keyof ChartData): number => {
+  return Math.round(getTotals(data, key) / data.length);
+}
+
+const getCtrAverage = (data: ChartData[], key: keyof ChartData): number => {
+  return Number((getTotals(data, key) / data.length).toFixed(1));
+}
 
 
 const getChartDomain = (data: ChartData[], key: keyof ChartData): [number, number] => {
   const values = data.map(item => item[key] as number);
   const min = Math.min(...values);
   const max = Math.max(...values);
-  const padding = (max - min) * 0.3; // 10% padding
-  return [min - padding, max + padding];
-};
+  const minPadding = 0.1;
+  const bottomPadding = Math.max((max - min) * 1, minPadding); // 10% padding for bottom
+  const topPadding = Math.max((max - min) * 0.1, minPadding); // 50% padding for top
+  return [min - bottomPadding, max + topPadding];
+}
 
 interface ChartData {
   date: string;
@@ -121,7 +140,7 @@ type GoogleSearchConsoleChartProps = {
 const GoogleSearchConsoleChart = ({ data, positionDomain, dataKey, color, title }: GoogleSearchConsoleChartProps) => {
 
   return (
-    <ResponsiveContainer width="100%" height="100%" style={{borderRadius: 23, overflow: 'hidden'}}>
+    <ResponsiveContainer width="100%" height="100%" style={{ borderRadius: 23, overflow: 'hidden' }}>
       <AreaChart data={data}>
         <defs>
           <linearGradient id={`color${title}`} x1="0" y1="0" x2="0" y2="1">
@@ -150,5 +169,57 @@ const GoogleSearchConsoleChart = ({ data, positionDomain, dataKey, color, title 
     </ResponsiveContainer>
   )
 }
+
+const MOCK_CHART_DATA: ChartData[] = [
+  {
+    "date": "2024-08-02",
+    "clicks": 0,
+    "ctr": 0,
+    "impressions": 70,
+    "position": 16
+  },
+  {
+    "date": "2024-08-03",
+    "clicks": 0,
+    "ctr": 1,
+    "impressions": 1,
+    "position": 2
+  },
+  {
+    "date": "2024-08-04",
+    "clicks": 0,
+    "ctr": 0,
+    "impressions": 0,
+    "position": 0
+  },
+  {
+    "date": "2024-08-05",
+    "clicks": 0,
+    "ctr": 0,
+    "impressions": 0,
+    "position": 0
+  },
+  {
+    "date": "2024-08-06",
+    "clicks": 0,
+    "ctr": 0.7,
+    "impressions": 3,
+    "position": 1
+  },
+  {
+    "date": "2024-08-07",
+    "clicks": 0,
+    "ctr": 0,
+    "impressions": 0,
+    "position": 0
+  },
+  {
+    "date": "2024-08-08",
+    "clicks": 0,
+    "ctr": 0,
+    "impressions": 2,
+    "position": 9.5
+  }
+]
 
 export default Test
