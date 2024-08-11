@@ -29,8 +29,7 @@ export function RadialChart({ value, total }: { value: number, total: number }) 
   } satisfies ChartConfig
 
   const { theme } = useTheme()
-  console.log('theme',theme)
-
+  
   const startingAngle = 0
   const endingAngle = calculateEndingAngle(value, total)
 

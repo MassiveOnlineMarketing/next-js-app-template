@@ -31,6 +31,9 @@ const useGoogleToken = (requiredScope: GoogleScopeOption) => {
     setRefreshToken(accountDetails.refresh_token);
     setIsLoading(false);
 
+    console.log('accountDetails', accountDetails);
+    
+
   }, [requiredScope, accountDetails]);
 
   async function authenticate(scope: GoogleScopeOption) {

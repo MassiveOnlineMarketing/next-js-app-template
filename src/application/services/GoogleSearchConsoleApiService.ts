@@ -32,12 +32,14 @@ export class GoogleSearchConsoleApiService {
     
     const refreshToken = await this.authService.getGoogleRefreshToken();
     if (!refreshToken) {
+      console.error('No refresh token found');
       throw new SimpleError(404, 'Please connect your Google Search Console account');
     }
 
     const website = await websiteRepository.getById(websiteId);
     if (!website?.gscUrl) {
-      throw new SimpleError(404, 'Please connect your Google Search Console account');
+      console.error('No website found');
+      throw new SimpleError(404, 'Please connect an Google Search Console url to your website');
     }
     if (website.userId !== user.id) {
       throw new SimpleError(403, 'Unauthorized');

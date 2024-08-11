@@ -11,6 +11,9 @@ import MetaTitle from "./keyword-details-row/comps/MetaTitle";
 import MetaDescription from "./keyword-details-row/comps/MetaDescription";
 import Url from "./keyword-details-row/comps/Url";
 import KeywordDetails from "./keyword-details-row/comps/KeywordDetails";
+import { Card } from "./keyword-details-row/GoogleSearchConsoleGraphCard";
+import SearchConsoleDataCard from "./keyword-details-row/comps/SearchConsoleDataCard";
+import Test from "./keyword-details-row/comps/Test";
 
 const KeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
   keywordData: GoogleSearchLatestKeywordResult,
@@ -18,17 +21,21 @@ const KeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
 }) => {
 
   return (
-    <div className="dark:bg-p-1100 max-w-[1240px] mx-auto grid grid-cols-2 gap-6">
-      <div className="space-y-6">
-        <KeywordDetails keywordData={keywordData} />
-        <Url url={keywordData.url} />
-        <MetaTitle metaTitle={keywordData.metaTitle} />
-        <MetaDescription metaDescription={keywordData.metaDescription} />
-      </div>
-      <div className="space-y-6">
-        <GoogleAdsMetrics keywordData={keywordData} />
-        <PeopleAlsoAsk keywordData={keywordData} />
-        <RelatedSearches keywordData={keywordData} />
+    <div className="dark:bg-p-1100 max-w-[1240px] mx-auto ">
+      <Test keywordName={keywordData.keywordName} websiteId={googleSearchCampaign.websiteId}/>
+
+      <div className="grid grid-cols-2 gap-6 pb-6">
+        <div className="space-y-6">
+          <KeywordDetails keywordData={keywordData} />
+          <Url url={keywordData.url} />
+          <MetaTitle metaTitle={keywordData.metaTitle} />
+          <MetaDescription metaDescription={keywordData.metaDescription} />
+        </div>
+        <div className="space-y-6">
+          <GoogleAdsMetrics keywordData={keywordData} />
+          <PeopleAlsoAsk keywordData={keywordData} />
+          <RelatedSearches keywordData={keywordData} />
+        </div>
       </div>
     </div>
   );
