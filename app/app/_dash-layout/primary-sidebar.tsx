@@ -18,9 +18,9 @@ import UpdateWebsiteButton from "@/presentation/components/website/update-websit
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { useCurrentUser } from "@/presentation/auth/hooks/user-current-user";
-import { logout } from "@/presentation/auth/actions/logout";
 import { LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import useLogout from "@/presentation/auth/hooks/use-logout";
 
 
 type NavigationProps = {
@@ -220,6 +220,10 @@ const NavItemChild = ({ child, pathname, isActive }: NavItemChildProps) => {
 
 const UserActions = () => {
   const user = useCurrentUser();
+  const logout = useLogout();
+  const handleLogout = async () => {
+    await logout();
+  };
   console.log(user);
 
   return (
@@ -239,9 +243,7 @@ const UserActions = () => {
           <LogOutIcon className="w-6 h-6" />
           <button
             className="w-full text-left"
-            onClick={() => {
-              logout();
-            }}
+            onClick={handleLogout}
           >
             Logout
           </button>

@@ -20,6 +20,8 @@ const KeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
   googleSearchCampaign: GoogleSearchCampaign
 }) => {
 
+  console.log('KeywordDetailsRow', keywordData, googleSearchCampaign);
+
   return (
     <div className="dark:bg-p-1100 max-w-[1240px] mx-auto ">
       <Test keywordName={keywordData.keywordName} websiteId={googleSearchCampaign.websiteId}/>

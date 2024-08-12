@@ -3,12 +3,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchGoogleSearchConsoleKeywordDetailsData } from "@/application/useCases/googleSearchConsoleApi/fetchGoogleSearchConsoleKeywordDetailsData";
 
-function useKeywordDetailsSearchConsoleData(keywordName: string, websiteId: string, hasAcces: boolean) {
+function useKeywordDetailsSearchConsoleData(keywordName: string, websiteId: string, hasAcces: boolean, gscUrl: string | null | undefined) {
+  console.log('useKeywordDetailsSearchConsoleData', keywordName, websiteId, hasAcces, gscUrl);
   return useQuery({
     queryKey: ['googleSearchConsoleKeywordDetailsData', keywordName],
     queryFn: () => {
       if (!hasAcces) {
         return Promise.reject(new Error('No access'));
+      }
+      if (!gscUrl || gscUrl === 'noWebsite') {
+        return Promise.reject(new Error('No GSC URL'));
       }
       return fetchGoogleSearchConsoleKeywordDetailsData(keywordName, websiteId);
     },

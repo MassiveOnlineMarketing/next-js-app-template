@@ -1,14 +1,17 @@
 'use client'
 
 import React, { useEffect } from 'react'
+import Link from "next/link";
 import { useToast } from '@/presentation/components/toast/use-toast';
 import useKeywordDetailsSearchConsoleData from '@/presentation/hooks/serp/fetching/useKeywordDetailsSearchConsoleData';
 import useGoogleToken from '@/presentation/hooks/useGoogleRefreshToken';
 
-
-
-import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
-import { Card } from '../GoogleSearchConsoleGraphCard';
+import { Card, CardHeader } from '../GoogleSearchConsoleGraphCard';
+import GoogleSearchConsoleChart, { GoogleSearchConsoleChartData } from '../google-search-console-data/GraphsN';
+import { useWebsiteDetailsStore } from '@/presentation/stores/website-details-store';
+import { LoadingSpinner } from '@/presentation/components/ui/loading-spinner';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/presentation/components/ui/tooltip";
+import { LockClosedIcon } from "@heroicons/react/20/solid";
 
 const Test = ({ keywordName, websiteId }: {
   keywordName: string,
@@ -16,10 +19,9 @@ const Test = ({ keywordName, websiteId }: {
 }) => {
   const { toast } = useToast();
   const { hasAccess } = useGoogleToken('search-console');
-  const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, hasAccess);
-  console.log('data1', searchConsoleKeywordDetails);
-
-
+  const website = useWebsiteDetailsStore(state => state.websiteDetails);
+  const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, hasAccess, website?.gscUrl);
+  // console.log('gsc data', searchConsoleKeywordDetails);
   useEffect(() => {
     if (searchConsoleKeywordDetails?.error) {
       toast({
@@ -30,8 +32,99 @@ const Test = ({ keywordName, websiteId }: {
     }
   }, [keywordName])
 
-  if (!searchConsoleKeywordDetails?.data) return null;
+  const mochChartConfig = generateChartConfig(MOCK_CHART_DATA);
 
+  if (!hasAccess) {
+    return (
+      <div className='grid grid-cols-4 gap-6 pb-6'>
+        {mochChartConfig.map((config) => (
+          <Card key={config.title} >
+            <CardHeader title={config.title} total={config.total} />
+            <div className='h-[250px] relative'>
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col justify-center gap-1 z-30 opacity-100">
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <LockClosedIcon className="w-8 h-8 text-gray-400 mx-auto" />
+                    </TooltipTrigger>
+                    <TooltipContent >
+                      <Link
+                        href="/app/settings/integrations"
+                        className="text-primary-500 text-center"
+                      >
+                        Connect Search Console
+                      </Link>
+                    </TooltipContent>
+                  </Tooltip>
+              </div>
+              <GoogleSearchConsoleChart
+                data={MOCK_CHART_DATA}
+                positionDomain={config.domain}
+                dataKey={config.dataKey}
+                color={config.color}
+                title={config.title}
+                interactive={false}
+              />
+            </div>
+          </Card>
+        ))}
+      </div>
+    )
+  }
+
+  if (!website?.gscUrl || website?.gscUrl === 'noWebsite') {
+    return (
+      <div className='grid grid-cols-4 gap-6 pb-6'>
+        {mochChartConfig.map((config) => (
+          <Card key={config.title} >
+            <CardHeader title={config.title} total={config.total} />
+            <div className='h-[250px] relative'>
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col justify-center gap-1 z-30 opacity-100">
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <LockClosedIcon className="w-8 h-8 text-gray-400 mx-auto" />
+                    </TooltipTrigger>
+                    <TooltipContent >
+                        Add Google Search Console to your website
+                    </TooltipContent>
+                  </Tooltip>
+              </div>
+              <GoogleSearchConsoleChart
+                data={MOCK_CHART_DATA}
+                positionDomain={config.domain}
+                dataKey={config.dataKey}
+                color={config.color}
+                title={config.title}
+                interactive={false}
+              />
+            </div>
+          </Card>
+        ))}
+      </div>
+    )
+  }
+
+  // TODO: Add card header loading
+  if (isLoading) {
+    return (
+      <div>
+        <div className='grid grid-cols-4 gap-6 pb-6'>
+          {mochChartConfig.map((config) => (
+            <Card key={config.title} >
+              <CardHeader title={config.title} total={config.total} />
+              <div className='h-[250px] flex items-center justify-center'>
+                <LoadingSpinner />
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  // TODO: Add error handling
+  if (!searchConsoleKeywordDetails?.data) {
+    return <div>No data</div>
+  }
   const data = Object.entries(searchConsoleKeywordDetails.data).map(([date, data]) => ({
     date,
     clicks: Number(data.clicks.toFixed(1)),
@@ -39,9 +132,36 @@ const Test = ({ keywordName, websiteId }: {
     impressions: Number(data.impressions.toFixed(1)),
     position: Number(data.position.toFixed(1)),
   }));
-  console.log('data2', data);
 
+  const chartConfig = generateChartConfig(data);
 
+  return (
+    <div className='grid grid-cols-4 gap-6 pb-6'>
+      {chartConfig.map((config) => (
+        <Card key={config.title} >
+          <CardHeader title={config.title} total={config.total} />
+          <div className='h-[250px]'>
+            <GoogleSearchConsoleChart
+              data={data}
+              positionDomain={config.domain}
+              dataKey={config.dataKey}
+              color={config.color}
+              title={config.title}
+            />
+          </div>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
+/**
+ * Generates the chart configuration based on the provided data.
+ * 
+ * @param data - The GoogleSearchConsoleChartData array used to generate the chart configuration.
+ * @returns The chart configuration array.
+ */
+const generateChartConfig = (data: GoogleSearchConsoleChartData[]) => {
   const chartConfig = [
     {
       title: "Clicks",
@@ -73,45 +193,23 @@ const Test = ({ keywordName, websiteId }: {
     }
   ]
 
-  console.log('chartConfig', chartConfig);
-  return (
-    <div className='grid grid-cols-4 gap-6 pb-6'>
-      {chartConfig.map((config) => (
-        <Card key={config.title} >
-          <div className='p-6'>
-            <p className='dark:text-[#DFE5FA]/90'>{config.title}</p>
-            <p className='text-sm dark:text-[#DFE5FA]/50'>description</p>
-            <p className='pt-6 text-4xl font-semibold dark:text-[#DFE5FA]/90'>{config.title === "CTR" ? `${config.total}%` : config.total}</p>
-          </div>
-          <div className='h-[250px]'>
-            <GoogleSearchConsoleChart
-              data={data}
-              positionDomain={config.domain}
-              dataKey={config.dataKey}
-              color={config.color}
-              title={config.title}
-            />
-          </div>
-        </Card>
-      ))}
-    </div>
-  )
+
+  return chartConfig;
 }
 
-const getTotals = (data: ChartData[], key: keyof ChartData): number => {
+const getTotals = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): number => {
   return data.reduce((acc, item) => acc + (item[key] as number), 0);
 }
 
-const getPositionAverage = (data: ChartData[], key: keyof ChartData): number => {
+const getPositionAverage = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): number => {
   return Math.round(getTotals(data, key) / data.length);
 }
 
-const getCtrAverage = (data: ChartData[], key: keyof ChartData): number => {
+const getCtrAverage = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): number => {
   return Number((getTotals(data, key) / data.length).toFixed(1));
 }
 
-
-const getChartDomain = (data: ChartData[], key: keyof ChartData): [number, number] => {
+const getChartDomain = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): [number, number] => {
   const values = data.map(item => item[key] as number);
   const min = Math.min(...values);
   const max = Math.max(...values);
@@ -121,104 +219,62 @@ const getChartDomain = (data: ChartData[], key: keyof ChartData): [number, numbe
   return [min - bottomPadding, max + topPadding];
 }
 
-interface ChartData {
-  date: string;
-  clicks: number;
-  ctr: number;
-  impressions: number;
-  position: number;
-}
-type GoogleSearchConsoleChartProps = {
-  data: ChartData[];
-  positionDomain: [number, number];
-
-  dataKey: string;
-  color: string;
-  title: string;
-}
-
-const GoogleSearchConsoleChart = ({ data, positionDomain, dataKey, color, title }: GoogleSearchConsoleChartProps) => {
-
-  return (
-    <ResponsiveContainer width="100%" height="100%" style={{ borderRadius: 23, overflow: 'hidden' }}>
-      <AreaChart data={data}>
-        <defs>
-          <linearGradient id={`color${title}`} x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="5%"
-              stopColor={color}
-              stopOpacity={0.6}
-            />
-            <stop
-              offset="85%"
-              stopColor={color}
-              stopOpacity={0.1}
-            />
-          </linearGradient>
-        </defs>
-        <XAxis hide={true} dataKey="date" />
-        <YAxis hide={true} axisLine={false} domain={positionDomain} />
-        <Tooltip />
-        <Area
-          type="monotoneX"
-          dataKey={dataKey}
-          stroke={color}
-          fill={`url(#color${title})`}
-          baseValue={positionDomain[0]} />
-      </AreaChart>
-    </ResponsiveContainer>
-  )
-}
-
-const MOCK_CHART_DATA: ChartData[] = [
-  {
-    "date": "2024-08-02",
-    "clicks": 0,
-    "ctr": 0,
-    "impressions": 70,
-    "position": 16
-  },
+const MOCK_CHART_DATA: GoogleSearchConsoleChartData[] = [
   {
     "date": "2024-08-03",
-    "clicks": 0,
-    "ctr": 1,
-    "impressions": 1,
-    "position": 2
+    "clicks": 16,
+    "ctr": 0.47058823529411764,
+    "impressions": 34,
+    "position": 1.088235294117647
   },
   {
     "date": "2024-08-04",
-    "clicks": 0,
-    "ctr": 0,
-    "impressions": 0,
-    "position": 0
+    "clicks": 25,
+    "ctr": 0.43103448275862066,
+    "impressions": 58,
+    "position": 1.1896551724137931
   },
   {
     "date": "2024-08-05",
-    "clicks": 0,
-    "ctr": 0,
-    "impressions": 0,
-    "position": 0
+    "clicks": 22,
+    "ctr": 0.5116279069767442,
+    "impressions": 43,
+    "position": 1.0232558139534884
   },
   {
     "date": "2024-08-06",
-    "clicks": 0,
-    "ctr": 0.7,
-    "impressions": 3,
-    "position": 1
+    "clicks": 12,
+    "ctr": 0.2608695652173913,
+    "impressions": 46,
+    "position": 1.1304347826086956
   },
   {
     "date": "2024-08-07",
-    "clicks": 0,
-    "ctr": 0,
-    "impressions": 0,
-    "position": 0
+    "clicks": 21,
+    "ctr": 0.5,
+    "impressions": 42,
+    "position": 1.0238095238095237
   },
   {
     "date": "2024-08-08",
-    "clicks": 0,
-    "ctr": 0,
-    "impressions": 2,
-    "position": 9.5
+    "clicks": 20,
+    "ctr": 0.5,
+    "impressions": 40,
+    "position": 1.075
+  },
+  {
+    "date": "2024-08-09",
+    "clicks": 16,
+    "ctr": 0.41025641025641024,
+    "impressions": 39,
+    "position": 1.0256410256410255
+  },
+  {
+    "date": "2024-08-10",
+    "clicks": 15,
+    "ctr": 0.375,
+    "impressions": 40,
+    "position": 1.025
   }
 ]
 
