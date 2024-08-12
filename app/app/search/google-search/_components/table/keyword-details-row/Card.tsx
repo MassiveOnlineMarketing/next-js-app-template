@@ -6,7 +6,7 @@ import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
 
 
-const FILL = "dark:bg-[rgba(223,229,250,0.02)] bg-p-50/25";
+const FILL = "dark:bg-[rgba(223,229,250,0.02)] bg-[#FBFBFF]";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -68,10 +68,11 @@ CardTitle.displayName = "CardTitle";
 
 interface CardPlainRowProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string;
+  paragraphStyles?: string;
   fill?: boolean;
 }
 const CardPlainRow = React.forwardRef<HTMLDivElement, CardPlainRowProps>(
-  ({ className, value, fill, ...props }, ref) => {
+  ({ className, value, fill, paragraphStyles, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -83,7 +84,10 @@ const CardPlainRow = React.forwardRef<HTMLDivElement, CardPlainRowProps>(
         {...props}
       >
         {/* Value */}
-        <p className="text-base leading-5 text-slate-500 dark:text-[#DFE5FA]/50">
+        <p className={cn(
+          'text-base leading-5 text-slate-500 dark:text-[#DFE5FA]/50',
+          paragraphStyles
+        )}>
           {value}
         </p>
       </div>

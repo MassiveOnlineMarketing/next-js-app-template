@@ -67,33 +67,33 @@ const Chart = ({ title, data, color, dataKey, reversed }: {
       {title}
     </h2>
     <div style={{ width: "100%", height: 96 }}>
-<ResponsiveContainer>
-  <AreaChart data={data} style={{ paddingBottom: 0 }}>
-<defs>
-  {reversed ? (
-    <linearGradient id={`color${title}`} x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor={color} stopOpacity={0} />
-      <stop offset="100%" stopColor={color} stopOpacity={0.15} />
-    </linearGradient>
-  ) : (
-    <linearGradient id={`color${title}`} x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stopColor={color} stopOpacity={0.15} />
-      <stop offset="100%" stopColor={color} stopOpacity={0} />
-    </linearGradient>
-  )}
-</defs>
-    <XAxis dataKey="date" hide={true} />
-    <YAxis reversed={reversed} axisLine={false} hide={true} />
-    <Tooltip />
-    <Area
-      type="linear"
-      strokeWidth={2}
-      dataKey={dataKey}
-      stroke={color}
-      fill={`url(#color${title})`}
-    />
-  </AreaChart>
-</ResponsiveContainer>
+      <ResponsiveContainer>
+        <AreaChart data={data} style={{ paddingBottom: 0 }}>
+          <defs>
+            {reversed ? (
+              <linearGradient id={`color${title}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={color} stopOpacity={0} />
+                <stop offset="100%" stopColor={color} stopOpacity={0.15} />
+              </linearGradient>
+            ) : (
+              <linearGradient id={`color${title}`} x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor={color} stopOpacity={0.15} />
+                <stop offset="100%" stopColor={color} stopOpacity={0} />
+              </linearGradient>
+            )}
+          </defs>
+          <XAxis dataKey="date" hide={true} />
+          <YAxis reversed={reversed} axisLine={false} hide={true} />
+          <Tooltip />
+          <Area
+            type="linear"
+            strokeWidth={2}
+            dataKey={dataKey}
+            stroke={color}
+            fill={`url(#color${title})`}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </div>
   </>
 );

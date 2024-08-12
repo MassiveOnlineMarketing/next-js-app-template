@@ -20,6 +20,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 import { useCurrentUser } from "@/presentation/auth/hooks/user-current-user";
 import { logout } from "@/presentation/auth/actions/logout";
 import { LogOutIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 
 type NavigationProps = {
@@ -38,6 +39,7 @@ type NavigationChildrenProps = {
 
 const PrimarySidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const googleSearchCampaigns = useGoogleSearchCampaignDetailsStore((state) => state.campaigns);
 
   const navigation = [
@@ -76,6 +78,14 @@ const PrimarySidebar = () => {
       <ul className="flex flex-col min-h-full">
         <li>
           <ThemeSwitcher />
+          <div>
+            <button onClick={() => router.back()}>
+              <p>back</p>
+            </button>
+            <button onClick={() => router.forward()}>
+              <p>forward</p>
+            </button>
+          </div>
         </li>
         <li className="p-3">
           <WebsiteSelectionButton />

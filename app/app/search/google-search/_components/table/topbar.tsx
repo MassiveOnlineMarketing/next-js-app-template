@@ -126,12 +126,12 @@ function DataTableTopBar<TData>({
 
       {/* Actions */}
       <div className="ml-4 h-11 p-[2px] rounded-[10px] bg-white dark:bg-[rgba(223,229,250,0.02)]">
-        <div className="flex h-10 rounded-lg border border-gray-200 dark:border-[#DFE5FA]/10">
+        <div className="overflow-hidden flex h-10 rounded-lg border border-gray-200 dark:border-[#DFE5FA]/10">
           <TooltipProvider delayDuration={0}>
             {/* Add keyword */}
             <Tooltip>
               <TooltipTrigger>
-                <GoogleSearchAddKeywordsFormDialog buttonClassName="px-4 py-[10px]">
+                <GoogleSearchAddKeywordsFormDialog buttonClassName="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
                   <PlusIcon className="w-5 h-5 text-gray-500 dark:text-[#DFE5FA]/50 group-hover:text-green-500" />
                 </GoogleSearchAddKeywordsFormDialog>
               </TooltipTrigger>
@@ -147,7 +147,7 @@ function DataTableTopBar<TData>({
             <Tooltip>
               <TooltipTrigger>
                 <button
-                  className="px-4 py-[10px]"
+                  className="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg"  
                   onClick={() => downloadKeywordsToExcel(data)}
                 >
                   <ArrowDownTrayIcon className="w-5 h-5 text-gray-500 dark:text-[#DFE5FA]/50" />
@@ -165,7 +165,7 @@ function DataTableTopBar<TData>({
             <Tooltip>
               <TooltipTrigger>
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="px-4 py-[10px]">
+                  <DropdownMenuTrigger className="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
                     <ViewColumnsIcon className="w-5 h-5 text-gray-500 dark:text-[#DFE5FA]/50" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
