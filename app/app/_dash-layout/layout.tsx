@@ -22,7 +22,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <PrimarySidebar />
 
             <div className="w-full h-full relative  ">
-              <div className="absolute inset-0 bg-transparent box-content lg:rounded-t-3xl overflow-hidden dark:border dark:border-[#DFE5FA]/10">
+              <div className="absolute inset-0 bg-transparent box-content lg:rounded-t-3xl overflow-hidden dark:border dark:border-dark-stroke">
                 <div className="h-full w-full overflow-y-hidden  ">
                   {children}
                 </div>

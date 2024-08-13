@@ -73,7 +73,7 @@ function DataTableTopBar<TData>({
           }
           className={cn(
             'ring-gray-300 text-gray-900 placeholder:text-gray-400',
-            'dark:ring-[#DFE5FA]/10 dark:bg-[rgba(223,229,250,0.02)] dark:text-[#DFE5FA]/50 dark:placeholder:text-[#DFE5FA]/35',
+            'dark:ring-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter dark:bg-dark-bg-light dark:text-dark-text-dark dark:placeholder:text-[#DFE5FA]/35',
             "block w-full min-w-[245px] rounded-md border-0 py-1.5 pl-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6"
           )}
 
@@ -84,8 +84,8 @@ function DataTableTopBar<TData>({
       <div className="ml-2">
         {table.getSelectedRowModel().rows.length > 0 && (
           <DropdownMenu>
-            <DropdownMenuTrigger className="h-11 p-[2px] rounded-[10px] bg-white dark:bg-[rgba(223,229,250,0.02)]">
-              <p className="px-[18px] flex items-center  h-10 rounded-lg border border-gray-200 dark:border-[#DFE5FA]/10 text-sm text-gray-800 dark:text-[#DFE5FA]/50">
+            <DropdownMenuTrigger className="h-11 p-[2px] rounded-[10px] bg-white dark:bg-dark-bg-light">
+              <p className="px-[18px] flex items-center  h-10 rounded-lg border border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter text-sm text-gray-800 dark:text-dark-text-dark">
                 Bulk Actions
               </p>
             </DropdownMenuTrigger>
@@ -125,14 +125,14 @@ function DataTableTopBar<TData>({
 
 
       {/* Actions */}
-      <div className="ml-4 h-11 p-[2px] rounded-[10px] bg-white dark:bg-[rgba(223,229,250,0.02)]">
-        <div className="overflow-hidden flex h-10 rounded-lg border border-gray-200 dark:border-[#DFE5FA]/10">
+      <div className="ml-4 h-11 p-[2px] rounded-[10px] bg-white dark:bg-dark-bg-light">
+        <div className="overflow-hidden flex h-10 rounded-lg border border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter">
           <TooltipProvider delayDuration={0}>
             {/* Add keyword */}
             <Tooltip>
               <TooltipTrigger>
                 <GoogleSearchAddKeywordsFormDialog buttonClassName="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
-                  <PlusIcon className="w-5 h-5 text-gray-500 dark:text-[#DFE5FA]/50 group-hover:text-green-500" />
+                  <PlusIcon className="w-5 h-5 text-gray-500 dark:text-dark-text-dark group-hover:text-green-500" />
                 </GoogleSearchAddKeywordsFormDialog>
               </TooltipTrigger>
               <TooltipContent>
@@ -141,7 +141,7 @@ function DataTableTopBar<TData>({
             </Tooltip>
 
             {/* Divider */}
-            <div className="h-5 w-[1px] my-[10px] bg-gray-200 dark:bg-[#DFE5FA]/10"></div>
+            <div className="h-5 w-[1px] my-[10px] bg-gray-200 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
 
             {/* Download to Excel */}
             <Tooltip>
@@ -150,7 +150,7 @@ function DataTableTopBar<TData>({
                   className="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg"  
                   onClick={() => downloadKeywordsToExcel(data)}
                 >
-                  <ArrowDownTrayIcon className="w-5 h-5 text-gray-500 dark:text-[#DFE5FA]/50" />
+                  <ArrowDownTrayIcon className="w-5 h-5 text-gray-500 dark:text-dark-text-dark" />
                 </button>
               </TooltipTrigger>
               <TooltipContent>
@@ -159,14 +159,14 @@ function DataTableTopBar<TData>({
             </Tooltip>
 
             {/* Divider */}
-            <div className="h-5 w-[1px] my-[10px] bg-gray-200 dark:bg-[#DFE5FA]/10"></div>
+            <div className="h-5 w-[1px] my-[10px] bg-gray-200 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
 
             {/* Toggle visable colums */}
             <Tooltip>
               <TooltipTrigger>
                 <DropdownMenu>
                   <DropdownMenuTrigger className="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
-                    <ViewColumnsIcon className="w-5 h-5 text-gray-500 dark:text-[#DFE5FA]/50" />
+                    <ViewColumnsIcon className="w-5 h-5 text-gray-500 dark:text-dark-text-dark" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     {table

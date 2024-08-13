@@ -172,7 +172,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
         {
           tags.map((tag) => (
             // TODO: design van tags pill
-            <p key={tag.id} className="text-xs bg-white dark:bg-[rgba(223,229,250,0.02)] text-gray-600 dark:text-[#DFE5FA]/50 px-2 py-1 rounded-full text-nowrap">
+            <p key={tag.id} className="text-xs bg-white dark:bg-dark-bg-light text-gray-600 dark:text-dark-text-dark px-2 py-1 rounded-full text-nowrap">
               {tag.name}
             </p>
           ))
@@ -240,7 +240,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "actions",
     id: "actions",
     header: ({ column }) => (
-      <p className="text-sm leading-5 font-medium text-gray-600 dark:text-[#DFE5FA]/50">Actions</p>
+      <p className="text-sm leading-5 font-medium text-gray-600 dark:text-dark-text-dark">Actions</p>
     ),
     cell: ({ row }) => {
       const keyword = row.original;

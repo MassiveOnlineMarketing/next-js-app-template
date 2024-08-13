@@ -227,9 +227,15 @@ const UserActions = () => {
   console.log(user);
 
   return (
-    <div className="p-1 border-4 border-white dark:border-[rgba(223,229,250,0.02)]  rounded-md group bg-white dark:bg-p-1100">
-      <div className="h-[54px] p-[6px] border bg-white dark:bg-[rgba(223,229,250,0.02)] dark:border-[#DFE5FA]/10 rounded flex justify-center items-center dark:text-[#DFE5FA]/90 font-medium text-sm">{user?.name}</div>
-      <div className="h-0 group-hover:h-[88px] transition-all duration-300 overflow-hidden dark:text-[#DFE5FA]/50">
+    <div className="p-1 border dark:bg-dark-bg-light dark:border-dark-stroke border-mix-blend-multiply dark:border-mix-blend-plus-lighter rounded-xl group bg-white ">
+      <div className="h-[54px] p-[6px] flex gap-3 justify-center items-center">
+        <p className="text-gray-500 dark:text-dark-text-light font-medium text-sm text-nowrap">
+          {user?.name}
+        </p>
+        <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
+        <ChevronDownIcon className="h-4 w-4 text-gray-500 dark:text-dark-text-dark shrink-0 transition-transform duration-200 group-hover:-rotate-90" />
+      </div>
+      <div className="h-0 group-hover:h-[88px] transition-all duration-300 overflow-hidden text-gray-500 dark:text-dark-text-dark dark:bg-p-1100 rounded-md">
         <div className="px-[6px] py-[10px]  flex items-center gap-2">
           <Cog6ToothIcon className="w-6 h-6" />
           <Link

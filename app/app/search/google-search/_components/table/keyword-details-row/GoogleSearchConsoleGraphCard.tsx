@@ -10,7 +10,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "bg-white dark:bg-[rgba(223,229,250,0.02)]  rounded-lg   gradient-mask card-gradient relative",
+          "bg-white dark:bg-dark-bg-light  rounded-lg   gradient-mask card-gradient relative",
           className,
         )}
         {...props}
@@ -39,9 +39,9 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
         )}
         {...props}
       >
-        <p className='dark:text-[#DFE5FA]/90'>{title}</p>
-        <p className='text-sm dark:text-[#DFE5FA]/50'>description</p>
-        <p className='pt-6 text-4xl font-semibold dark:text-[#DFE5FA]/90'>{title === "CTR" ? `${total}%` : total}</p>
+        <p className='dark:text-dark-text-light'>{title}</p>
+        <p className='text-sm dark:text-dark-text-dark'>description</p>
+        <p className='pt-6 text-4xl font-semibold dark:text-dark-text-light'>{title === "CTR" ? `${total}%` : total}</p>
       </div>
     );
   },

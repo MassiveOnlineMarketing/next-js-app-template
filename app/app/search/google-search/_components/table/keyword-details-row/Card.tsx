@@ -6,7 +6,7 @@ import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
 
 
-const FILL = "dark:bg-[rgba(223,229,250,0.02)] bg-[#FBFBFF]";
+const FILL = "dark:bg-dark-bg-light bg-[#FBFBFF]";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -18,7 +18,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "bg-white dark:bg-[rgba(223,229,250,0.02)] p-1 rounded-lg   gradient-mask card-gradient relative",
+          "bg-white dark:bg-dark-bg-light p-1 rounded-lg   gradient-mask card-gradient relative",
           className,
         )}
         {...props}
@@ -51,11 +51,11 @@ const CardTitle = React.forwardRef<HTMLDivElement, CardTitleProps>(
         {...props}
       >
         {/* Title */}
-        <p className="text-sm font-medium leading-5 text-p-800 dark:text-[#DFE5FA]/90">
+        <p className="text-sm font-medium leading-5 text-p-800 dark:text-dark-text-light">
           {title}
         </p>
         {/* Divider */}
-        <div className="w-full h-[1px] bg-p-100 dark:bg-[#DFE5FA]/10"></div>
+        <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
         {/* Children */}
         {children}
       </div>
@@ -85,7 +85,7 @@ const CardPlainRow = React.forwardRef<HTMLDivElement, CardPlainRowProps>(
       >
         {/* Value */}
         <p className={cn(
-          'text-base leading-5 text-slate-500 dark:text-[#DFE5FA]/50',
+          'text-base leading-5 text-slate-500 dark:text-dark-text-dark',
           paragraphStyles
         )}>
           {value}
@@ -116,11 +116,11 @@ const CardRow = React.forwardRef<HTMLDivElement, CardRowProps>(
         {...props}
       >
         {/* Label */}
-        <p className="text-sm font-medium leading-5 text-p-800 dark:text-[#DFE5FA]/90">
+        <p className="text-sm font-medium leading-5 text-p-800 dark:text-dark-text-light">
           {label}
         </p>
         {/* Value */}
-        <p className="text-sm font-medium leading-5 text-slate-500 dark:text-[#DFE5FA]/50">
+        <p className="text-sm font-medium leading-5 text-slate-500 dark:text-dark-text-dark">
           {value ? value : "N/A"}
         </p>
       </div>
@@ -148,11 +148,11 @@ const CardDateRow = React.forwardRef<HTMLDivElement, CardDateRowProps>(
         {...props}
       >
         {/* Label */}
-        <p className="text-sm font-medium leading-5 text-p-800 dark:text-[#DFE5FA]/90">
+        <p className="text-sm font-medium leading-5 text-p-800 dark:text-dark-text-light">
           {label}
         </p>
         {/* Value */}
-        <p className="text-sm font-medium leading-5 text-slate-500 dark:text-[#DFE5FA]/50">
+        <p className="text-sm font-medium leading-5 text-slate-500 dark:text-dark-text-dark">
           {new Date(value).toLocaleDateString()}
         </p>
       </div>
@@ -185,13 +185,13 @@ const CardTagsRow = React.forwardRef<HTMLDivElement, CardTagsRowProps>(
         {...props}
       >
         {/* Label */}
-        <p className="text-sm font-medium leading-5 text-p-800 dark:text-[#DFE5FA]/90">
+        <p className="text-sm font-medium leading-5 text-p-800 dark:text-dark-text-light">
           {label}
         </p>
         {/* Data */}
         <div className="flex gap-2">
           {tags.map((tag: Tags) => (
-            <span key={tag.id} className="text-xs font-medium leading-5 text-slate-500 dark:text-[#DFE5FA]/50 bg-[#DFE5FA]/10 px-2 py-1 rounded-sm">
+            <span key={tag.id} className="text-xs font-medium leading-5 text-slate-500 dark:text-dark-text-dark bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter px-2 py-1 rounded-sm">
               {tag.name}
             </span>
           ))}
@@ -216,24 +216,24 @@ const CardRowInput = React.forwardRef<HTMLLabelElement, CardRowInputProps>(({
   <label
     className={cn(
       "flex items-center gap-3 px-3 py-2 cursor-pointer",
-      selectedSearches.includes(item.text) && "bg-p-100 dark:bg-[rgba(223,229,250,0.02)] rounded-lg"
+      selectedSearches.includes(item.text) && "bg-p-100 dark:bg-dark-bg-light rounded-lg"
     )}
     key={item.text}
     ref={ref}
   >
     {/* Label */}
     <span className="ml-auto min-w-10">{item.keyword_metrics.avg_monthly_searches ?? 'N/A'}</span>
-    <p className="text-nowrap flex justify-between text-xs font-medium leading-5 text-slate-500 dark:text-[#DFE5FA]/50">
+    <p className="text-nowrap flex justify-between text-xs font-medium leading-5 text-slate-500 dark:text-dark-text-dark">
       <span>{item.text}</span>
     </p>
     {/* Divider */}
-    <div className="w-full h-[1px] bg-p-100 dark:bg-[#DFE5FA]/10"></div>
+    <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
     {/* Checkbox */}
     <input
       type="checkbox"
       name={item.text}
       // TODO: Styles
-      className="h-4 w-4 my-auto rounded  bg-p-1100 checked:bg-p-1100  border  dark:border-[#DFE5FA]/10 focus:ring-p-1100 text-green-500 "
+      className="h-4 w-4 my-auto rounded  bg-p-1100 checked:bg-p-1100  border  dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter focus:ring-p-1100 text-green-500 "
       value={item.text}
       checked={selectedSearches.includes(item.text)}
       onChange={() => handleCheckboxChange(item.text)}
@@ -269,14 +269,14 @@ const CardAccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         // TODO: light styles
-        "flex flex-1 items-center justify-between gap-3 px-3 py-2 text-sm font-medium leading-5 transition-all text-slate-500 dark:text-[#DFE5FA]/50 dark:hover:text-[#DFE5FA] dark:[&[data-state=open]]:text-[#DFE5FA] [&[data-state=open]>svg]:-rotate-90",
+        "flex flex-1 items-center justify-between gap-3 px-3 py-2 text-sm font-medium leading-5 transition-all text-slate-500 dark:text-dark-text-dark dark:hover:text-[#DFE5FA] dark:[&[data-state=open]]:text-[#DFE5FA] [&[data-state=open]>svg]:-rotate-90",
         className
       )}
       {...props}
     >
       <p className="text-nowrap">{children}</p>
       {/* Divider */}
-      <div className="w-full h-[1px] bg-p-100 dark:bg-[#DFE5FA]/10"></div>
+      <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
       <ChevronDownIcon className="h-4 w-4 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
@@ -292,7 +292,7 @@ const CardAccordionContent = React.forwardRef<
     className="mx-[1px] mb-1 dark:bg-p-1100 overflow-hidden text-sm font-light transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...props}
   >
-    <div className={cn("p-3 text-slate-500 dark:text-[#DFE5FA]/50", className)}>{children}</div>
+    <div className={cn("p-3 text-slate-500 dark:text-dark-text-dark", className)}>{children}</div>
   </AccordionPrimitive.Content>
 ))
 

@@ -62,6 +62,20 @@ module.exports = {
         'p-1100': '#070114',
 
         'p-1200': '#04010D',
+
+
+        //* Dark Mode Colors
+        // Text
+        "dark-text-dark": 'rgba(223,229,250,0.35)',
+        "dark-text-light": 'rgba(223,229,250,0.90)',
+
+        // Background
+        "dark-bg-light": 'rgba(223,229,250,0.02)',
+
+        // Stroke
+        "dark-stroke": 'rgba(223,229,250,0.09)',
+
+        // ""mix-blend-multiply dark:mix-blend-plus-lighter
       },
       zIndex: {
         "-90": "-90",

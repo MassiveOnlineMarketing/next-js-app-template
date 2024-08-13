@@ -47,12 +47,12 @@ export const CampaignStats = ({ filteredResults }: { filteredResults: GoogleSear
   return (
     <div className="p-6 w-full grid grid-cols-4 gap-2">
       {/* Keywords Card*/}
-      <div className="py-4 px-6 bg-white dark:bg-[rgba(223,229,250,0.02)] rounded-xl shadow-sm w-full h-full flex gap-6 items-center">
-        <p className="text-4xl font-semibold text-gray-700 dark:text-[#DFE5FA]/90 w-[60px] h-[60px] flex items-center justify-center">
+      <div className="py-4 px-6 bg-white dark:bg-dark-bg-light rounded-xl shadow-sm w-full h-full flex gap-6 items-center">
+        <p className="text-4xl font-semibold text-gray-700 dark:text-dark-text-light w-[60px] h-[60px] flex items-center justify-center">
           {numberOfKeywords}
         </p>
         <div className="h-fit">
-          <h2 className="mr-auto mb-[20px] text-lg font-semibold text-gray-800 dark:text-[#DFE5FA]/90">
+          <h2 className="mr-auto mb-[20px] text-lg font-semibold text-gray-800 dark:text-dark-text-light">
             Keywords
           </h2>
         </div>
@@ -62,14 +62,14 @@ export const CampaignStats = ({ filteredResults }: { filteredResults: GoogleSear
         <StatsCardWithChart key={i} item={item} total={numberOfKeywords} />
       ))}
       {/* Avg pos Card*/}
-      <div className="py-4 px-6 bg-white dark:bg-[rgba(223,229,250,0.02)] rounded-xl shadow-sm w-full h-full flex gap-6 items-center">
-        <p className="text-4xl font-semibold text-gray-700 dark:text-[#DFE5FA]/90 w-[60px] h-[60px] flex items-center justify-center">
+      <div className="py-4 px-6 bg-white dark:bg-dark-bg-light rounded-xl shadow-sm w-full h-full flex gap-6 items-center">
+        <p className="text-4xl font-semibold text-gray-700 dark:text-dark-text-light w-[60px] h-[60px] flex items-center justify-center">
           {
             ((positionSum / numberOfKeywords).toFixed(1) === "NaN" ? "0" : (positionSum / numberOfKeywords).toFixed(1))
           }
         </p>
         <div className="h-fit">
-          <h2 className="mr-auto mb-[20px] text-lg font-semibold text-gray-800 dark:text-[#DFE5FA]/90">
+          <h2 className="mr-auto mb-[20px] text-lg font-semibold text-gray-800 dark:text-dark-text-light">
             Average Position
           </h2>
         </div>
@@ -91,13 +91,13 @@ type StatsCardWithChartProps = {
 const StatsCardWithChart = ({ item, total }: StatsCardWithChartProps) => {
   const { title, value } = item;
   return (
-    <div className="py-4 px-6 bg-white dark:bg-[rgba(223,229,250,0.02)] rounded-xl shadow-sm w-full h-full flex gap-6 items-center">
+    <div className="py-4 px-6 bg-white dark:bg-dark-bg-light rounded-xl shadow-sm w-full h-full flex gap-6 items-center">
       <RadialChart value={value} total={total} />
       <div className="h-fit">
-        <h2 className="mr-auto text-lg font-semibold text-gray-800 dark:text-[#DFE5FA]/90">
+        <h2 className="mr-auto text-lg font-semibold text-gray-800 dark:text-dark-text-light">
           {title}
         </h2>
-        <p className="text-sm font-light text-gray-500 dark:text-[#DFE5FA]/50 ">Vs Yesterday</p>
+        <p className="text-sm font-light text-gray-500 dark:text-dark-text-dark ">Vs Yesterday</p>
       </div>
     </div>
   );

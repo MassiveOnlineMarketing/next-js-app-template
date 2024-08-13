@@ -43,8 +43,7 @@ const baseValue = reverse ? positionDomain[1] : positionDomain[0];
           </linearGradient>
         </defs>
         <XAxis hide={true} dataKey="date" />
-        {/*  hide={true} axisLine={false} */}
-        <YAxis domain={positionDomain} reversed={reverse} />
+        <YAxis hide={true} axisLine={false} domain={positionDomain} reversed={reverse} />
         {interactive && <Tooltip />}
         <Area
           type="monotoneX"

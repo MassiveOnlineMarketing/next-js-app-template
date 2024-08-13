@@ -9,7 +9,7 @@ const BreadCrumbsSearchKeywords = ({
 }) => {
 
   return (
-    <div className="p-6 w-full  dark:bg-[rgba(223,229,250,0.02)]">
+    <div className="p-6 w-full  dark:bg-dark-bg-light">
       <p className="inline-flex items-center gap-4 text-sm leading-5 font-base text-gray-400 dark:text-[#DFE5FA]/35">
         <span>Home</span>
         <span><ChevronRightIcon className="w-4 h-4" /></span>

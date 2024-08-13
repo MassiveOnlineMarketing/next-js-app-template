@@ -115,9 +115,9 @@ function DataTable<TData, TValue>({
         {/* Dit naar Table */}
         <table className="w-full">
           {/* Weg , overflow hidden*/}
-          <TableHeader className="sticky top-[72px] z-20       rouded-md  bg-white dark:bg-[rgba(223,229,250,0.02)]">
+          <TableHeader className="sticky top-[72px] z-20       rouded-md  bg-white dark:bg-dark-bg-light">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className=" rounded-lg shadow-sm  dark:bg-[rgba(223,229,250,0.02)]">
+              <TableRow key={headerGroup.id} className=" rounded-lg shadow-sm  dark:bg-dark-bg-light">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
@@ -140,7 +140,7 @@ function DataTable<TData, TValue>({
                 <React.Fragment key={row.id}>
                   <TableRow
                     data-state={row.getIsSelected() && "selected"}
-                    className="border-b border-gray-200 dark:border-[#DFE5FA]/10 hover:bg-neutral-100/50 cursor-pointer"
+                    className="border-b border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter hover:bg-neutral-100/50 cursor-pointer"
                     // handle click row, open keyword detail
                     onClick={handleClickRow(row.id)}
                   >

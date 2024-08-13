@@ -47,14 +47,14 @@ const TagSelection = () => {
       <PopoverTrigger role="combobox" aria-expanded={tagPopoverOpen}
         className={cn(
           "w-[250px]  text-sm text-left",
-          'h-11 p-[2px] rounded-[10px] bg-white dark:bg-[rgba(223,229,250,0.02)]'
+          'h-11 p-[2px] rounded-[10px] bg-white dark:bg-dark-bg-light'
         )}>
-        <div className="px-[18px] flex items-center h-10 rounded-lg border border-gray-200 dark:border-[#DFE5FA]/10">
-          <span className="text-gray-400 dark:text-[#DFE5FA]/50 mr-[6px]">Tags:</span>
+        <div className="px-[18px] flex items-center h-10 rounded-lg border border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter">
+          <span className="text-gray-400 dark:text-dark-text-dark mr-[6px]">Tags:</span>
           {tagSting ? (
-            <span className="text-gray-800 dark:text-[#DFE5FA]/90">{tagSting}</span>
+            <span className="text-gray-800 dark:text-dark-text-light">{tagSting}</span>
           ) : (
-            <span className="text-gray-800 dark:text-[#DFE5FA]/90">All Keywords</span>
+            <span className="text-gray-800 dark:text-dark-text-light">All Keywords</span>
           )}
           <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </div>

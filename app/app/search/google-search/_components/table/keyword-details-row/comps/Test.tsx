@@ -212,7 +212,7 @@ const getPositionAverage = (data: GoogleSearchConsoleChartData[], key: keyof Goo
 }
 
 const getCtrAverage = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): number => {
-  return Number((getTotals(data, key) / data.length).toFixed(1));
+  return Number((getTotals(data, key) / data.length).toFixed(2));
 }
 
 const getChartDomain = (
