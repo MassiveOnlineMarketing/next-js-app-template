@@ -134,6 +134,7 @@ const Test = ({ keywordName, websiteId }: {
   }));
 
   const chartConfig = generateChartConfig(data);
+  console.log('chartConfig', chartConfig);
 
   return (
     <div className='grid grid-cols-4 gap-6 pb-6'>
@@ -147,6 +148,7 @@ const Test = ({ keywordName, websiteId }: {
               dataKey={config.dataKey}
               color={config.color}
               title={config.title}
+              reverse={config.reverse}
             />
           </div>
         </Card>
@@ -168,28 +170,32 @@ const generateChartConfig = (data: GoogleSearchConsoleChartData[]) => {
       color: "#2563EB",
       dataKey: "clicks",
       domain: getChartDomain(data, 'clicks'),
-      total: getTotals(data, 'clicks')
+      total: getTotals(data, 'clicks'),
+      reverse: false
     },
     {
       title: "CTR",
       color: "#059669",
       dataKey: "ctr",
       domain: getChartDomain(data, 'ctr'),
-      total: getCtrAverage(data, 'ctr')
+      total: getCtrAverage(data, 'ctr'),
+      reverse: false
     },
     {
       title: "Position",
       color: "#F59E0B",
       dataKey: "position",
-      domain: getChartDomain(data, 'position'),
-      total: getPositionAverage(data, 'position')
+      domain: getChartDomain(data, 'position', true),
+      total: getPositionAverage(data, 'position'),
+      reverse: true
     },
     {
       title: "Impressions",
       color: "#7857FE",
       dataKey: "impressions",
       domain: getChartDomain(data, 'impressions'),
-      total: getTotals(data, 'impressions')
+      total: getTotals(data, 'impressions'),
+      reverse: false
     }
   ]
 
@@ -209,13 +215,19 @@ const getCtrAverage = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSe
   return Number((getTotals(data, key) / data.length).toFixed(1));
 }
 
-const getChartDomain = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): [number, number] => {
+const getChartDomain = (
+  data: GoogleSearchConsoleChartData[], 
+  key: keyof GoogleSearchConsoleChartData, 
+  flipped: boolean = false
+): [number, number] => {
   const values = data.map(item => item[key] as number);
   const min = Math.min(...values);
   const max = Math.max(...values);
   const minPadding = 0.1;
-  const bottomPadding = Math.max((max - min) * 1, minPadding); // 10% padding for bottom
-  const topPadding = Math.max((max - min) * 0.1, minPadding); // 50% padding for top
+  const bottomMultiplier = flipped ? 0.1 : 1;
+  const topMultiplier = flipped ? 1 : 0.1;
+  const bottomPadding = Math.max((max - min) * bottomMultiplier, minPadding);
+  const topPadding = Math.max((max - min) * topMultiplier, minPadding);
   return [min - bottomPadding, max + topPadding];
 }
 

@@ -1,3 +1,4 @@
+import { cn } from "@/presentation/components/utils";
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
 
 export interface GoogleSearchConsoleChartData {
@@ -15,12 +16,17 @@ type GoogleSearchConsoleChartProps = {
   color: string;
   title: string;
   interactive?: boolean;
+  reverse?: boolean;
 }
 
-const GoogleSearchConsoleChart = ({ data, positionDomain, dataKey, color, title, interactive = true }: GoogleSearchConsoleChartProps) => {
-
+const GoogleSearchConsoleChart = ({ data, positionDomain, dataKey, color, title, interactive = true, reverse  }: GoogleSearchConsoleChartProps) => {
+console.log(title, reverse)
+const baseValue = reverse ? positionDomain[1] : positionDomain[0];
   return (
-    <ResponsiveContainer width="100%" height="100%" style={{ borderRadius: 23, overflow: 'hidden' }} className={ interactive ? 'opacity-100' : 'opacity-20 dark:opacity-50'}>
+    <ResponsiveContainer width="100%" height="100%" style={{ borderRadius: 23, overflow: 'hidden'  }} className={cn(
+      interactive ? 'opacity-100' : 'opacity-20 dark:opacity-50' ,
+      // reverse && 'pb-20'
+    )}>
       <AreaChart data={data}>
         <defs>
           <linearGradient id={`color${title}`} x1="0" y1="0" x2="0" y2="1">
@@ -37,14 +43,16 @@ const GoogleSearchConsoleChart = ({ data, positionDomain, dataKey, color, title,
           </linearGradient>
         </defs>
         <XAxis hide={true} dataKey="date" />
-        <YAxis hide={true} axisLine={false} domain={positionDomain} />
+        {/*  hide={true} axisLine={false} */}
+        <YAxis domain={positionDomain} reversed={reverse} />
         {interactive && <Tooltip />}
         <Area
           type="monotoneX"
           dataKey={dataKey}
           stroke={color}
           fill={`url(#color${title})`}
-          baseValue={positionDomain[0]} />
+          baseValue={baseValue} 
+          />
       </AreaChart>
     </ResponsiveContainer>
   )
