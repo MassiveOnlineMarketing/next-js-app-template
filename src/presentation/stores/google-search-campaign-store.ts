@@ -8,15 +8,11 @@ import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearc
 
 export type GoogleSearchCampaignDetailsActions = {
   setCampaignDetails: (campaignDetails: GoogleSearchCampaign) => void;
-  setCampaigns: (campaigns: GoogleSearchCampaign[]) => void;
-  addCampaignToList: (campaign: GoogleSearchCampaign) => void;
-  updateCampaign: (campaign: GoogleSearchCampaign) => void;
-  removeCampaignFromList: (campaignId: string) => void;
+  deSelectCampaign: () => void;
 };
 
 export type CampaignDetailsState = {
   campaignDetails: GoogleSearchCampaign | null;
-  campaigns: GoogleSearchCampaign[];
 };
 
 export type GoogleSearchCampaignDetailsStore = CampaignDetailsState &
@@ -31,37 +27,9 @@ export const useGoogleSearchCampaignDetailsStore =
         campaignDetails: campaignDetails,
       });
     },
-
-    campaigns: [],
-    setCampaigns: (campaigns: GoogleSearchCampaign[]) => {
+    deSelectCampaign: () => {
       set({
-        campaigns: campaigns,
+        campaignDetails: null,
       });
-    },
-    addCampaignToList: (campaign: GoogleSearchCampaign) => {
-      set((state) => {
-        return {
-          campaigns: [...state.campaigns, campaign],
-        };
-      });
-    },
-    updateCampaign: (campaign: GoogleSearchCampaign) => {
-      set((state) => {
-        const updatedCampaigns = state.campaigns.map((c) =>
-          c.id === campaign.id ? campaign : c
-        );
-        return {
-          campaigns: updatedCampaigns,
-        };
-      });
-    },
-    removeCampaignFromList: (campaignId: string) => {
-      set((state) => {
-        const updatedCampaigns = state.campaigns.filter((c) => c.id !== campaignId);
-        return {
-          campaigns: updatedCampaigns,
-        };
-      });
-    },
-
+    }
   }));

@@ -51,7 +51,7 @@ const CardTitle = React.forwardRef<HTMLDivElement, CardTitleProps>(
         {...props}
       >
         {/* Title */}
-        <p className="text-sm font-medium leading-5 text-p-800 dark:text-dark-text-light">
+        <p className="text-sm leading-5 text-p-800 dark:text-dark-text-light">
           {title}
         </p>
         {/* Divider */}
@@ -116,11 +116,11 @@ const CardRow = React.forwardRef<HTMLDivElement, CardRowProps>(
         {...props}
       >
         {/* Label */}
-        <p className="text-sm font-medium leading-5 text-p-800 dark:text-dark-text-light">
+        <p className="text-sm text-p-800 dark:text-dark-text-light">
           {label}
         </p>
         {/* Value */}
-        <p className="text-sm font-medium leading-5 text-slate-500 dark:text-dark-text-dark">
+        <p className="text-sm text-slate-500 dark:text-dark-text-dark">
           {value ? value : "N/A"}
         </p>
       </div>
@@ -148,11 +148,11 @@ const CardDateRow = React.forwardRef<HTMLDivElement, CardDateRowProps>(
         {...props}
       >
         {/* Label */}
-        <p className="text-sm font-medium leading-5 text-p-800 dark:text-dark-text-light">
+        <p className="text-sm leading-5 text-p-800 dark:text-dark-text-light">
           {label}
         </p>
         {/* Value */}
-        <p className="text-sm font-medium leading-5 text-slate-500 dark:text-dark-text-dark">
+        <p className="text-sm leading-5 text-slate-500 dark:text-dark-text-dark">
           {new Date(value).toLocaleDateString()}
         </p>
       </div>
@@ -185,13 +185,13 @@ const CardTagsRow = React.forwardRef<HTMLDivElement, CardTagsRowProps>(
         {...props}
       >
         {/* Label */}
-        <p className="text-sm font-medium leading-5 text-p-800 dark:text-dark-text-light">
+        <p className="text-sm leading-5 text-p-800 dark:text-dark-text-light">
           {label}
         </p>
         {/* Data */}
         <div className="flex gap-2">
           {tags.map((tag: Tags) => (
-            <span key={tag.id} className="text-xs font-medium leading-5 text-slate-500 dark:text-dark-text-dark bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter px-2 py-1 rounded-sm">
+            <span key={tag.id} className="text-xs leading-5 text-slate-500 dark:text-dark-text-dark bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter px-2 py-1 rounded-sm">
               {tag.name}
             </span>
           ))}
@@ -223,7 +223,7 @@ const CardRowInput = React.forwardRef<HTMLLabelElement, CardRowInputProps>(({
   >
     {/* Label */}
     <span className="ml-auto min-w-10">{item.keyword_metrics.avg_monthly_searches ?? 'N/A'}</span>
-    <p className="text-nowrap flex justify-between text-xs font-medium leading-5 text-slate-500 dark:text-dark-text-dark">
+    <p className="text-nowrap flex justify-between text-xs leading-5 text-slate-500 dark:text-dark-text-dark">
       <span>{item.text}</span>
     </p>
     {/* Divider */}
@@ -269,7 +269,7 @@ const CardAccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         // TODO: light styles
-        "flex flex-1 items-center justify-between gap-3 px-3 py-2 text-sm font-medium leading-5 transition-all text-slate-500 dark:text-dark-text-dark dark:hover:text-[#DFE5FA] dark:[&[data-state=open]]:text-[#DFE5FA] [&[data-state=open]>svg]:-rotate-90",
+        "flex flex-1 items-center justify-between gap-3 px-3 py-2 text-sm leading-5 transition-all text-slate-500 dark:text-dark-text-dark dark:hover:text-[#DFE5FA] dark:[&[data-state=open]]:text-[#DFE5FA] [&[data-state=open]>svg]:-rotate-90",
         className
       )}
       {...props}

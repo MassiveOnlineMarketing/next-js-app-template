@@ -14,8 +14,6 @@
   @apply bg-indigo-500 rounded;
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -69,5 +67,15 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-2: 340 75% 55%;
-    }
+  }
+}
+
+p {
+  line-height: 160%;
+  word-spacing: -3%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 125%;
+  word-spacing: -3%;
 }

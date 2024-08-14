@@ -26,6 +26,7 @@ const page = async ({
     );
   }
   
+  // BUG: nadat je een projeect aanmaakt staan er geen serp results in de database
   if (!latestSerpResults.data) {
     return (
       <div className='flex h-full w-full items-center justify-center'>

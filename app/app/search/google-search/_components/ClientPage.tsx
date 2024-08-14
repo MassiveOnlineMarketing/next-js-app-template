@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-store";
 import useFilteredKeywordResults from "@/presentation/hooks/serp/useFilteredKeywordResults";
 import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
-import useGoogleSearchCampaignOpperations from "@/presentation/hooks/serp/useGoogleSearchCampaignOpperations";
+import useGoogleSearchKeywordTracker from "../useGoogleSearchKeywordTracker";
 
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
@@ -16,12 +16,9 @@ import DataTable from "./table/keyword-table";
 import { columns } from "./table/columns";
 
 // Components
-import KeywordTableHead from "./table/KeywordTableHead";
 import CampaignStats from "@/presentation/components/google-search-campaign/campaign-stats/CampaignStats";
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from "@/presentation/components/ui/alert-dialog";
-
-
 
 const ClientPage = ({
   googleSearchCampaign,
@@ -31,14 +28,13 @@ const ClientPage = ({
   latestSerpResults: GoogleSearchLatestKeywordResult[];
 }) => {
   const filteredResults = useFilteredKeywordResults();
-  console.log("filtered google search results", filteredResults);
   const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
 
-  const { setInitialStateSerpResults, isDeleteDialogOpen, setIsDeleteDialogOpen, cancelDelete, confirmDelete } = useKeywordOpperations();
-  const { setGoogleSearchCampaignInitialState } = useGoogleSearchCampaignOpperations();
+  const { isDeleteDialogOpen, setIsDeleteDialogOpen, cancelDelete, confirmDelete } = useKeywordOpperations();
+  const { setNewSerpResultState } = useGoogleSearchKeywordTracker();
+
   useEffect(() => {
-    setInitialStateSerpResults(latestSerpResults);
-    setGoogleSearchCampaignInitialState(googleSearchCampaign);
+    setNewSerpResultState(latestSerpResults);
   }, []);
 
   if (!currentWebsite) {
@@ -47,7 +43,6 @@ const ClientPage = ({
 
   return (
     <>
-      {/* <KeywordTableHead /> */}
       <CampaignStats filteredResults={filteredResults} />
       <div className="relative">
         <DataTable columns={columns(currentWebsite.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />

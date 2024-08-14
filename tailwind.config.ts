@@ -28,8 +28,27 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
+    },   
+    fontSize: {
+      xs: "0.75rem",
+      sm: "0.875rem",
+      base: "1rem",
+      lg: "1.125rem",
+      xl: "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem",
+      "5xl": "3rem",
+      "6xl": "4rem",
+      "7xl": "5rem",
+      "8xl": "6rem",
+      "9xl": "8rem",
     },
+
     extend: {
+      lineHeight: {
+        "160": '160%'
+      },
       colors: {
         "primary-25": "#FBFBFF",
         "primary-50": "#f8f8ff",
@@ -84,7 +103,7 @@ module.exports = {
         "4xl": "32px",
       },
       boxShadow: {
-        'CardAccordion':'inset 0 0 0 1px rgba(225, 223, 250, 0.1)',
+        'CardAccordion': 'inset 0 0 0 1px rgba(225, 223, 250, 0.1)',
 
         base: "0px 1px 2px 0px rgba(0, 0, 0, 0.06), 0px 1px 3px 0px rgba(0, 0, 0, 0.10)",
         md: "0px 2px 4px -1px rgba(21, 23, 77, 0.06), 0px 4px 6px -1px rgba(27, 35, 64, 0.10)",

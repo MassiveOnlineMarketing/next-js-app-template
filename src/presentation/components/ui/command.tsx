@@ -7,6 +7,7 @@ import { Search } from "lucide-react"
 
 import { cn } from "@/presentation/components/utils";
 import { Dialog, DialogContent } from "@/presentation/components/common/dialog"
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -15,7 +16,7 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-md bg-white text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50",
+      "flex h-full w-full flex-col overflow-hidden rounded-md bg-white text-neutral-950 dark:border-dark-stroke dark:bg-dark-bg-light backdrop-blur dark:text-dark-text-light",
       className,
     )}
     {...props}
@@ -23,7 +24,7 @@ const Command = React.forwardRef<
 ));
 Command.displayName = CommandPrimitive.displayName;
 
-interface CommandDialogProps extends DialogProps {}
+interface CommandDialogProps extends DialogProps { }
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
@@ -41,16 +42,25 @@ const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
-    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-    <CommandPrimitive.Input
-      ref={ref}
-      className={cn(
-        "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-neutral-400",
-        className,
-      )}
-      {...props}
-    />
+  <div className="flex items-center pb-1">
+    {/* Searchbar */}
+    <div className="relative rounded-md shadow-sm w-full p-1">
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+        <MagnifyingGlassIcon
+          className="h-5 w-5 text-gray-400"
+          aria-hidden="true"
+        />
+      </div>
+      <CommandPrimitive.Input
+        ref={ref}
+        className={cn(
+          'ring-gray-300 text-gray-900 placeholder:text-gray-400',
+          'dark:ring-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter dark:bg-dark-bg-light dark:text-dark-text-dark dark:placeholder:text-[#DFE5FA]/35',
+          "block w-full rounded-[2px] border-0 py-1.5 pl-10  ring-1 ring-inset  focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6"
+        )}
+        {...props}
+      />
+    </div>
   </div>
 ));
 

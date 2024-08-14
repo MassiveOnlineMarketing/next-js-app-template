@@ -59,7 +59,7 @@ const TagSelection = () => {
           <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] p-0">
+      <PopoverContent className="w-[250px] p-0 dark:border-dark-stroke dark:bg-dark-bg-light backdrop-blur dark:text-dark-text-light">
         <Command>
           <CommandInput
             placeholder={
@@ -69,7 +69,7 @@ const TagSelection = () => {
           />
           {uniqueTags.length > 0 && (
             <CommandGroup>
-              <CommandItem value="" onSelect={() => clearTags()} className="hover:bg-gray-100">
+              <CommandItem value="" onSelect={() => clearTags()} className="dark:hover:bg-neutral-800" >
                 All Keywords
               </CommandItem>
               {uniqueTags.map((tag) => (

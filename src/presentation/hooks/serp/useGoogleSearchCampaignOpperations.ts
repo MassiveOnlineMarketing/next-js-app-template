@@ -30,11 +30,8 @@ function useGoogleSearchCampaignOpperations() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const { setGoogleSearchCampaignDetails, updateGoogleSearchCampaigns, removeCampaignFromList, addCampaignToList } = useGoogleSearchCampaignDetailsStore(state => ({
+  const { setGoogleSearchCampaignDetails } = useGoogleSearchCampaignDetailsStore(state => ({
     setGoogleSearchCampaignDetails: state.setCampaignDetails,
-    updateGoogleSearchCampaigns: state.updateCampaign,
-    removeCampaignFromList: state.removeCampaignFromList,
-    addCampaignToList: state.addCampaignToList
   }));
   const { handleProcessNewKeyword } = useKeywordOpperations();
 
@@ -80,7 +77,6 @@ function useGoogleSearchCampaignOpperations() {
         if (response.data) {
           setGoogleSearchCampaignDetails(response.data);
           // Add project to campaign list
-          addCampaignToList(response.data);
           showSuccessToast('Google search campaign created successfully!');
           if (googleSearchCampaignData.keywords){
             console.log('keywords:', googleSearchCampaignData.keywords);
@@ -139,8 +135,6 @@ function useGoogleSearchCampaignOpperations() {
       if (response.success && response.data) {
         // Set the updated campaign details
         setGoogleSearchCampaignDetails(response.data);
-        // Update the campaign list
-        updateGoogleSearchCampaigns(response.data);
         showSuccessToast('Google search campaign updated successfully!');
         return { success: true };
       } else {
@@ -170,7 +164,6 @@ function useGoogleSearchCampaignOpperations() {
 
       if (response.success) {
         // Remove the campaign from the list
-        removeCampaignFromList(campaignId);
         showSuccessToast('Google search campaign deleted successfully!');
         return { success: true };
       } else {

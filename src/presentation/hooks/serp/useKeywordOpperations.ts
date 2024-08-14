@@ -25,24 +25,6 @@ export function useKeywordOpperations() {
   const setKeywordResults = useGoogleSearchKeywordResultStore((state) => state.setKeywordResults);
   const results = useGoogleSearchKeywordResultStore((state) => state.keywordResults);
 
-  const resetResults = useGoogleSearchKeywordResultStore((state) => state.resetKeywordResults);
-  const resetSelectedTags = useGoogleSearchKeywordResultStore((state) => state.resetSelectedTags);
-
-  /**
-   * Sets the initial state of the keyword operations.
-   * 
-   * @param serpResults - The latest keyword results from Google search.
-   */
-  const setInitialStateSerpResults = (serpResults: GoogleSearchLatestKeywordResult[]) => {
-    console.log('resetting results');
-    resetResults();
-    resetSelectedTags();
-
-    console.log('🟢 setting new keyword results');
-    console.log('googleSearchLatestSerpResult', serpResults);
-    setKeywordResults(serpResults);;
-  }
-
   /**
    * Handles the addition of new keywords to a Google Search Campaign.
    * 
@@ -197,7 +179,7 @@ export function useKeywordOpperations() {
     });
   }
 
-  return { setInitialStateSerpResults, handleAddNewKeyword, isLoading, handleProcessNewKeyword, handleDeleteKeyword, confirmDelete, cancelDelete, isDeleteDialogOpen, setIsDeleteDialogOpen };
+  return { handleAddNewKeyword, isLoading, handleProcessNewKeyword, handleDeleteKeyword, confirmDelete, cancelDelete, isDeleteDialogOpen, setIsDeleteDialogOpen };
 }
 
 export default useKeywordOpperations;

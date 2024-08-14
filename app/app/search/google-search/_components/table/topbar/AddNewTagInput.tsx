@@ -28,11 +28,11 @@ const AddNewTagInput = ({
   };
 
   return (
-    <div className="overflow-hidden rounded-lg gap-[6px] border border-neutral-200 bg-white  dark:border-neutral-800 dark:bg-neutral-950">
+    <div className="overflow-hidden rounded-lg gap-[6px]">
       <form onSubmit={handleSubmit}>
         <div className=" text-sm font-medium leading-5">
         <input
-          className=" placeholder-gray-500 m-1 pl-[12px] pr-[20px] py-[8px] w-[204px]"
+          className=" placeholder-gray-500 m-1 pl-[12px] pr-[20px] py-[8px] w-[204px] bg-transparent     border-0 ring-1 ring-inset dark:ring-dark-stroke  focus:ring-2 focus:ring-inset focus:ring-indigo-600"
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -46,7 +46,7 @@ const AddNewTagInput = ({
         </div>
         <button
           className={cn(
-            'text-sm font-medium  leading-5 text-gray-800',
+            'text-sm font-medium  leading-5 text-gray-800 dark:text-dark-text-light',
             "px-[16px] py-[8px] w-full",
             'hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50'
           )}

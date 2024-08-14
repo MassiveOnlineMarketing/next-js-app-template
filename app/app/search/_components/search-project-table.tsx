@@ -18,6 +18,7 @@ import { OutlinedTextButton } from "@/presentation/components/ui/text-button";
 // Icons
 import { MagnifyingGlassIcon, ViewColumnsIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
+import useTestWebsiteSelection from "@/presentation/components/website/useTestWebsiteSelection";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -66,15 +67,15 @@ function DataTable<TData, TValue>({
   });
 
   const router = useRouter();
-  const setWebsiteDetails = useWebsiteDetailsStore(
-    (state) => state.setWebsiteDetails,
-  );
+  const setWebsiteDetails = useWebsiteDetailsStore((state) => state.setWebsiteDetails);
+  const { setGoogleSearchCampaignById } = useTestWebsiteSelection();
   const numberOfVisibleColumns = table.getVisibleFlatColumns().length;
 
   const handleClickRow = (row: Row<TData>) => () => {
     const campaign = row.original as GoogleSearchCampaignWithResult;
 
     setWebsiteDetails(campaign.website);
+    setGoogleSearchCampaignById(campaign.id);
     router.push(`/app/search/google-search/${campaign.id}`);
   };
 
