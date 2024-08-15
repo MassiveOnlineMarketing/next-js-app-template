@@ -36,17 +36,6 @@ function useGoogleSearchCampaignOpperations() {
   const { handleProcessNewKeyword } = useKeywordOpperations();
 
   /**
-   * Sets the initial state of the Google Search Campaign.
-   * 
-   * @param googleSearchCampaignDetails - The details of the Google Search Campaign.
-   */
-  const setGoogleSearchCampaignInitialState = (googleSearchCampaignDetails: GoogleSearchCampaign) => {
-    console.log('🟢 setting new campaign details');
-    setGoogleSearchCampaignDetails(googleSearchCampaignDetails);
-  }
-
-
-  /**
    * Handles the creation of a Google search campaign with toasts.
    * 
    * @param googleSearchCampaignData - The data for the Google search campaign.
@@ -195,7 +184,7 @@ function useGoogleSearchCampaignOpperations() {
     });
   };
 
-  return { setGoogleSearchCampaignInitialState, isLoading, handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign };
+  return { isLoading, handleCreateCampaign, handleUpdateCampaign, handleDeleteCampaign };
 }
 
 export default useGoogleSearchCampaignOpperations;

@@ -58,8 +58,6 @@ const PrimarySidebar = () => {
     { name: 'Billing', href: '/app/billing', icon: CreditCardIcon },
   ];
 
-console.log('pathname', pathname)
-console.log('navigation', selectedGoogleSearchCampaign?.id)
 
   return (
     <nav className="lg:block hidden h-full w-fit min-w-[398px] bg-white-50 relative z-10 bg-primary-50 dark:bg-p-1100">
