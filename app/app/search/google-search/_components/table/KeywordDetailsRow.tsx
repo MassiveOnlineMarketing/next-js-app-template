@@ -14,22 +14,28 @@ import KeywordDetails from "./keyword-details-row/comps/KeywordDetails";
 import { Card } from "./keyword-details-row/GoogleSearchConsoleGraphCard";
 import SearchConsoleDataCard from "./keyword-details-row/comps/SearchConsoleDataCard";
 import Test from "./keyword-details-row/comps/Test";
+import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
-const KeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
+const KeywordDetailsRow = ({ keywordData }: {
   keywordData: GoogleSearchLatestKeywordResult,
-  googleSearchCampaign: GoogleSearchCampaign
 }) => {
 
-  console.log('KeywordDetailsRow', keywordData, googleSearchCampaign);
+  const selectedGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
+
+  if (!selectedGoogleSearchCampaign) {
+    return <div>loading ...</div>;
+  }
+
+  console.log('KeywordDetailsRow', keywordData, selectedGoogleSearchCampaign);
 
   return (
     <div className="dark:bg-p-1100 max-w-[1240px] mx-auto ">
-      <Test keywordName={keywordData.keywordName} websiteId={googleSearchCampaign.websiteId}/>
+      <Test keywordName={keywordData.keywordName} websiteId={selectedGoogleSearchCampaign.websiteId}/>
 
       <div className="grid grid-cols-2 gap-6 pb-6">
         <div className="space-y-6">
           <KeywordDetails keywordData={keywordData} />
-          <Url url={keywordData.url} domainUrl={googleSearchCampaign.domainUrl} />
+          <Url url={keywordData.url} domainUrl={selectedGoogleSearchCampaign.domainUrl} />
           <MetaTitle metaTitle={keywordData.metaTitle} metaDescription={keywordData.metaDescription}/>
         </div>
         <div className="space-y-6">

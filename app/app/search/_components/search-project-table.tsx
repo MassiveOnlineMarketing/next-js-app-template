@@ -67,14 +67,13 @@ function DataTable<TData, TValue>({
   });
 
   const router = useRouter();
-  const setWebsiteDetails = useWebsiteDetailsStore((state) => state.setWebsiteDetails);
-  const { setGoogleSearchCampaignById } = useTestWebsiteSelection();
+  const { setGoogleSearchCampaignById, setWebsiteById } = useTestWebsiteSelection();
   const numberOfVisibleColumns = table.getVisibleFlatColumns().length;
 
   const handleClickRow = (row: Row<TData>) => () => {
     const campaign = row.original as GoogleSearchCampaignWithResult;
 
-    setWebsiteDetails(campaign.website);
+    setWebsiteById(campaign.website.id);
     setGoogleSearchCampaignById(campaign.id);
     router.push(`/app/search/google-search/${campaign.id}`);
   };

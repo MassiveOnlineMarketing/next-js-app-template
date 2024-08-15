@@ -5,8 +5,8 @@ import { Website } from "@/domain/_entities/Website";
 import { create } from "zustand";
 
 export type WebsiteDetailsActions = {
-  setWebsiteDetails: (website: Website) => void;
-  resetWebsiteDetails: () => void;
+  setWebsiteDetails: (website: Website, userId: string) => void;
+  resetWebsiteDetails: (userId: string) => void;
   
   setWebsites: (websites: Website[]) => void; 
   addWebsite: (website: Website) => void;
@@ -23,13 +23,13 @@ export type WebsiteDetailsStore = WebsiteDetailsState & WebsiteDetailsActions;
 
 export const useWebsiteDetailsStore = create<WebsiteDetailsStore>((set) => ({
   websiteDetails: undefined,
-  setWebsiteDetails: (website) => {
+  setWebsiteDetails: (website, userId) => {
     set({ websiteDetails: website })
-    sessionStorage.setItem('websiteDetails', JSON.stringify(website))
+    sessionStorage.setItem('websiteDetails' + userId, JSON.stringify(website))
   },
-  resetWebsiteDetails: () => {
+  resetWebsiteDetails: (userId) => {
     set({ websiteDetails: undefined })
-    sessionStorage.removeItem('websiteDetails')
+    sessionStorage.removeItem('websiteDetails' + userId)
   },
 
   websites: null,

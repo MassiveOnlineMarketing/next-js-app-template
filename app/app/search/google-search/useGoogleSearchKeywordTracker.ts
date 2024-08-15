@@ -7,6 +7,8 @@ import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/googl
 import { useGoogleSearchKeywordResultStore } from "@/presentation/stores/google-search-keyword-result-store";
 
 import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
+import { useQuery } from "@tanstack/react-query";
+import { getGoogleSearchLatestSerpResults } from "@/application/useCases/googleSearchLatestSerpResults/getGoogleSearchLatestSerpResults";
 
 /**
  * Hook for the Google Search Keyword Tracker.
@@ -28,6 +30,23 @@ export function useGoogleSearchKeywordTracker() {
     if (!googleSearchCampaign) return;
     router.push(`/app/search/google-search/${googleSearchCampaign.id}`);
   }, [googleSearchCampaign]);
+
+  useQuery({
+    queryKey: ['googleSearchResults', googleSearchCampaign?.id],
+    queryFn: async () => {
+      if (!googleSearchCampaign) return [];
+      const response = await getGoogleSearchLatestSerpResults(googleSearchCampaign.id);
+
+      const latestSerpResults = response?.data || [];
+      if (!latestSerpResults.length) return [];
+      const filteredSerpResults = latestSerpResults.filter(result => result !== null);
+      console.log('🅱️ setting new filteredSerpResults after campaing switch');
+
+      setNewSerpResultState(filteredSerpResults);
+      return filteredSerpResults;
+    },
+    enabled: !!googleSearchCampaign, // This ensures the query only runs when googleSearchCampaign is defined
+  });
 
 
   /**

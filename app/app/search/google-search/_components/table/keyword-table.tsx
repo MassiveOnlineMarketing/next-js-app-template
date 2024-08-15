@@ -19,13 +19,11 @@ import KeywordDetailsRow from "./KeywordDetailsRow";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  googleSearchCampaign: GoogleSearchCampaign;
 }
 
 function DataTable<TData, TValue>({
   columns,
   data,
-  googleSearchCampaign,
 }: DataTableProps<TData, TValue>) {
 
   const [rowSelection, setRowSelection] = useState({});
@@ -160,7 +158,6 @@ function DataTable<TData, TValue>({
                         <td className="pt-6" colSpan={numberOfVisibleColumns}>
                           <KeywordDetailsRow
                             keywordData={keywordData}
-                            googleSearchCampaign={googleSearchCampaign}
                           />
                         </td>
                       ) : (

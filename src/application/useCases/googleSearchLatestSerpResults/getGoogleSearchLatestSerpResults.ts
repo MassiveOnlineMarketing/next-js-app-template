@@ -11,7 +11,7 @@ export async function getGoogleSearchLatestSerpResults(campaignId: string) {
     if (!user) {
         return { success: false, error: 'User not found' }
     }
-
+console.log('🅱️ server getGoogleSearchLatestSerpResults');
     try {
         const latestResultsDbResponse = await googleSearchSerpResultRepository.getLatestResultsByCampaignId(campaignId);
     

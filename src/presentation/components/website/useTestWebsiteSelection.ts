@@ -41,10 +41,11 @@ const useTestWebsiteSelection = () => {
 
   // load website details on mount
   useEffect(() => {
+    if (!user?.id) return;
     console.log('🅱️ getting website details, safe')
-    const sessionDetails = sessionStorage.getItem("websiteDetails");
+    const sessionDetails = sessionStorage.getItem("websiteDetails-" + user?.id);
     if (sessionDetails && !currentWebsite) {
-      setSelectedWebsite(JSON.parse(sessionDetails));
+      setSelectedWebsite(JSON.parse(sessionDetails), user?.id);
     }
   }, []);
 
@@ -70,11 +71,11 @@ const useTestWebsiteSelection = () => {
   };
 
   const setWebsiteById = async (id: string) => {
-    if (currentWebsite?.id === id) return;
+    if (currentWebsite?.id === id || !user?.id) return;
     console.log('🅱️ setting website by id', id)
     const website = await getWebsiteById(id);
     if (website.data){
-      setSelectedWebsite(website.data);
+      setSelectedWebsite(website.data, user?.id);
       clearSelectedGoogleSearchCampaign();
     }
   }

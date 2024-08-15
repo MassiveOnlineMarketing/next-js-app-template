@@ -10,6 +10,7 @@ import { WebsiteInputSchemaType } from '@/application/schemas/websiteSchema';
 import { createWebsite } from '@/application/useCases/website/createWebsite';
 import { updateWebsite } from '@/application/useCases/website/updateWebsite';
 import { deleteWebsite } from '@/application/useCases/website/deleteWebsite';
+import { useCurrentUser } from '../auth/hooks/user-current-user';
 
 
 
@@ -31,6 +32,7 @@ function useWebsiteOperations() {
     removeWebsiteFromStore: state.removeWebsite,
     resetWebsiteDetails: state.resetWebsiteDetails
   }));
+  const userId = useCurrentUser()?.id;
 
   /**
    * Handles the creation of a website with toast messages.
@@ -46,7 +48,9 @@ function useWebsiteOperations() {
       
       if (response.success) {
         if (response.data) {
-          setWebsiteDetails(response.data);
+          if (userId) {
+            setWebsiteDetails(response.data, userId);
+          }
           addWebsiteToStore(response.data);
           showSuccessToast('Website created successfully!');
           return { success: true };
@@ -77,7 +81,9 @@ function useWebsiteOperations() {
 
       if (response.success) {
         updateWebsiteInStore(response.success)
-        setWebsiteDetails(response.success);
+        if (userId) {
+          setWebsiteDetails(response.success, userId);
+        }
         showSuccessToast('Website updated successfully!');
         return { success: true };
       } else {
@@ -105,7 +111,9 @@ function useWebsiteOperations() {
 
       if (response.success) {
         removeWebsiteFromStore(websiteId);
-        resetWebsiteDetails();
+        if (userId) {
+          resetWebsiteDetails(userId);
+        }
         showSuccessToast('Website deleted successfully!');
         return { success: true };
       } else {

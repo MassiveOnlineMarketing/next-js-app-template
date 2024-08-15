@@ -20,22 +20,13 @@ import CampaignStats from "@/presentation/components/google-search-campaign/camp
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from "@/presentation/components/ui/alert-dialog";
 
-const ClientPage = ({
-  googleSearchCampaign,
-  latestSerpResults,
-}: {
-  googleSearchCampaign: GoogleSearchCampaign;
-  latestSerpResults: GoogleSearchLatestKeywordResult[];
-}) => {
+const ClientPage = () => {
   const filteredResults = useFilteredKeywordResults();
   const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
 
   const { isDeleteDialogOpen, setIsDeleteDialogOpen, cancelDelete, confirmDelete } = useKeywordOpperations();
   const { setNewSerpResultState } = useGoogleSearchKeywordTracker();
 
-  useEffect(() => {
-    setNewSerpResultState(latestSerpResults);
-  }, []);
 
   if (!currentWebsite) {
     return <div>loading</div>;
@@ -45,7 +36,7 @@ const ClientPage = ({
     <>
       <CampaignStats filteredResults={filteredResults} />
       <div className="relative">
-        <DataTable columns={columns(currentWebsite.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
+        <DataTable columns={columns(currentWebsite.domainUrl)} data={filteredResults} />
       </div>
 
       {/* Dialog for deleting keyword */}
