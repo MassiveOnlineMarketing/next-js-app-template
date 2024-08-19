@@ -95,13 +95,9 @@ function DataTable<TData, TValue>({
   const numberOfVisibleColumns = table.getVisibleFlatColumns().length;
 
   return (
-    // dit weg
-    <div className="p-6 pb-10">
 
-      <div className="bg-primary-50 dark:bg-p-1100  h-[150px] top-0 absolute z-20 w-[97%]"></div>
-
-      {/* Dit we */}
-      <div className="sticky top-0 dark:bg-p-1100 z-20" >
+    <div className="p-6 pb-10 ">
+      <div className="sticky top-0 pt-6 dark:bg-p-1100 z-20" >
         {/* Top bar */}
         <DataTableTopBar
           table={table}
@@ -115,7 +111,7 @@ function DataTable<TData, TValue>({
         {/* Dit naar Table */}
         <table className="w-full">
           {/* Weg , overflow hidden*/}
-          <TableHeader className="sticky top-[72px] z-20       rouded-md  bg-white dark:bg-dark-bg-light">
+          <TableHeader className="sticky top-[92px] z-20       rouded-md  bg-white dark:bg-p-1100">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className=" rounded-lg shadow-sm  dark:bg-dark-bg-light">
                 {headerGroup.headers.map((header) => {
@@ -182,7 +178,7 @@ function DataTable<TData, TValue>({
             )}
           </TableBody>
         </table>
-      <DataTablePagination table={table} />
+        <DataTablePagination table={table} />
       </div>
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </div>

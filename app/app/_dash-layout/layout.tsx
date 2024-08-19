@@ -18,12 +18,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           {/* <TopBar setMobileSidebarOpen={setMobileSidebarOpen} /> */}
 
-          <div className="flex flex-row h-screen">
+          <div className="flex flex-row h-screen  pt-6 pr-6">
             <PrimarySidebar />
 
             <div className="w-full h-full relative  ">
               <div className="absolute inset-0 bg-transparent box-content lg:rounded-t-3xl overflow-hidden dark:border dark:border-dark-stroke">
-                <div className="h-full w-full overflow-y-hidden  ">
+                <div className="h-full w-full overflow-y-hidden">
                   {children}
                 </div>
               </div>

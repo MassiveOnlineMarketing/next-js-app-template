@@ -45,7 +45,7 @@ export const CampaignStats = ({ filteredResults }: { filteredResults: GoogleSear
   ];
 
   return (
-    <div className="p-6 w-full grid grid-cols-4 gap-2">
+    <div className="px-6 pt-6 w-full grid grid-cols-4 gap-2">
       {/* Keywords Card*/}
       <div className="py-4 px-6 bg-white dark:bg-dark-bg-light rounded-xl shadow-sm w-full h-full flex gap-6 items-center">
         <p className="text-4xl font-semibold text-gray-700 dark:text-dark-text-light w-[60px] h-[60px] flex items-center justify-center">

@@ -54,9 +54,12 @@ function DataTableTopBar<TData>({
   deselectAllRows
 }: TopBarProps<TData>) {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center relative">
+      {/* Backdrop */}
+      <div className="absolute w-full -top-6 h-[140px] -z-10 bg-p-25 dark:bg-p-1100 "></div>
+      
       {/* Searchbar */}
-      <div className="relative rounded-md shadow-sm h-[34px] ">
+      <div className="relative rounded-md shadow-sm h-[34px] z-30">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <MagnifyingGlassIcon
             className="h-5 w-5 text-gray-400"
@@ -130,7 +133,7 @@ function DataTableTopBar<TData>({
           <TooltipProvider delayDuration={0}>
             {/* Add keyword */}
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <GoogleSearchAddKeywordsFormDialog buttonClassName="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
                   <PlusIcon className="w-5 h-5 text-gray-500 dark:text-dark-text-dark group-hover:text-green-500" />
                 </GoogleSearchAddKeywordsFormDialog>
@@ -145,7 +148,7 @@ function DataTableTopBar<TData>({
 
             {/* Download to Excel */}
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <button
                   className="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg"  
                   onClick={() => downloadKeywordsToExcel(data)}
@@ -163,7 +166,7 @@ function DataTableTopBar<TData>({
 
             {/* Toggle visable colums */}
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <DropdownMenu>
                   <DropdownMenuTrigger className="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
                     <ViewColumnsIcon className="w-5 h-5 text-gray-500 dark:text-dark-text-dark" />
