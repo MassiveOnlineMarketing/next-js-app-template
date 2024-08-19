@@ -41,8 +41,8 @@ const page = async ({
   
   return (
     <div className="w-full h-full">
-      <BreadCrumbsSearchKeywords campaignName={campaign.data.campaignName} />
-      <ClientPage googleSearchCampaign={campaign.data} latestSerpResults={filteredSerpResults} />
+      <BreadCrumbsSearchKeywords  campaignName={campaign.data.campaignName}/>
+      <ClientPage latestSerpResults={filteredSerpResults} googleSearchCampaign={campaign.data}/>
     </div>
   )
 }
