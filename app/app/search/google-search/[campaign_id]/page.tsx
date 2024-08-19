@@ -36,6 +36,7 @@ const page = async ({
       </div>
     );
   }
+  
   // Filter out null values from latestSerpResults.data
   const filteredSerpResults = latestSerpResults.data.filter(result => result !== null);
   
