@@ -42,7 +42,7 @@ const ClientPage = ({
   }
 
   return (
-    <>
+    <div className=" h-[calc(100vh-32px)] overflow-y-auto custom-scrollbar">
       <CampaignStats filteredResults={filteredResults} />
       <div className="relative">
         <DataTable columns={columns(currentWebsite.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
@@ -65,7 +65,7 @@ const ClientPage = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   );
 };
 

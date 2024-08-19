@@ -41,65 +41,115 @@ const TestWebsiteSelectionButton = () => {
 
   if (isLoading === true) {
     return (
-      <div>Loading</div>
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
+        <WebsiteSelectorMock label='Loading...' />
+        <LocationSelectorMock label='Loading...' />
+      </div>
     )
   }
+
+  console.log('selectedWesbite', selectedWebsite)
+  console.log('websiteWithGoogleSearchCampaigns', websiteWithGoogleSearchCampaigns)
+  console.log('filtered selected website', websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite?.id)[0])
+
+  console.log('test', websiteWithGoogleSearchCampaigns, 'loading', isLoading)
+
 
 
 
   return (
-
     <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
       {/* Website selector */}
-      <DropdownMenu dir="ltr">
-        <DropdownMenuTrigger className='flex items-center mb-2'>
-          {
-            selectedWebsite?.domainUrl ? (
-              <img src={getFaviconUrl(selectedWebsite?.domainUrl)} width={36} height={36} alt='favicon' className='border dark:border-dark-stroke rounded-[4px]' />
-            ) : (
-              <CubeTransparentIcon className="h-6 w-6 text-gray-700" />
-            )
-          }
-          <p className='pl-3 dark:text-dark-text-light'>{selectedWebsite?.websiteName}</p>
-          <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
-        </DropdownMenuTrigger>
-        {websiteWithGoogleSearchCampaigns.length > 0 && (
-          <DropdownMenuContent side="right" className="w-fit flex flex-row min-w-[40px]">
-            {websiteWithGoogleSearchCampaigns.map((website) => (
-              <WebsiteItem key={website.id} website={website} handleClick={handleClick} />
-            ))}
-          </DropdownMenuContent>
-        )}
-      </DropdownMenu>
+
+      {selectedWebsite ? (
+        <DropdownMenu dir="ltr">
+          <DropdownMenuTrigger className='flex items-center mb-2'>
+            <img src={getFaviconUrl(selectedWebsite?.domainUrl)} width={36} height={36} alt='favicon' className='border dark:border-dark-stroke rounded-[4px]' />
+            <p className='pl-3 dark:text-dark-text-light'>{selectedWebsite.websiteName}</p>
+            <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
+          </DropdownMenuTrigger>
+          {websiteWithGoogleSearchCampaigns.length > 0 && (
+            <DropdownMenuContent side="right" className="w-fit flex flex-row min-w-[40px]">
+              {websiteWithGoogleSearchCampaigns.map((website) => (
+                <WebsiteItem key={website.id} website={website} handleClick={handleClick} />
+              ))}
+            </DropdownMenuContent>
+          )}
+        </DropdownMenu>
+      ) : (
+        websiteWithGoogleSearchCampaigns.length > 0 ? (
+          <DropdownMenu dir="ltr">
+            <DropdownMenuTrigger className='flex items-center mb-2'>
+              <CubeTransparentIcon className="h-9 w-9 text-gray-700" />
+              <p className='pl-3 dark:text-dark-text-light'>Select Website</p>
+              <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="right" className="w-fit flex flex-row min-w-[40px]">
+              {websiteWithGoogleSearchCampaigns.map((website) => (
+                <WebsiteItem key={website.id} website={website} handleClick={handleClick} />
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <WebsiteSelectorMock label='No website to select' />
+        )
+      )}
 
 
       {/* Campaign selector */}
-      <DropdownMenu>
-        <DropdownMenuTrigger className='px-3 py-2 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]'>
-          <MapPinIcon className='min-w-5 h-5 dark:text-dark-text-dark' />
-          <p className='text-nowrap text-sm'>
-            {selectedGoogleSearchCampaign?.location ? `${selectedGoogleSearchCampaign.country} ${selectedGoogleSearchCampaign.location.split(',')[0]}` : (
-              selectedGoogleSearchCampaign?.country ? selectedGoogleSearchCampaign.country : 'Select Campaign'
-            )}
-          </p>
-          <div className='w-full h-[1px] bg-p-100 dark:bg-dark-stroke'></div>
-          <ChevronDownIcon className='min-w-5 h-5 ml-auto dark:text-dark-text-dark' />
-        </DropdownMenuTrigger>
-        {websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite?.id).length > 0 && (
+      {selectedWebsite && websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite.id).length > 0 &&
+        websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite.id)[0].googleSearchCampaign.length > 0 ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger className='px-3 py-2 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]'>
+            <MapPinIcon className='min-w-5 h-5 dark:text-dark-text-dark' />
+            <p className='text-nowrap text-sm'>
+              {selectedGoogleSearchCampaign?.location ? `${selectedGoogleSearchCampaign.country} ${selectedGoogleSearchCampaign.location.split(',')[0]}` : (
+                selectedGoogleSearchCampaign?.country ? selectedGoogleSearchCampaign.country : 'Select Location'
+              )}
+            </p>
+            <div className='w-full h-[1px] bg-p-100 dark:bg-dark-stroke'></div>
+            <ChevronDownIcon className='min-w-5 h-5 ml-auto dark:text-dark-text-dark' />
+          </DropdownMenuTrigger>
+
           <DropdownMenuContent side="bottom" className=" w-[350px]">
-            {websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite?.id).map((campaign) => (
-              <React.Fragment key={campaign.id}>
-                {campaign.googleSearchCampaign.map((campaign) => (
+            {websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite?.id).map((website) => (
+              <React.Fragment key={website.id}>
+                {website.googleSearchCampaign.map((campaign) => (
                   <DropdownMenuItem className='w-full' key={campaign.id} onClick={() => handleClick(campaign)}>
                     {campaign.location ? `${campaign.country} ${campaign.location.split(',')[0]}` : campaign.country}
                   </DropdownMenuItem>
                 ))}
-
               </React.Fragment>
             ))}
           </DropdownMenuContent>
-        )}
-      </DropdownMenu>
+        </DropdownMenu>
+      ) : (
+        <LocationSelectorMock label='No location to select' />
+      )}
+    </div>
+  )
+}
+
+
+const WebsiteSelectorMock = ({ label }: { label: string }) => {
+  return (
+    <div className='flex items-center mb-2'>
+      <CubeTransparentIcon className="h-9 w-9 text-gray-700" />
+      <p className='pl-3 dark:text-dark-text-light'>{label}</p>
+      <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
+    </div>
+  )
+}
+
+const LocationSelectorMock = ({ label }: { label: string }) => {
+  return (
+    <div className='px-3 py-2 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]'>
+      <MapPinIcon className='min-w-5 h-5 dark:text-dark-text-dark' />
+      <p className='text-nowrap text-sm'>
+        {label}
+      </p>
+      <div className='w-full h-[1px] bg-p-100 dark:bg-dark-stroke'></div>
+      <ChevronDownIcon className='min-w-5 h-5 ml-auto dark:text-dark-text-dark' />
     </div>
   )
 }
@@ -178,7 +228,7 @@ const CampaignItem = ({ campaign, website, handleClick }: { campaign: GoogleSear
             {/* @ts-ignore -- we pushed a custom campaign as a location instead of the standard string that is in the database schema */}
             {campaign.location.map(locationCampaign => (
               <DropdownMenuItem key={locationCampaign.id} onClick={() => handleClick(locationCampaign)}>
-                {locationCampaign.location}
+                {`${website.websiteName} ${campaign.country}, ${locationCampaign.location.split(',')[0]}`}
               </DropdownMenuItem>
             ))}
           </DropdownMenuSubContent>

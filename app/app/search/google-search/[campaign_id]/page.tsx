@@ -40,7 +40,7 @@ const page = async ({
   const filteredSerpResults = latestSerpResults.data.filter(result => result !== null);
   
   return (
-    <div className="w-full h-full pt-6 pr-6">
+    <div className="w-full h-full">
       <BreadCrumbsSearchKeywords  campaignName={campaign.data.campaignName}/>
       <ClientPage latestSerpResults={filteredSerpResults} googleSearchCampaign={campaign.data}/>
     </div>

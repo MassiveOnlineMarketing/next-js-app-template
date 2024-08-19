@@ -96,7 +96,7 @@ function DataTable<TData, TValue>({
 
   return (
     // dit weg
-    <div className="p-6 h-[calc(100vh-322px)] overflow-y-auto custom-scrollbar pb-10">
+    <div className="p-6 pb-10">
 
       <div className="bg-primary-50 dark:bg-p-1100  h-[150px] top-0 absolute z-20 w-[97%]"></div>
 
