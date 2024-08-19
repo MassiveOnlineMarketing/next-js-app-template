@@ -1,7 +1,7 @@
 import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult'
 import React from 'react'
-import { Card, CardTitle, CardRow } from '../Card'
-import { TraficLight, TraficLightIndicator, TraficLightMinMaxValue } from './TraficLightIndicator'
+import { Card, CardTitle, CardRow, CardAdsBidRow } from '../Card'
+import { TraficLight, TraficLightIndicator, TraficLightMinMaxValue } from '../comps/TraficLightIndicator'
 
 const GoogleAdsMetrics = ({ keywordData }: { keywordData: GoogleSearchLatestKeywordResult }) => {
   const competitionIndex = Number(keywordData.competitionIndex)
@@ -17,8 +17,8 @@ const GoogleAdsMetrics = ({ keywordData }: { keywordData: GoogleSearchLatestKeyw
         </TraficLight>
       </CardTitle>
       <CardRow label='Keyword volume' value={`${keywordData.avgMonthlySearches}/mo`} />
-      <CardRow label='Higest bid' value={highTopOfBidPage} fill />
-      <CardRow label='Lowest bid' value={lowTopOfBidPage} />
+      <CardAdsBidRow label='Higest bid' value={highTopOfBidPage} fill />
+      <CardAdsBidRow label='Lowest bid' value={lowTopOfBidPage} />
     </Card>
   )
 }

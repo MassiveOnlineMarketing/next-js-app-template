@@ -1,15 +1,18 @@
 import React from 'react'
 import { Card, CardDateRow, CardPlainRow, CardRow, CardTagsRow, CardTitle } from '../Card'
-import { TraficLight, TraficLightIndicator } from './TraficLightIndicator'
+import { TraficLight, TraficLightIndicator } from '../comps/TraficLightIndicator'
 import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult'
+import { getOrdinalSuffix } from '@/presentation/utils/numberUtils'
 
 const KeywordDetails = ({ keywordData }: { keywordData: GoogleSearchLatestKeywordResult }) => {
   return (
     <Card>
       <CardTitle title='Keyword'>
         <TraficLight>
-          <p>{keywordData.position}</p>
-          <TraficLightIndicator maxValue={100} currentValue={keywordData.position} />
+          <div className='text-p-800 dark:text-dark-text-light font-semibold mr-3'>
+            {getPositionSvg(keywordData.position)}
+          </div>
+          <TraficLightIndicator maxValue={10} currentValue={keywordData.position} flip />
         </TraficLight>
       </CardTitle>
       <CardPlainRow value={keywordData.keywordName} />
@@ -22,5 +25,25 @@ const KeywordDetails = ({ keywordData }: { keywordData: GoogleSearchLatestKeywor
     </Card>
   )
 }
+
+
+const getPositionSvg = (position: number | null) => {
+  if (position === null) {
+    return (
+      <p className="text-sm">
+        N/A
+      </p>
+    );
+  }
+
+  const suffix = getOrdinalSuffix(position);
+
+  return (
+    <p className='text-sm'>
+      {position}
+      <span className='text-[10px]'>{suffix}</span>
+    </p>
+  );
+};
 
 export default KeywordDetails

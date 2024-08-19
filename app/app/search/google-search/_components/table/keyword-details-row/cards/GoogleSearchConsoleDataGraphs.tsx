@@ -7,13 +7,13 @@ import useKeywordDetailsSearchConsoleData from '@/presentation/hooks/serp/fetchi
 import useGoogleToken from '@/presentation/hooks/useGoogleRefreshToken';
 
 import { Card, CardHeader } from '../GoogleSearchConsoleGraphCard';
-import GoogleSearchConsoleChart, { GoogleSearchConsoleChartData } from '../google-search-console-data/GraphsN';
+import GoogleSearchConsoleChart, { GoogleSearchConsoleChartData } from '../comps/GraphsN';
 import { useWebsiteDetailsStore } from '@/presentation/stores/website-details-store';
 import { LoadingSpinner } from '@/presentation/components/ui/loading-spinner';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/presentation/components/ui/tooltip";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 
-const Test = ({ keywordName, websiteId }: {
+const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId }: {
   keywordName: string,
   websiteId: string
 }) => {
@@ -41,7 +41,7 @@ const Test = ({ keywordName, websiteId }: {
           <Card key={config.title} >
             <CardHeader title={config.title} total={config.total} />
             <div className='h-[250px] relative'>
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col justify-center gap-1 z-30 opacity-100">
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col justify-center gap-1 z-10 opacity-100">
                   <Tooltip>
                     <TooltipTrigger>
                       <LockClosedIcon className="w-8 h-8 text-gray-400 mx-auto" />
@@ -78,7 +78,7 @@ const Test = ({ keywordName, websiteId }: {
           <Card key={config.title} >
             <CardHeader title={config.title} total={config.total} />
             <div className='h-[250px] relative'>
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col justify-center gap-1 z-30 opacity-100">
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col justify-center gap-1 z-10 opacity-100">
                   <Tooltip>
                     <TooltipTrigger>
                       <LockClosedIcon className="w-8 h-8 text-gray-400 mx-auto" />
@@ -134,7 +134,6 @@ const Test = ({ keywordName, websiteId }: {
   }));
 
   const chartConfig = generateChartConfig(data);
-  console.log('chartConfig', chartConfig);
 
   return (
     <div className='grid grid-cols-4 gap-6 pb-6'>
@@ -290,4 +289,4 @@ const MOCK_CHART_DATA: GoogleSearchConsoleChartData[] = [
   }
 ]
 
-export default Test
+export default GoogleSearchConsoleDataGraphs

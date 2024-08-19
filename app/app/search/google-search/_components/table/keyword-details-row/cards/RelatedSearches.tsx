@@ -79,9 +79,9 @@ const RelatedSearches = ({
         <CardTitle title='Related Searches'>
           <Button
             disabled={isLoading || selectedSearches.length === 0}
-            size="sm"
+            size="newXs"
             type="submit"
-            variant="appWhite"
+            variant="new"
           >
             {isLoading ? (
               <LoadingSpinnerSmall className="w-4 h-4" />

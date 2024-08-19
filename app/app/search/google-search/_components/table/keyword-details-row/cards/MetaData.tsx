@@ -1,9 +1,9 @@
 import React from 'react'
 import { Card, CardPlainRow, CardTitle } from '../Card'
-import { TraficLight, TraficLightIndicator, TraficLightMinMaxValue } from './TraficLightIndicator'
+import { TraficLight, TraficLightIndicator, TraficLightMinMaxValue } from '../comps/TraficLightIndicator'
 
 
-const MetaTitle = ({ metaTitle, metaDescription }: { metaTitle: string | null, metaDescription: string | null }) => {
+const MetaData = ({ metaTitle, metaDescription }: { metaTitle: string | null, metaDescription: string | null }) => {
   if (!metaTitle || !metaDescription) {
     return null
   }
@@ -28,4 +28,4 @@ const MetaTitle = ({ metaTitle, metaDescription }: { metaTitle: string | null, m
   )
 }
 
-export default MetaTitle
+export default MetaData

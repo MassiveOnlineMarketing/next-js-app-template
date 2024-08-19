@@ -8,3 +8,7 @@
 1. 
 1. 
 1. NU not in use Ol old 
+
+
+text-gray-500 text-dark-text-dark
+text-gray-800 text-dark-text-light

@@ -18,7 +18,7 @@ const PeopleAlsoAsk = ({
       <CardAccordion type='multiple' >
         {keywordData.peopleAlsoAsk.map((item, index) => (
           <CardAccordionItem key={index} value={item.question} >
-            <CardAccordionTrigger>{item.question}</CardAccordionTrigger>
+            <CardAccordionTrigger><p>{item.question}</p></CardAccordionTrigger>
             <CardAccordionContent>{item.snippet}</CardAccordionContent>
           </CardAccordionItem>
         ))}

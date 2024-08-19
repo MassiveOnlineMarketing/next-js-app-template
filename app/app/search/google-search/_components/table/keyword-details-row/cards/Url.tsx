@@ -21,11 +21,11 @@ const Url = ({ url, domainUrl }: { url: string | null, domainUrl: string }) => {
     <Card>
       <CardTitle title='Url' >
         <button onClick={() => copyUrlToClipboard(url)}>
-          <Link className='w-4 h-4 text-p-500 dark:text-[#DFE5FA]/30' />
+          <Link className='w-4 h-4 text-gray-500 dark:text-dark-text-dark' />
         </button>
         <div>
           <a href={url} target='_blank'>
-            <ArrowTopRightOnSquareIcon className='w-4 h-4 text-p-500 dark:text-[#DFE5FA]/30' />
+            <ArrowTopRightOnSquareIcon className='w-4 h-4 text-gray-500 dark:text-dark-text-dark' />
           </a>
         </div>
       </CardTitle>

@@ -4,6 +4,7 @@ import React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
+import { Checkmark } from "../../../../../../../assets/icons";
 
 
 const FILL = "dark:bg-dark-bg-light bg-[#FBFBFF]";
@@ -127,8 +128,36 @@ const CardRow = React.forwardRef<HTMLDivElement, CardRowProps>(
     );
   }
 );
-
 CardRow.displayName = "CardRow";
+
+const CardAdsBidRow = React.forwardRef<HTMLDivElement, CardRowProps>(
+  ({ className, label, value, fill, ...props }, ref) => {
+
+    const formattedValue = typeof value === 'number' ? `$${(value / 1000000).toFixed(2)}` : value;
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "p-3 w-full flex items-center justify-between",
+          fill ? FILL : "",
+          className,
+        )}
+        {...props}
+      >
+        {/* Label */}
+        <p className="text-sm text-p-800 dark:text-dark-text-light">
+          {label}
+        </p>
+        {/* Value */}
+        <p className="text-sm text-slate-500 dark:text-dark-text-dark">
+          {formattedValue}
+        </p>
+      </div>
+    );
+  }
+);
+CardAdsBidRow.displayName = "CardAdsBidRow";
+
 
 interface CardDateRowProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
@@ -216,7 +245,7 @@ const CardRowInput = React.forwardRef<HTMLLabelElement, CardRowInputProps>(({
   <label
     className={cn(
       "flex items-center gap-3 px-3 py-2 cursor-pointer",
-      selectedSearches.includes(item.text) && "bg-p-100 dark:bg-dark-bg-light rounded-lg"
+      selectedSearches.includes(item.text) && "bg-p-25 dark:bg-dark-bg-light rounded-lg"
     )}
     key={item.text}
     ref={ref}
@@ -233,7 +262,12 @@ const CardRowInput = React.forwardRef<HTMLLabelElement, CardRowInputProps>(({
       type="checkbox"
       name={item.text}
       // TODO: Styles
-      className="h-4 w-4 my-auto rounded  bg-p-1100 checked:bg-p-1100  border  dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter focus:ring-p-1100 text-green-500 "
+      className={cn(
+        "h-4 w-4 my-auto rounded",
+        "bg-transparent",
+        "border border-slate-300 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter focus:ring-p-1100 ",
+        // "appearance-none"
+      )}
       value={item.text}
       checked={selectedSearches.includes(item.text)}
       onChange={() => handleCheckboxChange(item.text)}
@@ -274,7 +308,7 @@ const CardAccordionTrigger = React.forwardRef<
       )}
       {...props}
     >
-      <p className="text-nowrap">{children}</p>
+      <div className="text-nowrap">{children}</div>
       {/* Divider */}
       <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
       <ChevronDownIcon className="h-4 w-4 shrink-0 transition-transform duration-200" />
@@ -298,5 +332,5 @@ const CardAccordionContent = React.forwardRef<
 
 CardAccordionContent.displayName = AccordionPrimitive.Content.displayName
 
-export { Card, CardTitle, CardPlainRow, CardRow, CardDateRow, CardTagsRow, CardRowInput };
+export { Card, CardTitle, CardPlainRow, CardRow, CardAdsBidRow, CardDateRow, CardTagsRow, CardRowInput };
 export { CardAccordion, CardAccordionItem, CardAccordionTrigger, CardAccordionContent }

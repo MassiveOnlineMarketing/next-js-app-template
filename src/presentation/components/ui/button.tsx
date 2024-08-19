@@ -55,9 +55,17 @@ const buttonVariants = cva(
         dashboard: "p-2 bg-white shadow-base rounded-lg",
         appWhite: "bg-white text-gray-800 shadow-base rounded-lg",
 
+
+
+
+
+
+        new: "border border-p-100 dark:border-dark-stroke bg-white/50 dark:bg-dark-bg-light text-p-800 dark:text-dark-text-light rounded-[6px] font-medium",
+
         "ts-prop": " ",
       },
       size: {
+        newXs: "px-[14px] py-[6px] gap-[4px] text-sm",
         xs: "px-[12px] py-[6px] text-xs font-medium leading-4 gap-[4px]",
         sm: "px-[16px] py-[8px] text-sm font-medium leading-5 gap-[6px]",
         md: "px-[24px] py-[12px] text-base font-semibold leading-6 gap-[8px]",

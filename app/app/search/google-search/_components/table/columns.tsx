@@ -118,7 +118,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "firstPosition",
     id: "firstPosition",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="F Pos" />
+      <StandardHeaderCell sorting={true} column={column} title="First" />
     ),
     cell: ({ row: { original: { firstPosition } } }) => (
       <StandardRowCell value={firstPosition} />
@@ -130,7 +130,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "bestPosition",
     id: "bestPosition",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="B Pos" />
+      <StandardHeaderCell sorting={true} column={column} title="Best" />
     ),
     cell: ({ row: { original: { bestPosition } } }) => (
       <StandardRowCell value={bestPosition} />
@@ -142,7 +142,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "latestChange",
     id: "latestChange",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="L Change" />
+      <StandardHeaderCell sorting={true} column={column} title="Change" />
     ),
     cell: ({ row: { original: { latestChange } } }) => (
       <TrendingIndicatorRowCell value={latestChange} />
@@ -154,7 +154,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "avgMonthlySearches",
     id: "avgMonthlySearches",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="Avg Searches" />
+      <StandardHeaderCell sorting={true} column={column} title="Volume" />
     ),
     cell: ({ row: { original: {avgMonthlySearches} } }) => (
       <StandardRowCell value={avgMonthlySearches} />
@@ -229,7 +229,7 @@ export const columns = (domainUrl?: string): ColumnDef<GoogleSearchLatestKeyword
     accessorKey: "createdAt",
     id: "createdAt",
     header: ({ column }) => (
-      <StandardHeaderCell sorting={true} column={column} title="L Updated" />
+      <StandardHeaderCell sorting={true} column={column} title="Updated" />
     ),
     cell: ({ row: { original: {createdAt}} }) => (
       <DateRowCell value={createdAt} />

@@ -23,14 +23,13 @@ const TraficLightIndicator: React.FC<TraficLightIndicatorProps> = ({ maxValue, c
 
   const percentage = (value / maximumValue) * 100;
   let litSquares = Math.round((percentage / 100) * 10);
-  if (value > maximumValue) litSquares = 1;
 
   if (flip) {
     litSquares = 11 - litSquares;
   }
 
+  if (value > maximumValue) litSquares = 1;
   return (
-
     <div className='w-fit flex gap-1 p-1  rounded-[4px] bg-white dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter'>
       {Array.from({ length: 10 }, (_, index) => (
         <div
@@ -53,7 +52,7 @@ const TraficLightIndicator: React.FC<TraficLightIndicatorProps> = ({ maxValue, c
 const TraficLight = ({ children }: { children: React.ReactNode }) => {
 
   return (
-    <div className='flex w-fit'>
+    <div className='flex w-fit items-center'>
       {children}
     </div >
   )
@@ -66,7 +65,7 @@ type TraficLightMinMaxValueProps = {
 const TraficLightMinMaxValue: React.FC<TraficLightMinMaxValueProps> = ({ maxValue, currentValue }) => {
 
   return (
-    <p className='px-3 text-slate-500 dark:text-slate-300/50'><span>{currentValue ? currentValue : 'N/A'}</span>/<span>{maxValue}</span></p>
+    <p className='px-3 text-slate-500 dark:text-slate-300/50 text-sm'><span>{currentValue ? currentValue : 'N/A'}</span>/<span>{maxValue}</span></p>
   )
 }
 
