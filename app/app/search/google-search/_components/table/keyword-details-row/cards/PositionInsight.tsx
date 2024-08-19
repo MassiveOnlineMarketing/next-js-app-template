@@ -26,7 +26,6 @@ const PositionInsight = ({ keywordId }: {
 
   // Remove the "date" key
   const websiteKeys = keys.filter(key => key !== 'date');
-  console.log('data', data)
 
   return (
     <Card className=" mb-6">
