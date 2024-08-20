@@ -1,6 +1,8 @@
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import BackAndForwardButtons from "@/presentation/components/dashboard/BackAndForwardButtons";
+
 
 const BreadCrumbsSearchKeywords = ({
   campaignName,
@@ -9,20 +11,21 @@ const BreadCrumbsSearchKeywords = ({
 }) => {
 
   return (
-    <div className="p-6 w-full  dark:bg-dark-bg-light">
-      <p className="inline-flex items-center gap-4 text-sm leading-5 font-base text-gray-400 dark:text-[#DFE5FA]/35">
-        <span>Home</span>
-        <span><ChevronRightIcon className="w-4 h-4" /></span>
-        <Link href="app/search">Search</Link>
-        <span><ChevronRightIcon className="w-4 h-4" /></span>
-        <span>Google Search Campaign</span>
-        {campaignName && (
-          <>
-            <span><ChevronRightIcon className="w-4 h-4" /></span>
-            <span className="text-gray-500">{campaignName}</span>
-          </>
-        )}
-      </p>
+    <div className="w-full pr-6">
+      <div className="px-6 py-4 w-full dark:bg-dark-bg-light lg:rounded-t-3xl dark:border-x dark:border-t dark:border-dark-stroke flex justify-between items-center">
+        <p className="inline-flex items-center gap-4 text-sm leading-5 font-base text-gray-400 dark:text-[#DFE5FA]/35">
+          <Link href="app/">Home</Link>
+          <span><ChevronRightIcon className="w-4 h-4" /></span>
+          <span>Keyword Tracker</span>
+          {campaignName && (
+            <>
+              <span><ChevronRightIcon className="w-4 h-4" /></span>
+              <span className="text-gray-500">{campaignName}</span>
+            </>
+          )}
+        </p>
+        <BackAndForwardButtons />
+      </div>
     </div>
   );
 };

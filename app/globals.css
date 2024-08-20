@@ -3,15 +3,19 @@
 @tailwind utilities;
 
 .custom-scrollbar::-webkit-scrollbar {
-  @apply w-2;
+  @apply w-2 absolute right-0;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  @apply bg-gray-100 rounded-full;
+  @apply bg-p-25 dark:bg-p-1100 rounded-full absolute right-0;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   @apply bg-indigo-500 rounded;
+}
+
+.custom-scrollbar {
+  scrollbar-gutter: inherit;
 }
 
 @layer base {
