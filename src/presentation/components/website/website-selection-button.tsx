@@ -55,7 +55,7 @@ const WebsiteSelectionButton = () => {
 
   if (isLoading === true) {
     return (
-      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[350px]'>
         <WebsiteSelectorMock label='Loading...' />
         <LocationSelectorMock label='Loading...' />
       </div>
@@ -69,7 +69,7 @@ const WebsiteSelectionButton = () => {
   // console.log('websiteWithGoogleSearchCampaigns', websiteWithGoogleSearchCampaigns)
   if (websiteWithGoogleSearchCampaigns.length === 0) {
     return (
-      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[350px]'>
         <WebsiteSelectorMock label='Click to setup website' onClick={handleCreateWebsite} />
         <LocationSelectorMock label='No location to select' />
       </div>
@@ -79,7 +79,7 @@ const WebsiteSelectionButton = () => {
   // no website selected
   if (!selectedWebsite) {
     return (
-      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[350px]'>
         <DropdownMenu dir="ltr">
           <DropdownMenuTrigger className='flex items-center mb-2'>
             <CubeTransparentIcon className="h-9 w-9 text-gray-700" />
@@ -103,7 +103,7 @@ const WebsiteSelectionButton = () => {
     console.log('create location')
   }
   return (
-    <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
+    <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[350px]'>
       {/* Website selector */}
       <DropdownMenu dir="ltr">
         <DropdownMenuTrigger className='flex items-center mb-2'>
@@ -125,7 +125,7 @@ const WebsiteSelectionButton = () => {
       {selectedWebsite && websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite.id).length > 0 &&
         websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite.id)[0].googleSearchCampaign.length > 0 ? (
         <DropdownMenu>
-          <DropdownMenuTrigger className='px-3 py-2 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]'>
+          <DropdownMenuTrigger className='px-3 py-2 bg-p-25 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]'>
             <MapPinIcon className='min-w-5 h-5 dark:text-dark-text-dark' />
             <p className='text-nowrap text-sm'>
               {selectedGoogleSearchCampaign?.location ? `${selectedGoogleSearchCampaign.country} ${selectedGoogleSearchCampaign.location.split(',')[0]}` : (
@@ -176,7 +176,7 @@ const LocationSelectorMock = ({ label, onClick }: { label: string, onClick?: () 
   return (
     <div
       className={cn(
-        'px-3 py-2 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]',
+        'px-3 py-2 bg-p-25 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px] rounded-md',
         onClick && 'cursor-pointer'
       )}
       onClick={onClick}

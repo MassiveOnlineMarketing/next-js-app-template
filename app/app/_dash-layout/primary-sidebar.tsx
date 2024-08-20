@@ -48,7 +48,7 @@ const PrimarySidebar = () => {
   const navigation = [
     { name: 'Home', href: '/app', icon: HomeIcon },
     { name: "Keyword Tracker", href: `/app/search/google-search/${selectedGoogleSearchCampaign?.id}`, icon: PresentationChartLineIcon, disabled: !selectedGoogleSearchCampaign?.id },
-    { name: 'Intergration', href: '/app/settings/integrations', icon: PresentationChartLineIcon },
+    { name: 'Integration', href: '/app/settings/integrations', icon: PresentationChartLineIcon },
     { name: 'Billing', href: '/app/billing', icon: CreditCardIcon },
   ];
 
@@ -88,12 +88,12 @@ const PrimarySidebar = () => {
           </div>
         </li>
         <li className="px-6">
-          <UpdateWebsiteButton>
+          {/* <UpdateWebsiteButton>
             <Cog6ToothIcon className="w-6 h-6 text-gray-400" />
             <span className="text-gray-500 text-base font-medium">
               Website Settings
             </span>
-          </UpdateWebsiteButton>
+          </UpdateWebsiteButton> */}
           {/* <Link href="/search/help" className="py-2 flex gap-4 items-center">
             <QuestionMarkCircleIcon className="w-6 h-6 text-gray-400" />
             <span className="text-gray-500 text-base font-medium">
@@ -149,7 +149,7 @@ const NavItem = ({ item, pathname }: NavItemProps) => {
       </div>
       <div
         className={cn(
-          "absolute top-0 h-full transition-all duration-500",
+          "dark:absolute top-0 h-full transition-all duration-500",
           isActive(item.href, pathname)
             ? "bg-gradient-to-r from-primary-500/15 to-transparent  border-x dark:border-dark-stroke  w-[350px]"
             : "w-0",
@@ -178,7 +178,7 @@ const UserActions = () => {
         <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
         <ChevronDownIcon className="h-4 w-4 text-gray-500 dark:text-dark-text-dark shrink-0 transition-transform duration-200 group-hover:-rotate-90" />
       </div>
-      <div className="h-0 group-hover:h-[88px] transition-all duration-300 overflow-hidden text-gray-500 dark:text-dark-text-dark dark:bg-p-1100 rounded-md">
+      <div className="h-0 group-hover:h-[88px] transition-all duration-300 overflow-hidden text-gray-500 bg-p-25 dark:text-dark-text-dark dark:bg-p-1100 rounded-md">
         <div className="px-[6px] py-[10px]  flex items-center gap-2">
           <Cog6ToothIcon className="w-6 h-6" />
           <Link
