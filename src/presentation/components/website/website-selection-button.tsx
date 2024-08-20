@@ -1,26 +1,35 @@
 'use client';
 
 import React from 'react'
-import Link from 'next/link';
 
 import { GoogleSearchCampaign } from '@/domain/serpTracker/enitities/GoogleSearchCampaign';
 
-import useTestWebsiteSelection, { WebsitesArrayType } from './useTestWebsiteSelection';
+import useLoadWebsiteDetails, { WebsitesArrayType } from './useLoadWebsiteDetails';
 import { useWebsiteDetailsStore } from '@/presentation/stores/website-details-store';
 import { useGoogleSearchCampaignDetailsStore } from '@/presentation/stores/google-search-campaign-store';
 
 import { getFaviconUrl } from '@/presentation/lib/utils';
+import { cn } from '../utils';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSubTriggerWithoutArrow, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
 import { CubeTransparentIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, ChevronUpDownIcon, MapPinIcon } from '@heroicons/react/20/solid';
+import { useCurrentUser } from '@/presentation/auth/hooks/user-current-user';
+import useWebsiteSelectionChecker from './useWebsiteSelectionChecker';
 
-const TestWebsiteSelectionButton = () => {
-  const { isLoading, websiteWithGoogleSearchCampaigns, setWebsiteById, setGoogleSearchCampaignById } = useTestWebsiteSelection();
+const WebsiteSelectionButton = () => {
   const selectedWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
+  const setWebsiteById = useWebsiteDetailsStore((state) => state.setWebsiteById);
+
   const selectedGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
-  // console.log('googleSearchCampaigns', googleSearchCampaigns)
+  const setGoogleSearchCampaignById = useGoogleSearchCampaignDetailsStore((state) => state.setCampaignDetailsById);
+
+  const { isLoading, websiteWithGoogleSearchCampaigns } = useLoadWebsiteDetails();
+  useWebsiteSelectionChecker();
+  
+  const user = useCurrentUser();
+
 
   const handleClick = (data: any) => {
     if (!data.id) {
@@ -28,13 +37,18 @@ const TestWebsiteSelectionButton = () => {
       return;
     }
 
+    if (!user?.id) {
+      console.log('no user id')
+      return
+    }
+
     if (data.websiteId) {
       console.log('google search campaign', data)
-      setWebsiteById(data.websiteId)
+      setWebsiteById(data.websiteId, user?.id)
       setGoogleSearchCampaignById(data.id)
     } else {
       console.log('website', data)
-      setWebsiteById(data.id)
+      setWebsiteById(data.id, user?.id)
     }
   }
 
@@ -48,55 +62,66 @@ const TestWebsiteSelectionButton = () => {
     )
   }
 
-  console.log('selectedWesbite', selectedWebsite)
-  console.log('websiteWithGoogleSearchCampaigns', websiteWithGoogleSearchCampaigns)
-  console.log('filtered selected website', websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite?.id)[0])
+  // no website with google search campaigns
+  const handleCreateWebsite = () => {
+    console.log('create website')
+  }
+  // console.log('websiteWithGoogleSearchCampaigns', websiteWithGoogleSearchCampaigns)
+  if (websiteWithGoogleSearchCampaigns.length === 0) {
+    return (
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
+        <WebsiteSelectorMock label='Click to setup website' onClick={handleCreateWebsite} />
+        <LocationSelectorMock label='No location to select' />
+      </div>
+    )
+  }
 
-  console.log('test', websiteWithGoogleSearchCampaigns, 'loading', isLoading)
+  // no website selected
+  if (!selectedWebsite) {
+    return (
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
+        <DropdownMenu dir="ltr">
+          <DropdownMenuTrigger className='flex items-center mb-2'>
+            <CubeTransparentIcon className="h-9 w-9 text-gray-700" />
+            <p className='pl-3 dark:text-dark-text-light'>Select Website</p>
+            <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="right" className="w-fit flex flex-row min-w-[40px]">
+            {websiteWithGoogleSearchCampaigns.map((website) => (
+              <WebsiteItem key={website.id} website={website} handleClick={handleClick} />
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <LocationSelectorMock label='No location to select' />
+      </div>
+    )
+  }
 
 
-
-
+  // Have selected website, possible no location, then setup Location selector
+  const handleCreateLocation = () => {
+    console.log('create location')
+  }
   return (
     <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke dark:bg-dark-bg-light w-[350px]'>
       {/* Website selector */}
-
-      {selectedWebsite ? (
-        <DropdownMenu dir="ltr">
-          <DropdownMenuTrigger className='flex items-center mb-2'>
-            <img src={getFaviconUrl(selectedWebsite?.domainUrl)} width={36} height={36} alt='favicon' className='border dark:border-dark-stroke rounded-[4px]' />
-            <p className='pl-3 dark:text-dark-text-light'>{selectedWebsite.websiteName}</p>
-            <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
-          </DropdownMenuTrigger>
-          {websiteWithGoogleSearchCampaigns.length > 0 && (
-            <DropdownMenuContent side="right" className="w-fit flex flex-row min-w-[40px]">
-              {websiteWithGoogleSearchCampaigns.map((website) => (
-                <WebsiteItem key={website.id} website={website} handleClick={handleClick} />
-              ))}
-            </DropdownMenuContent>
-          )}
-        </DropdownMenu>
-      ) : (
-        websiteWithGoogleSearchCampaigns.length > 0 ? (
-          <DropdownMenu dir="ltr">
-            <DropdownMenuTrigger className='flex items-center mb-2'>
-              <CubeTransparentIcon className="h-9 w-9 text-gray-700" />
-              <p className='pl-3 dark:text-dark-text-light'>Select Website</p>
-              <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" className="w-fit flex flex-row min-w-[40px]">
-              {websiteWithGoogleSearchCampaigns.map((website) => (
-                <WebsiteItem key={website.id} website={website} handleClick={handleClick} />
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <WebsiteSelectorMock label='No website to select' />
-        )
-      )}
+      <DropdownMenu dir="ltr">
+        <DropdownMenuTrigger className='flex items-center mb-2'>
+          <img src={getFaviconUrl(selectedWebsite?.domainUrl)} width={36} height={36} alt='favicon' className='border dark:border-dark-stroke rounded-[4px]' />
+          <p className='pl-3 dark:text-dark-text-light'>{selectedWebsite.websiteName}</p>
+          <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
+        </DropdownMenuTrigger>
+        {websiteWithGoogleSearchCampaigns.length > 0 && (
+          <DropdownMenuContent side="right" className="w-fit flex flex-row min-w-[40px]">
+            {websiteWithGoogleSearchCampaigns.map((website) => (
+              <WebsiteItem key={website.id} website={website} handleClick={handleClick} />
+            ))}
+          </DropdownMenuContent>
+        )}
+      </DropdownMenu>
 
 
-      {/* Campaign selector */}
+      {/* Location selector */}
       {selectedWebsite && websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite.id).length > 0 &&
         websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite.id)[0].googleSearchCampaign.length > 0 ? (
         <DropdownMenu>
@@ -124,16 +149,22 @@ const TestWebsiteSelectionButton = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <LocationSelectorMock label='No location to select' />
+        <LocationSelectorMock label='Click to setup Location' onClick={handleCreateLocation} />
       )}
     </div>
   )
 }
 
 
-const WebsiteSelectorMock = ({ label }: { label: string }) => {
+const WebsiteSelectorMock = ({ label, onClick }: { label: string, onClick?: () => void }) => {
   return (
-    <div className='flex items-center mb-2'>
+    <div
+      className={cn(
+        'flex items-center mb-2',
+        onClick && 'cursor-pointer'
+      )}
+      onClick={onClick}
+    >
       <CubeTransparentIcon className="h-9 w-9 text-gray-700" />
       <p className='pl-3 dark:text-dark-text-light'>{label}</p>
       <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
@@ -141,9 +172,15 @@ const WebsiteSelectorMock = ({ label }: { label: string }) => {
   )
 }
 
-const LocationSelectorMock = ({ label }: { label: string }) => {
+const LocationSelectorMock = ({ label, onClick }: { label: string, onClick?: () => void }) => {
   return (
-    <div className='px-3 py-2 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]'>
+    <div
+      className={cn(
+        'px-3 py-2 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]',
+        onClick && 'cursor-pointer'
+      )}
+      onClick={onClick}
+    >
       <MapPinIcon className='min-w-5 h-5 dark:text-dark-text-dark' />
       <p className='text-nowrap text-sm'>
         {label}
@@ -238,4 +275,4 @@ const CampaignItem = ({ campaign, website, handleClick }: { campaign: GoogleSear
   )
 }
 
-export default TestWebsiteSelectionButton;
+export default WebsiteSelectionButton;

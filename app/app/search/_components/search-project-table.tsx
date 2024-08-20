@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 
 import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-store";
+import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 import { GoogleSearchCampaignWithResult } from "@/application/dto/GoogleSearchCampaignWithResult";
 import GoogleSearchProjectFormDialog from "@/presentation/components/google-search-campaign/google-search-campaign-form-dialog";
 
@@ -18,7 +19,6 @@ import { OutlinedTextButton } from "@/presentation/components/ui/text-button";
 // Icons
 import { MagnifyingGlassIcon, ViewColumnsIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
-import useTestWebsiteSelection from "@/presentation/components/website/useTestWebsiteSelection";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -68,7 +68,7 @@ function DataTable<TData, TValue>({
 
   const router = useRouter();
   const setWebsiteDetails = useWebsiteDetailsStore((state) => state.setWebsiteDetails);
-  const { setGoogleSearchCampaignById } = useTestWebsiteSelection();
+  const setGoogleSearchCampaignById = useGoogleSearchCampaignDetailsStore((state) => state.setCampaignDetailsById);
   const numberOfVisibleColumns = table.getVisibleFlatColumns().length;
 
   const handleClickRow = (row: Row<TData>) => () => {

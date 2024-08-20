@@ -1,11 +1,9 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 
-import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 import { cn } from "@/presentation/components/utils";
 
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
@@ -14,13 +12,11 @@ import useLogout from "@/presentation/auth/hooks/use-logout";
 
 // Components
 import ThemeSwitcher from "./ThemeSwitcher";
-import TestWebsiteSelectionButton from "@/presentation/components/website/test-website-selection-button";
+import WebsiteSelectionButton from "@/presentation/components/website/website-selection-button";
 import UpdateWebsiteButton from "@/presentation/components/website/update-website-button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/presentation/components/ui/tooltip";
-// import WebsiteSelectionButton from "@/presentation/components/website/NUwebsite-selection-button";
 
 // Icons
-import { ChevronDownIcon, LockClosedIcon } from "@heroicons/react/20/solid";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { HomeIcon, PresentationChartLineIcon, Cog6ToothIcon, CreditCardIcon } from "@heroicons/react/24/outline";
 import { MassiveDashLogo } from "../../../assets/branding";
 import { LogOutIcon } from "lucide-react";
@@ -47,8 +43,6 @@ function isActive(href: string, pathname: string) {
 const PrimarySidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  // const googleSearchCampaigns = useGoogleSearchCampaignDetailsStore((state) => state.campaigns);
-
   const selectedGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
 
   const navigation = [
@@ -69,7 +63,7 @@ const PrimarySidebar = () => {
         </li>
 
         <li className="px-6">
-          <TestWebsiteSelectionButton />
+          <WebsiteSelectionButton />
         </li>
 
         <li className="px-6">
@@ -162,13 +156,6 @@ const NavItem = ({ item, pathname }: NavItemProps) => {
         )}
       >
       </div>
-      {/* <div
-        className={cn(
-          "absolute -left-3 h-6 top-1/2 -translate-y-1/2 w-1 bg-primary-500 rounded-r-sm",
-          isActive(item.href, pathname) ? "" : "hidden",
-        )}
-      >
-      </div> */}
     </div>
   )
 }
@@ -181,7 +168,6 @@ const UserActions = () => {
   const handleLogout = async () => {
     await logout();
   };
-  // console.log(user);
 
   return (
     <div className="p-1 border dark:bg-dark-bg-light dark:border-dark-stroke border-mix-blend-multiply dark:border-mix-blend-plus-lighter rounded-xl group bg-white ">

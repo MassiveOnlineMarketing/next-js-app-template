@@ -7,8 +7,6 @@ import getAccountById from '@/application/useCases/user/getAccountById';
 
 import { UserAccountStoreProvider } from './userAccountStoreProvider';
 import { getWebsiteByUserId } from '@/application/useCases/website/getWebsiteByUserId';
-import { WebsiteDetailsProvider } from './websiteDetailsStoreProvider';
-import { Website } from '@/domain/_entities/Website';
 
 
 const ServerProvider = async ({
@@ -24,18 +22,10 @@ const ServerProvider = async ({
     account = await getAccountById(userId);
   }
 
-  let website = null;
-  if (userId) {
-    website = await getWebsiteByUserId(userId).then((res) => {
-      return res.data
-    });
-  }
-
 
   return (
     <>
       <UserAccountStoreProvider account={account} />
-      <WebsiteDetailsProvider websites={website} />
       {children}
     </>
   )

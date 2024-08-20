@@ -19,19 +19,26 @@ import { columns } from "./table/columns";
 import CampaignStats from "@/presentation/components/google-search-campaign/campaign-stats/CampaignStats";
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from "@/presentation/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
+import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
 const ClientPage = ({
   googleSearchCampaign,
   latestSerpResults,
+  campaignId
 }: {
   googleSearchCampaign: GoogleSearchCampaign;
   latestSerpResults: GoogleSearchLatestKeywordResult[];
+  campaignId: string;
 }) => {
   const filteredResults = useFilteredKeywordResults();
   const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
+  const currentGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
 
   const { isDeleteDialogOpen, setIsDeleteDialogOpen, cancelDelete, confirmDelete } = useKeywordOpperations();
   const { setNewSerpResultState } = useGoogleSearchKeywordTracker();
+
+  const router = useRouter();
 
   useEffect(() => {
     setNewSerpResultState(latestSerpResults);
@@ -39,6 +46,14 @@ const ClientPage = ({
 
   if (!currentWebsite) {
     return <div>loading</div>;
+  }
+
+  if (!currentGoogleSearchCampaign) {
+    return <div>Select a location</div>;
+  }
+
+  if (currentGoogleSearchCampaign.id !== campaignId) {
+    router.push(`/search/google-search/${currentGoogleSearchCampaign.id}`);
   }
 
   return (
