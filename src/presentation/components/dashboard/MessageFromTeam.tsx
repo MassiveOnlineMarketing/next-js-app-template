@@ -16,15 +16,15 @@ const MessageFromTeam = ({
   return (
     <div
       className={cn(
-        "p-6 bg-white rounded-2xl shadow-base flex gap-2",
+        "p-6 bg-white rounded-2xl shadow-base flex gap-2 dark:bg-dark-bg-light dark:border dark:border-dark-stroke",
         className,
       )}
     >
-      <ChatBubbleBottomCenterTextIcon className="min-w-6 h-6 text-gray-700 mt-1 flex-0" />
+      <ChatBubbleBottomCenterTextIcon className="min-w-6 h-6 text-gray-700 mt-1 flex-0 dark:text-dark-text-light" />
       <div>
-        <p className="mb-2 font-medium text-lg text-gray-800">{heading}</p>
+        <p className="mb-2 font-medium text-lg text-gray-800 dark:text-dark-text-light">{heading}</p>
         <p
-          className="text-sm text-gray-500"
+          className="text-sm text-gray-500 dark:text-dark-text-dark"
           dangerouslySetInnerHTML={{ __html: message }}
         />
       </div>

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import BackAndForwardButtons from "@/presentation/components/dashboard/BackAndForwardButtons";
+import UserCredits from "./UserCredits";
 
 
 const BreadCrumbsSearchKeywords = ({
@@ -24,7 +25,12 @@ const BreadCrumbsSearchKeywords = ({
             </>
           )}
         </p>
+        <div className="flex gap-20">
+          <div className=" h-fit py-2 px-3 rounded-[4px] dark:bg-dark-bg-light">
+          <UserCredits />
+          </div>
         <BackAndForwardButtons />
+        </div>
       </div>
     </div>
   );

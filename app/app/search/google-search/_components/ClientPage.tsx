@@ -60,7 +60,7 @@ const ClientPage = ({
   return (
     <>
       {/* <BreadCrumbsSearchKeywords campaignName={googleSearchCampaign.campaignName} /> */}
-      <div className=" h-[calc(100vh-32px)] overflow-y-scroll custom-scrollbar pr-4">
+      <div className=" h-[calc(100vh-96px)] overflow-y-scroll custom-scrollbar pr-4">
         <div className="dark:border-x dark:border-dark-stroke h-fit">
           <CampaignStats filteredResults={filteredResults} />
           <div className="relative">
