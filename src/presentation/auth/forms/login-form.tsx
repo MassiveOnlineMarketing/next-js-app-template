@@ -26,7 +26,7 @@ export const LoginForm = () => {
       ? "Email already in use with different provider!"
       : "";
 
-  const [showTwoFactor, setShowTwoFactor] = useState(false);
+  // const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -158,7 +158,8 @@ export const LoginForm = () => {
             <FormSuccess message={success} />
           </div>
           <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='md'>
-            {showTwoFactor ? "Confirm" : "Login"}
+            Login
+            {/* {showTwoFactor ? "Confirm" : "Login"} */}
           </Button>
         </form>
       </Form>
