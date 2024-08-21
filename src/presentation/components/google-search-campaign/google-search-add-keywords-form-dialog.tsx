@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTriggerNoButton } from "@/presentation/components/common/dialog";
-import AddKeywordsFrom from '../forms/AddKeywordsForm';
+import AddKeywordsFrom from '../../keyword-tracker/components/forms/AddKeywordsForm';
 
 
 const GoogleSearchAddKeywordsFormDialog = ({

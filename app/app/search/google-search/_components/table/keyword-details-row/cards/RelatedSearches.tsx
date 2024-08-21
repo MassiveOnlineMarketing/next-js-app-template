@@ -6,7 +6,7 @@ import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/
 
 // Hooks and Store
 import { useToast } from "@/presentation/components/toast/use-toast";
-import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
+import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
 // Components
@@ -15,7 +15,7 @@ import { Button } from "@/presentation/components/ui/button";
 // Assets
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
-import useRelatedSearchesWithSearchVolume from "@/presentation/hooks/serp/fetching/useRelatedSearchesWithSearchVolume";
+import useRelatedSearchesWithSearchVolume from "@/presentation/keyword-tracker/hooks/fetching/useRelatedSearchesWithSearchVolume";
 import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
 import { Card, CardTitle, CardRowInput } from "../Card";
 

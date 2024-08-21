@@ -8,7 +8,7 @@ import { GoogleSearchCampaignKeywordsSchemaType } from "@/application/schemas/go
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 
 import { TextareaApp } from "@/presentation/components/ui/inputFields";
-import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
+import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
 
 /**
  * Component for adding keywords to a Google search campaign.

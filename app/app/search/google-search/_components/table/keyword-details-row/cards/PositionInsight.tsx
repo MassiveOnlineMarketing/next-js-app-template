@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import useGoogleSearchCompetitorGraphData from '@/presentation/hooks/serp/fetching/useGoogleSearchCompetitorGraphData';
+import useGoogleSearchCompetitorGraphData from '@/presentation/keyword-tracker/hooks/fetching/useGoogleSearchCompetitorGraphData';
 import { YAxis, XAxis, Tooltip, ResponsiveContainer, Area, AreaChart, CartesianGrid, Legend, TooltipProps } from "recharts";
 
 import { Card, CardTitle } from '../Card'

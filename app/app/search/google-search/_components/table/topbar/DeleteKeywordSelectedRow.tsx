@@ -8,7 +8,7 @@ import {
 } from "@/presentation/components/ui/dropdown-menu";
 import { OutlinedTextButton } from "@/presentation/components/ui/text-button";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
+import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
 
 const DeleteKeywordSelectedRowButton = ({
   selectedRows,

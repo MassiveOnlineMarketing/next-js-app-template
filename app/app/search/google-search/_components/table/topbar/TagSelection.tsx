@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useGoogleSearchKeywordResultStore } from "@/presentation/stores/google-search-keyword-result-store";
-import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/keyword-tracker/hooks/useGoogleSearchKeywordTagOpperations";
 
 import {
   Command,

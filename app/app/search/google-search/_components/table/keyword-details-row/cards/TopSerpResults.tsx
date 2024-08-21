@@ -1,4 +1,4 @@
-import useGoogleSearchTopTenResults from '@/presentation/hooks/serp/fetching/useGoogleSearchTopTenResults'
+import useGoogleSearchTopTenResults from '@/presentation/keyword-tracker/hooks/fetching/useGoogleSearchTopTenResults'
 import React from 'react'
 import { Card, CardAccordion, CardAccordionContent, CardAccordionItem, CardAccordionTrigger, CardTitle } from '../Card'
 import { cn } from '@/presentation/components/utils'

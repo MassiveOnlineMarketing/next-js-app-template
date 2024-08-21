@@ -20,8 +20,8 @@ import {
 import { Button } from "@/presentation/components/ui/button";
 import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
 import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
-import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
-import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/keyword-tracker/hooks/useGoogleSearchKeywordTagOpperations";
+import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
 
 type Props = {
   keyword: GoogleSearchLatestKeywordResult;

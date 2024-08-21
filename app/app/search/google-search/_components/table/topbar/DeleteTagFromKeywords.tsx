@@ -9,7 +9,7 @@ import {
   DropdownMenuPortal,
   DropdownMenuSubContent,
 } from "@/presentation/components/ui/dropdown-menu";
-import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/keyword-tracker/hooks/useGoogleSearchKeywordTagOpperations";
 
 const DeleteTagFromKeyword = ({
   selectedRows,

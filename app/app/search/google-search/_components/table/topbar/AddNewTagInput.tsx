@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import useGoogleSearchKeywordTagOpperations from "@/presentation/hooks/serp/useGoogleSearchKeywordTagOpperations";
+import useGoogleSearchKeywordTagOpperations from "@/presentation/keyword-tracker/hooks/useGoogleSearchKeywordTagOpperations";
 import { cn } from "@/presentation/components/utils";
 
 const AddNewTagInput = ({

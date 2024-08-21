@@ -15,7 +15,7 @@ import { deleteCompetitorsFromGoogleSearchCampaign } from "@/application/useCase
 import { deleteGoogleSearchCampaign } from "@/application/useCases/googleSearchCampaign/deleteGoogleSearchCampaign";
 
 
-import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
+import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 
 

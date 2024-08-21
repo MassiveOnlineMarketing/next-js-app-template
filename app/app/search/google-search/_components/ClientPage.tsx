@@ -4,8 +4,8 @@ import React, { useEffect } from "react";
 
 // Hooks
 import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-store";
-import useFilteredKeywordResults from "@/presentation/hooks/serp/useFilteredKeywordResults";
-import useKeywordOpperations from "@/presentation/hooks/serp/useKeywordOpperations";
+import useFilteredKeywordResults from "@/presentation/keyword-tracker/hooks/useFilteredKeywordResults";
+import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
 import useGoogleSearchKeywordTracker from "../useGoogleSearchKeywordTracker";
 
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";

@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react'
 import Link from "next/link";
 import { useToast } from '@/presentation/components/toast/use-toast';
-import useKeywordDetailsSearchConsoleData from '@/presentation/hooks/serp/fetching/useKeywordDetailsSearchConsoleData';
+import useKeywordDetailsSearchConsoleData from '@/presentation/keyword-tracker/hooks/fetching/useKeywordDetailsSearchConsoleData';
 import useGoogleToken from '@/presentation/hooks/useGoogleRefreshToken';
 
 import { Card, CardHeader } from '../GoogleSearchConsoleGraphCard';
