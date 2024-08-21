@@ -6,7 +6,7 @@ import { useToast } from '@/presentation/components/toast/use-toast';
 import useKeywordDetailsSearchConsoleData from '@/presentation/keyword-tracker/hooks/fetching/useKeywordDetailsSearchConsoleData';
 import useGoogleToken from '@/presentation/hooks/useGoogleRefreshToken';
 
-import { Card, CardHeader } from '../GoogleSearchConsoleGraphCard';
+import { Card, CardHeader, CardFooter } from '../GoogleSearchConsoleGraphCard';
 import GoogleSearchConsoleChart, { GoogleSearchConsoleChartData } from '../comps/GraphsN';
 import { useWebsiteDetailsStore } from '@/presentation/stores/website-details-store';
 import { LoadingSpinner } from '@/presentation/components/ui/loading-spinner';
@@ -139,7 +139,7 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId }: {
     <div className='grid grid-cols-4 gap-6 pb-6'>
       {chartConfig.map((config) => (
         <Card key={config.title} >
-          <CardHeader title={config.title} total={config.total} />
+          <CardHeader title={config.title} description={config.description} total={config.total} />
           <div className='h-[250px]'>
             <GoogleSearchConsoleChart
               data={data}
@@ -150,6 +150,7 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId }: {
               reverse={config.reverse}
             />
           </div>
+          <CardFooter firstValue={config.firstValue} lastValue={config.lastValue} reverse={config.reverse} />
         </Card>
       ))}
     </div>
@@ -166,34 +167,46 @@ const generateChartConfig = (data: GoogleSearchConsoleChartData[]) => {
   const chartConfig = [
     {
       title: "Clicks",
+      description: "Search Engine Clicks",
       color: "#2563EB",
       dataKey: "clicks",
       domain: getChartDomain(data, 'clicks'),
       total: getTotals(data, 'clicks'),
+      firstValue: getFirst(data, 'clicks'),
+      lastValue: getLast(data, 'clicks'),
       reverse: false
     },
     {
       title: "CTR",
+      description: "Click Through Rate",
       color: "#059669",
       dataKey: "ctr",
       domain: getChartDomain(data, 'ctr'),
       total: getCtrAverage(data, 'ctr'),
+      firstValue: getFirst(data, 'ctr'),
+      lastValue: getLast(data, 'ctr'),
       reverse: false
     },
     {
       title: "Position",
+      description: "Average Position",
       color: "#F59E0B",
       dataKey: "position",
       domain: getChartDomain(data, 'position', true),
       total: getPositionAverage(data, 'position'),
+      firstValue: getFirst(data, 'position'),
+      lastValue: getLast(data, 'position'),
       reverse: true
     },
     {
       title: "Impressions",
+      description: "Search Engine Impressions",
       color: "#7857FE",
       dataKey: "impressions",
       domain: getChartDomain(data, 'impressions'),
       total: getTotals(data, 'impressions'),
+      firstValue: getFirst(data, 'impressions'),
+      lastValue: getLast(data, 'impressions'),
       reverse: false
     }
   ]
@@ -212,6 +225,14 @@ const getPositionAverage = (data: GoogleSearchConsoleChartData[], key: keyof Goo
 
 const getCtrAverage = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): number => {
   return Number((getTotals(data, key) / data.length).toFixed(2));
+}
+
+const getFirst = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): number => {
+  return data[0][key] as number;
+}
+
+const getLast = (data: GoogleSearchConsoleChartData[], key: keyof GoogleSearchConsoleChartData): number => {
+  return data[data.length - 1][key] as number;
 }
 
 const getChartDomain = (

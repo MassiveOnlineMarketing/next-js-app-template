@@ -14,6 +14,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   }
 
   const { email, password, name } = validatedFields.data;
+  const lowerCaseEmail = email.toLowerCase();
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -21,8 +22,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const authService = new AuthService();
 
   try {
-    console.log("🟡 Registering user", email, name)
-    const login = await authService.register(email, hashedPassword, name);
+    console.log("🟡 Registering user", email, lowerCaseEmail)
+    const login = await authService.register(lowerCaseEmail, hashedPassword, name);
 
     console.log("User registered", login);
     return login;

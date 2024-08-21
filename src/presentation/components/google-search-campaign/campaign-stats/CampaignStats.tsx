@@ -40,8 +40,8 @@ export const CampaignStats = ({ filteredResults }: { filteredResults: GoogleSear
     { title: 'Top 3', value: numberOfKeywordsInTop3 },
     { title: 'Top 10', value: numberOfKeywordsInTop10 },
     { title: 'Top 100', value: numberOfKeywordsInTop100 },
-    { title: 'Bettered', value: numberOfKeyowrdsBettered },
-    { title: 'Worsened', value: numberOfKeyowrdsWorsened }
+    { title: 'Improved', value: numberOfKeyowrdsBettered },
+    { title: 'Decreased ', value: numberOfKeyowrdsWorsened }
   ];
 
   return (

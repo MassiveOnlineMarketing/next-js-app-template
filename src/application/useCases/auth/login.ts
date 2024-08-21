@@ -16,10 +16,11 @@ export const login = async (
   }
 
   const { email, password, code } = validatedFields.data;
+  const lowerCaseEmail = email.toLowerCase();
 
 
   const authService = new AuthService();
-  const login = await authService.login(email, password, callbackUrl);
+  const login = await authService.login(lowerCaseEmail, password, callbackUrl);
 
   return login;
 };

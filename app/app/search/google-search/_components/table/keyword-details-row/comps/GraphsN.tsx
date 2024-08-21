@@ -44,7 +44,7 @@ const GoogleSearchConsoleChart = ({ data, positionDomain, dataKey, color, title,
         </defs>
         <XAxis hide={true} dataKey="date" />
         <YAxis hide={true} axisLine={false} domain={positionDomain} reversed={reverse} />
-        {interactive && <Tooltip content={< CustomTooltip />} />}
+        {interactive && <Tooltip wrapperStyle={{ zIndex: 9999 }} content={< CustomTooltip />} />}
         <Area
           type="monotoneX"
           dataKey={dataKey}

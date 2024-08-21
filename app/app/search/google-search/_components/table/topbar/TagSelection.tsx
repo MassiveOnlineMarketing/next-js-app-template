@@ -67,7 +67,7 @@ const TagSelection = () => {
             }
             className="h-9"
           />
-          {uniqueTags.length > 0 && (
+          {uniqueTags.length > 0 ? (
             <CommandGroup>
               <CommandItem value="" onSelect={() => clearTags()} className="dark:hover:bg-neutral-800" >
                 All Keywords
@@ -91,6 +91,12 @@ const TagSelection = () => {
                   />
                 </CommandItem>
               ))}
+            </CommandGroup>
+          ) : (
+            <CommandGroup>
+              <CommandItem value="" onSelect={() => clearTags()} className="dark:hover:bg-neutral-800" >
+                All Keywords
+              </CommandItem>
             </CommandGroup>
           )}
         </Command>

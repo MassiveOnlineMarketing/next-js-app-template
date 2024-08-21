@@ -72,7 +72,7 @@ const KeywordRowActionsDropdown = ({ keyword }: Props) => {
           <EllipsisHorizontalIcon className="w-4 h-4 dark:text-[#DFE5FA]/35" />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="relative">
+      <DropdownMenuContent align="end" className="relative" onClick={(e) => e.stopPropagation()}>
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         {/* <DropdownMenuItem
                     onClick={(event) => {
