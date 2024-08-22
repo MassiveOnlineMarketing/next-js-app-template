@@ -6,14 +6,14 @@ import React, { useEffect } from "react";
 import { useWebsiteDetailsStore } from "@/presentation/stores/website-details-store";
 import useFilteredKeywordResults from "@/presentation/keyword-tracker/hooks/useFilteredKeywordResults";
 import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
-import useGoogleSearchKeywordTracker from "../useGoogleSearchKeywordTracker";
+import useGoogleSearchKeywordTracker from "@/presentation/keyword-tracker/hooks/useGoogleSearchKeywordTracker";
 
 import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearchCampaign";
 import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
 
 // Table
-import DataTable from "./table/keyword-table";
-import { columns } from "./table/columns";
+import DataTable from "@/presentation/keyword-tracker/components/table/keyword-table";
+import { columns } from "@/presentation/keyword-tracker/components/table/columns";
 
 // Components
 import CampaignStats from "@/presentation/components/google-search-campaign/campaign-stats/CampaignStats";
@@ -21,7 +21,7 @@ import CampaignStats from "@/presentation/components/google-search-campaign/camp
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from "@/presentation/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
-import BreadCrumbsSearchKeywords from "./bread-crumbs";
+
 
 const ClientPage = ({
   googleSearchCampaign,

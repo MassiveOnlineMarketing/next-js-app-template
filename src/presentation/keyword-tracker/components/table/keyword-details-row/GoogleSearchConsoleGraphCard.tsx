@@ -58,7 +58,6 @@ interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, firstValue, lastValue, reverse, ...props }, ref) => {
-    console.log(firstValue, lastValue)
 
     const change = (firstValue: string | number, lastValue: string | number) => {
       if (typeof firstValue === 'number' && typeof lastValue === 'number') {

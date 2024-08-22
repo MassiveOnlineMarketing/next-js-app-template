@@ -4,7 +4,6 @@ import React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
-import { Checkmark } from "../../../../../../../assets/icons";
 
 
 const FILL = "dark:bg-dark-bg-light bg-[#FBFBFF]";

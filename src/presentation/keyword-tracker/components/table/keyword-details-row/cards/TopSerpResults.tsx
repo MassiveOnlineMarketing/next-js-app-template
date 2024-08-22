@@ -1,8 +1,11 @@
-import useGoogleSearchTopTenResults from '@/presentation/keyword-tracker/hooks/fetching/useGoogleSearchTopTenResults'
 import React from 'react'
-import { Card, CardAccordion, CardAccordionContent, CardAccordionItem, CardAccordionTrigger, CardTitle } from '../Card'
+
 import { cn } from '@/presentation/components/utils'
 import { getOrdinalSuffix } from '@/presentation/utils/numberUtils'
+
+import useGoogleSearchTopTenResults from '@/presentation/keyword-tracker/hooks/fetching/useGoogleSearchTopTenResults'
+
+import { Card, CardAccordion, CardAccordionContent, CardAccordionItem, CardAccordionTrigger, CardTitle } from '../Card'
 
 const TopSerpResults = ({
   keywordId,

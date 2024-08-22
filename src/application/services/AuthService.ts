@@ -381,7 +381,7 @@ export const {
         session.user.customField =
           token.customField || session.user.customField;
         session.user.credits = latestUserData.credits || session.user.credits;
-        session.user.name = token.name;
+        session.user.name = latestUserData.name; // verantwoordelijk voor de naam van de user, voor wanneer we de sessie updaten
         session.user.email = token.email;
         session.user.loginProvider =
           latestUserData.loginProvider || session.user.loginProvider;

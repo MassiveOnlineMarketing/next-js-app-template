@@ -2,8 +2,8 @@ import { getGoogleSearchCampaignById } from '@/application/useCases/googleSearch
 import React from 'react'
 
 import { getGoogleSearchLatestSerpResults } from '@/application/useCases/googleSearchLatestSerpResults/getGoogleSearchLatestSerpResults'
-import BreadCrumbsSearchKeywords from '../_components/bread-crumbs'
-import ClientPage from '../_components/ClientPage'
+import BreadCrumbsSearchKeywords from '@/presentation/keyword-tracker/components/bread-crumbs'
+import ClientPage from './ClientPage'
 
 const page = async ({
   params: { campaign_id }

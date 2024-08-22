@@ -1,7 +1,7 @@
 import { Table } from "@tanstack/react-table";
+import { cn } from "@/presentation/components/utils";
 
 // Components
-import { OutlinedButton } from "@/presentation/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -17,7 +17,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from "@/presentation/components/ui/dropdown-menu";
-import { OutlinedTextButton } from "@/presentation/components/ui/text-button";
 
 // Assets
 import {
@@ -32,11 +31,10 @@ import AddTagToKeywords from "./topbar/AddTagToKeywords";
 import DeleteTagFromKeyword from "./topbar/DeleteTagFromKeywords";
 import AddNewTagInput from "./topbar/AddNewTagInput";
 import TagSelection from "./topbar/TagSelection";
-import GoogleSearchAddKeywordsFormDialog from "@/presentation/components/google-search-campaign/google-search-add-keywords-form-dialog";
 import downloadKeywordsToExcel from "@/presentation/lib/xlsx";
 import DeleteKeywordSelectedRowButton from "./topbar/DeleteKeywordSelectedRow";
-import { cn } from "@/presentation/components/utils";
 
+import GoogleSearchAddKeywordsFormDialog from "@/presentation/components/google-search-campaign/google-search-add-keywords-form-dialog";
 
 
 interface TopBarProps<TData> {
@@ -87,8 +85,8 @@ function DataTableTopBar<TData>({
       <div className="ml-2">
         {table.getSelectedRowModel().rows.length > 0 && (
           <DropdownMenu>
-            <DropdownMenuTrigger className="h-11 p-[2px] rounded-[10px] bg-white dark:bg-dark-bg-light">
-              <p className="px-[18px] flex items-center  h-10 rounded-lg border border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter text-sm text-gray-800 dark:text-dark-text-dark">
+            <DropdownMenuTrigger className="h-10 p-[2px] rounded-[10px] bg-white dark:bg-dark-bg-light">
+              <p className="px-[18px] flex items-center h-full rounded-lg border border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter text-sm text-gray-800 dark:text-dark-text-dark">
                 Bulk Actions
               </p>
             </DropdownMenuTrigger>
@@ -129,11 +127,11 @@ function DataTableTopBar<TData>({
 
       {/* Actions */}
       <div className="ml-4 h-11 p-[2px] rounded-[10px] bg-white dark:bg-dark-bg-light">
-        <div className="overflow-hidden flex h-10 rounded-lg border border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter">
+        <div className="flex h-10 rounded-lg border border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter">
           <TooltipProvider delayDuration={0}>
             {/* Add keyword */}
             <Tooltip>
-              <TooltipTrigger asChild>
+              <TooltipTrigger>
                 <GoogleSearchAddKeywordsFormDialog buttonClassName="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
                   <PlusIcon className="w-5 h-5 text-gray-500 dark:text-dark-text-dark group-hover:text-green-500" />
                 </GoogleSearchAddKeywordsFormDialog>
@@ -166,9 +164,9 @@ function DataTableTopBar<TData>({
 
             {/* Toggle visable colums */}
             <Tooltip>
-              <TooltipTrigger asChild>
+              <TooltipTrigger>
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
+                  <DropdownMenuTrigger  className="px-4 py-[10px] active:bg-[rgba(243,243,244,0.1)] active:rounded-lg">
                     <ViewColumnsIcon className="w-5 h-5 text-gray-500 dark:text-dark-text-dark" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">

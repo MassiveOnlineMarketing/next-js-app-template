@@ -8,7 +8,7 @@ import { GoogleSearchCampaign } from "@/domain/serpTracker/enitities/GoogleSearc
 
 // Components
 import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/presentation/components/ui/table/table";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/presentation/components/ui/table/table";
 import DataTablePagination from "@/presentation/components/ui/table/table-pagination";
 
 import DataTableTopBar from "./topbar";

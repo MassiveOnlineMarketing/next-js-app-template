@@ -36,12 +36,12 @@ const AddKeywordsFrom = ({
     if (!currentGoogleSearchCampaign) {
       return;
     }
+    setOpen(false);
 
     const res = await handleAddNewKeyword(data, currentGoogleSearchCampaign);
     if (res.success) {
       reset();
     }
-    setOpen(false);
   };
 
   return (

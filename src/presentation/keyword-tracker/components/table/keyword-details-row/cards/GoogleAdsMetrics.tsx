@@ -1,5 +1,7 @@
-import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult'
 import React from 'react'
+
+import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult'
+
 import { Card, CardTitle, CardRow, CardAdsBidRow } from '../Card'
 import { TraficLight, TraficLightIndicator, TraficLightMinMaxValue } from '../comps/TraficLightIndicator'
 

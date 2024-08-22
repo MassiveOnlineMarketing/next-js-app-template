@@ -34,6 +34,7 @@ export function useKeywordOpperations() {
    */
   const handleAddNewKeyword = async (keywords: GoogleSearchCampaignKeywordsSchemaType, googleSearchCampaign: GoogleSearchCampaign) => {
     setIsLoading(true);
+    showProcessingToast('Adding keywords...');
 
     try {
       const response = await handleProcessNewKeyword(keywords.keywords, googleSearchCampaign);
@@ -176,6 +177,13 @@ export function useKeywordOpperations() {
       icon: 'success',
       description: message,
       variant: 'success',
+    });
+  }
+
+  const showProcessingToast = (message: string) => {
+    toast({
+      description: message,
+      variant: 'warning',
     });
   }
 

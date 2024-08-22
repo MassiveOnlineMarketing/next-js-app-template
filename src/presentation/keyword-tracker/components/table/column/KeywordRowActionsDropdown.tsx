@@ -1,27 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-import { GoogleSearchKeywordTag, GoogleSearchResult } from "@prisma/client";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuItemEmpty,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/presentation/components/ui/dropdown-menu";
-import { Button } from "@/presentation/components/ui/button";
-import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
+import { GoogleSearchKeywordTag } from "@prisma/client";
 import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
+
 import useGoogleSearchKeywordTagOpperations from "@/presentation/keyword-tracker/hooks/useGoogleSearchKeywordTagOpperations";
 import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
+
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/presentation/components/ui/dropdown-menu";
+
+import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
 
 type Props = {
   keyword: GoogleSearchLatestKeywordResult;

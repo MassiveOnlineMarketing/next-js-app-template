@@ -1,6 +1,7 @@
 import React from 'react'
+
 import { Card, CardPlainRow, CardTitle } from '../Card'
-import { Link1Icon, Link2Icon } from '@radix-ui/react-icons'
+
 import { Link } from 'lucide-react'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 

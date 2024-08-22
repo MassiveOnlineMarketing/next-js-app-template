@@ -2,13 +2,7 @@
 
 import React from "react";
 
-import {
-  DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuPortal,
-  DropdownMenuSubContent,
-} from "@/presentation/components/ui/dropdown-menu";
+import { DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuPortal, DropdownMenuSubContent } from "@/presentation/components/ui/dropdown-menu";
 import useGoogleSearchKeywordTagOpperations from "@/presentation/keyword-tracker/hooks/useGoogleSearchKeywordTagOpperations";
 
 const DeleteTagFromKeyword = ({

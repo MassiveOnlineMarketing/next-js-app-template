@@ -1,5 +1,7 @@
-import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
 import React from "react";
+
+import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult";
+
 import { Card, CardTitle, CardAccordion, CardAccordionItem, CardAccordionTrigger, CardAccordionContent } from "../Card";
 
 

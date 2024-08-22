@@ -2,15 +2,18 @@
 
 import React, { useEffect } from 'react'
 import Link from "next/link";
+
 import { useToast } from '@/presentation/components/toast/use-toast';
 import useKeywordDetailsSearchConsoleData from '@/presentation/keyword-tracker/hooks/fetching/useKeywordDetailsSearchConsoleData';
 import useGoogleToken from '@/presentation/hooks/useGoogleRefreshToken';
+import { useWebsiteDetailsStore } from '@/presentation/stores/website-details-store';
+
+import GoogleSearchConsoleChart, { GoogleSearchConsoleChartData } from '../comps/GraphsN';
 
 import { Card, CardHeader, CardFooter } from '../GoogleSearchConsoleGraphCard';
-import GoogleSearchConsoleChart, { GoogleSearchConsoleChartData } from '../comps/GraphsN';
-import { useWebsiteDetailsStore } from '@/presentation/stores/website-details-store';
 import { LoadingSpinner } from '@/presentation/components/ui/loading-spinner';
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/presentation/components/ui/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/presentation/components/ui/tooltip";
+
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 
 const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId }: {

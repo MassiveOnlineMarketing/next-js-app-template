@@ -1,14 +1,10 @@
 import React from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuTrigger,
-  DropdownMenuItemEmpty,
-} from "@/presentation/components/ui/dropdown-menu";
-import { OutlinedTextButton } from "@/presentation/components/ui/text-button";
-import { TrashIcon } from "@heroicons/react/24/outline";
+
 import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
+
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuTrigger, DropdownMenuItemEmpty } from "@/presentation/components/ui/dropdown-menu";
+
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 const DeleteKeywordSelectedRowButton = ({
   selectedRows,
@@ -35,15 +31,11 @@ const DeleteKeywordSelectedRowButton = ({
 
   return (
     <DropdownMenu onOpenChange={(isOpen) => isOpen && handleDeleteClick()}>
-      <DropdownMenuTrigger asChild>
-        <OutlinedTextButton
-          outlineClassName="outline-red-50 bg-red-50"
-          size="smD"
-          className="ml-1"
-          buttonClassName="px-2"
-        >
-          <TrashIcon className="w-5 h-5 text-red-500" />
-        </OutlinedTextButton>
+      <DropdownMenuTrigger className="ml-1 h-10 w-10 p-[2px] rounded-[10px] bg-white dark:bg-dark-bg-light">
+        <div className="rounded-lg border w-full h-full  border-gray-200 dark:border-dark-stroke flex items-center justify-center hover:text-red-500 hover:border-red-500 text-gray-500 dark:text-dark-text-dark ">
+          <TrashIcon className="h-5 w-5 " />
+        </div>
+
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-2">
         <DropdownMenuGroup className="text-sm leading-5 font-normal">

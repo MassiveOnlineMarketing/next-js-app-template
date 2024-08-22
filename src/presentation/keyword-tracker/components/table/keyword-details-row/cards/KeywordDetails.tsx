@@ -1,8 +1,11 @@
 import React from 'react'
+
+import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult'
+
+import { getOrdinalSuffix } from '@/presentation/utils/numberUtils'
+
 import { Card, CardDateRow, CardPlainRow, CardRow, CardTagsRow, CardTitle } from '../Card'
 import { TraficLight, TraficLightIndicator } from '../comps/TraficLightIndicator'
-import { GoogleSearchLatestKeywordResult } from '@/domain/serpTracker/enitities/GoogleSearchLatestKeywordResult'
-import { getOrdinalSuffix } from '@/presentation/utils/numberUtils'
 
 const KeywordDetails = ({ keywordData }: { keywordData: GoogleSearchLatestKeywordResult }) => {
   return (

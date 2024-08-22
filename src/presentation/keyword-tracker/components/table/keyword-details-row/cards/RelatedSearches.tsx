@@ -8,16 +8,15 @@ import { GoogleSearchLatestKeywordResult } from "@/domain/serpTracker/enitities/
 import { useToast } from "@/presentation/components/toast/use-toast";
 import useKeywordOpperations from "@/presentation/keyword-tracker/hooks/useKeywordOpperations";
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
+import useRelatedSearchesWithSearchVolume from "@/presentation/keyword-tracker/hooks/fetching/useRelatedSearchesWithSearchVolume";
 
 // Components
 import { Button } from "@/presentation/components/ui/button";
+import { Card, CardTitle, CardRowInput } from "../Card";
+import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
 
 // Assets
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
-import useRelatedSearchesWithSearchVolume from "@/presentation/keyword-tracker/hooks/fetching/useRelatedSearchesWithSearchVolume";
-import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
-import { Card, CardTitle, CardRowInput } from "../Card";
 
 const RelatedSearches = ({
   keywordData,

@@ -168,7 +168,7 @@ const UserActions = () => {
   const handleLogout = async () => {
     await logout();
   };
-
+  
   return (
     <div className="p-1 border dark:bg-dark-bg-light dark:border-dark-stroke border-mix-blend-multiply dark:border-mix-blend-plus-lighter rounded-xl group bg-white ">
       <div className="h-[54px] p-[6px] flex gap-3 justify-center items-center">

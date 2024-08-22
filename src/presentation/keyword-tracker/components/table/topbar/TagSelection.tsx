@@ -3,19 +3,8 @@ import React from "react";
 import { useGoogleSearchKeywordResultStore } from "@/presentation/stores/google-search-keyword-result-store";
 import useGoogleSearchKeywordTagOpperations from "@/presentation/keyword-tracker/hooks/useGoogleSearchKeywordTagOpperations";
 
-import {
-  Command,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/presentation/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/presentation/components/ui/popover";
-
-import { OutlinedButton } from "@/presentation/components/ui/button";
+import { Command, CommandGroup, CommandInput, CommandItem } from "@/presentation/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/presentation/components/ui/popover";
 
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/presentation/components/utils";
