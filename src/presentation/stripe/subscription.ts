@@ -1,7 +1,9 @@
-import { auth } from "@/auth/auth";
-import { db } from "../../lib/db";
-import { storeMonthlySubcsriptionPlans } from "../../../config/stripe/subscriptions";
-import { stripe } from "./stripe";
+'use server';
+
+import { auth } from "@/application/services/AuthService";
+import { stripe } from "@/application/services/StripeService";
+import { storeMonthlySubcsriptionPlans } from "@/config/stripe/subscriptions";
+import { db } from "@/infrastructure/db/prisma";
 
 export type UserSubscriptionPlan = Awaited<ReturnType<typeof getUserSubscriptionPlan>>;
 

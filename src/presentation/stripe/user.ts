@@ -1,5 +1,7 @@
-import { auth } from "@/auth/auth";
-import { db } from "@/lib/db";
+'use server';
+
+import { auth } from "@/application/services/AuthService";
+import { db } from "@/infrastructure/db/prisma";
 
 export async function getUserStripeId() {
   const session = await auth();
