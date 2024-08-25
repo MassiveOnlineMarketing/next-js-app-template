@@ -81,6 +81,7 @@ export class StripeService {
   }
 
   async oneTimePurchaseEvent(stripePriceId: string, userId: string) {
+    console.log("stripe/webhook: One time purchase", stripePriceId);
     const plan = storeOneTimeProducts.find(
       (plan) => plan.stripePriceId === stripePriceId,
     );

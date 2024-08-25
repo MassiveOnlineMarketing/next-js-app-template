@@ -17,6 +17,7 @@ export async function POST(request: Request) {
       process.env.STRIPE_WEBHOOK_SECRET ?? "",
     );
   } catch (err) {
+    console.log("stripe/webhook: error", err);
     return new Response(
       `Webhook Error: ${err instanceof Error ? err.message : "Unknown error"}`,
       { status: 400 },
