@@ -16,6 +16,7 @@ export const manageStripeBuyOneTimeProductAction = async ({
   stripePriceId,
 }: ManageStripeBuyOneTimeProductActionProps) => {
   const billingUrl = `${BASE_URL}/app/billing`;
+  console.log('billingUrl', billingUrl)
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card", "ideal", "paypal"],
@@ -34,6 +35,7 @@ export const manageStripeBuyOneTimeProductAction = async ({
       stripePriceId: stripePriceId,
     },
   });
+  console.log('session', session)
 
   return { url: session.url };
 };
