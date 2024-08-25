@@ -4,7 +4,7 @@ import { stripe, StripeService } from "@/application/services/StripeService";
 import { SimpleError } from "@/domain/errors/simpleErrors";
 
 export async function POST(request: Request) {
-  console.log('stripe/webhook: request', request)
+  // console.log('stripe/webhook request: ', request)
   const body = await request.text();
   const sig = request.headers.get("stripe-signature") ?? "";
 
@@ -17,14 +17,14 @@ export async function POST(request: Request) {
       process.env.STRIPE_WEBHOOK_SECRET ?? "",
     );
   } catch (err) {
-    console.log("stripe/webhook: error", err);
+    console.log("stripe/webhook error: ", err);
     return new Response(
       `Webhook Error: ${err instanceof Error ? err.message : "Unknown error"}`,
       { status: 400 },
     );
   }
 
-  console.log("stripe/webhook: event", event.type);
+  console.log("stripe/webhook event: ", event.type);
 
   const stripeService = new StripeService(stripe);
 

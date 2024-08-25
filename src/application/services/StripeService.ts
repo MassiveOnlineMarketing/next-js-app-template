@@ -22,7 +22,7 @@ export class StripeService {
   async handleWebsocketEvent(event: Stripe.Event): Promise<any> {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
-      console.log("stripe/webhook: Checkout session", session);
+      console.log("stripe/webhook Checkout session: ", session);
 
       // If the user doesn't have a userId, return a 400 error
       if (!session?.metadata?.userId || !session?.metadata?.stripePriceId) {
@@ -81,7 +81,6 @@ export class StripeService {
   }
 
   async oneTimePurchaseEvent(stripePriceId: string, userId: string) {
-    console.log("stripe/webhook: One time purchase", stripePriceId);
     const plan = storeOneTimeProducts.find(
       (plan) => plan.stripePriceId === stripePriceId,
     );
