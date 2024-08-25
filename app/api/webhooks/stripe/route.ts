@@ -4,7 +4,7 @@ import { stripe, StripeService } from "@/application/services/StripeService";
 import { SimpleError } from "@/domain/errors/simpleErrors";
 
 export async function POST(request: Request) {
-  // console.log('stripe/webhook: request', request)
+  console.log('stripe/webhook: request', request)
   const body = await request.text();
   const sig = request.headers.get("stripe-signature") ?? "";
 
