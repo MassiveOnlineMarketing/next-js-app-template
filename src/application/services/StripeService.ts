@@ -2,6 +2,7 @@ import { storeOneTimeProducts } from "@/config/stripe/one-time-products";
 import { storeMonthlySubcsriptionPlans } from "@/config/stripe/subscriptions";
 import { SimpleError } from "@/domain/errors/simpleErrors";
 import { db } from "@/infrastructure/db/prisma";
+import EmailRepository from "@/infrastructure/repositories/EMailRepository";
 import Stripe from "stripe";
 
 
@@ -20,9 +21,37 @@ export class StripeService {
 
   // This is ran when a user completes a checkout session, both for new subscriptions and product purchases
   async handleWebsocketEvent(event: Stripe.Event): Promise<any> {
+
+
+    if (event.type === "customer.subscription.updated"){
+      console.log('❗ should fire when subscription is updated')
+      console.log('event: ', event)
+      const emailRepository = new EmailRepository();
+      await emailRepository.sendEmail(event);
+    }
+
+    if (event.type === "invoice.payment_succeeded"){
+      console.log('❗ should fire after a successfull payment. Ment for subscription payments')
+      console.log('event: ', event)
+      const emailRepository = new EmailRepository();
+      await emailRepository.sendEmail(event);
+
+      // If created add all the credits to the user
+      const created = event.data.object.billing_reason === "subscription_create" ? true : false;
+
+      // If updated, add the difference in credits to the user
+      const updated = event.data.object.billing_reason === "subscription_update" ? true : false;
+
+      // const continue = event.data.object.billing_reason === ""
+    }
+
+    //* checkout session completed, fires on both subscription and one-time purchases. 
     if (event.type === "checkout.session.completed") {
+      console.log("❗ fire when chcekout session is completed");
       const session = event.data.object as Stripe.Checkout.Session;
       console.log("stripe/webhook Checkout session: ", session);
+      const emailRepository = new EmailRepository();
+      await emailRepository.sendEmail(event);
 
       // If the user doesn't have a userId, return a 400 error
       if (!session?.metadata?.userId || !session?.metadata?.stripePriceId) {
@@ -39,12 +68,12 @@ export class StripeService {
       else {
         this.oneTimePurchaseEvent(stripePriceId, userId);
       }
-
     }
   }
 
 
   async subscriptionEvent(session: Stripe.Checkout.Session, userId: string) {
+    console.log("Subscription event: ", session);
     const subscription = await this.stripe.subscriptions.retrieve(
       session.subscription as string,
     );
@@ -71,6 +100,7 @@ export class StripeService {
           stripeCurrentPeriodEnd: new Date(
             subscription.current_period_end * 1000,
           ),
+          // TODO: Move this to payment succeeded event
           credits: { increment: credditsToAdd },
         },
       });

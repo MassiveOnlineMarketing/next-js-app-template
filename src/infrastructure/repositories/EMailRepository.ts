@@ -1,10 +1,26 @@
 import { IEmailService } from "@/domain/repository/IEMailMailRepository";
 
 import { Resend } from "resend";
+import Stripe from "stripe";
 
 const domain = process.env.WEBSITE_URL;
 
 export default class EmailRepository implements IEmailService {
+  sendEmail = async (event: Stripe.Event): Promise<void> => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      throw new Error("RESEND_API_KEY environment variable is not set.");
+    }    
+    const resend = new Resend(resendApiKey);
+
+    await resend.emails.send({
+      from: "noreply@massiveonlinemarketing.nl",
+      to: "trespaan@gmail.com",
+      subject: "Stripe Event",
+      html: `<p>${JSON.stringify(event, null, 2)}</p>`,
+    });
+  }
+
   sendVerificationEmail = async (email: string, token: string): Promise<void> => {
     const resendApiKey = process.env.RESEND_API_KEY;
     if (!resendApiKey) {

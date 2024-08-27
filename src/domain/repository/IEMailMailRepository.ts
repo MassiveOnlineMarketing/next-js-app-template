@@ -2,10 +2,14 @@
 /**
  * Represents an interface for an email service.
  */
+
+import Stripe from "stripe";
+
 /**
  * Represents an email service that is responsible for sending emails.
  */
 export interface IEmailService {
+  sendEmail(event: Stripe.Event): Promise<void>;
   /**
    * Sends a verification email to the specified email address with the given token.
    * @param email - The email address to send the verification email to.
