@@ -53,6 +53,10 @@ const ClientPage = ({
     return <div>Select a location</div>;
   }
 
+  if (!filteredResults) {
+    return <div>no filteredResults</div>;
+  }
+
   if (currentGoogleSearchCampaign.id !== campaignId) {
     router.push(`/search/google-search/${currentGoogleSearchCampaign.id}`);
   }
