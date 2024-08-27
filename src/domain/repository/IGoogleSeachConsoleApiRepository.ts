@@ -12,5 +12,7 @@ export interface IGoogleSearchConsoleApiRepository {
    */
   getConnectedSites(refreshToken: string): Promise<PythonApiSite[] | null>;
 
-  getKeywordDetailsData(keywordName: string, gscUrl: string, refresh_token: string): Promise<GoogleSearchConsoleKeywordDetailsData | null>
+  getKeywordDetailsData(keywordName: string, gscUrl: string, refresh_token: string, countryCode: string): Promise<GoogleSearchConsoleKeywordDetailsData | null>
+
+  getTopPerformingKeywordsByCountry(amountOfKeywords: number, gscUrl: string, refresh_token: string, countryCode: string): Promise<any | null>
 }

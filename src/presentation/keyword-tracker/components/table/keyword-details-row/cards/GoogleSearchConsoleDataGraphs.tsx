@@ -16,14 +16,15 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/presentation/componen
 
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 
-const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId }: {
+const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCampaignId }: {
   keywordName: string,
-  websiteId: string
+  websiteId: string,
+  googleSearchCampaignId: string
 }) => {
   const { toast } = useToast();
   const { hasAccess } = useGoogleToken('search-console');
   const website = useWebsiteDetailsStore(state => state.websiteDetails);
-  const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, hasAccess, website?.gscUrl);
+  const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, googleSearchCampaignId, hasAccess, website?.gscUrl);
   // console.log('gsc data', searchConsoleKeywordDetails);
   useEffect(() => {
     if (searchConsoleKeywordDetails?.error) {
