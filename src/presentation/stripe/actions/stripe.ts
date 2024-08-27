@@ -26,8 +26,6 @@ export const manageStripeSubscriptionAction = async ({
 
   console.log("manageSubAction: isSubscribed", isSubscribed);
   console.log("manageSubAction: stripeCustomerId", stripeCustomerId);
-  // console.log('manageSubAction: isCurrentPlan', isCurrentPlan)
-  // console.log('manageSubAction: stripeSubscriptionId', stripeSubscriptionId)
 
   // if (isSubscribed && stripeCustomerId ) {
   //     const stripeSession = await stripe.billingPortal.sessions.create({
@@ -38,37 +36,42 @@ export const manageStripeSubscriptionAction = async ({
   //     return { url: stripeSession.url };
   // }
 
-  // if (isSubscribed && stripeCustomerId ) {
-  //    // * standard billing portal for existing customers
-  //     const stripeSession = await stripe.billingPortal.sessions.create({
-  //         customer: stripeCustomerId,
-  //         return_url: billingUrl,
-  //     });
+  //! subscribed and stripeCustomerId
+  if (isSubscribed && stripeCustomerId) {
+    // * standard billing portal for existing customers
+    const stripeSession = await stripe.billingPortal.sessions.create({
+      customer: stripeCustomerId,
+      return_url: billingUrl,
+    });
 
-  //     return { url: stripeSession.url };
-  // }
+    return { url: stripeSession.url };
+  }
 
-  // if (isSubscribed && stripeCustomerId  && stripeSubscriptionId) {
-  //     console.log('run')
-  //     // * update subscription for existing customers
-  //     const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+  //! subscribed and active subscription
+  if (isSubscribed && stripeCustomerId && stripeSubscriptionId) {
+    console.log('run')
+    // * update subscription for existing customers
+    const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
 
-  //     const stripeSession = await stripe.subscriptions.update(
-  //         stripeSubscriptionId,
-  //         {
-  //             items: [{
-  //                 id: subscription.items.data[0].id,
-  //                 price: stripePriceId
-  //             }],
-  //             proration_behavior: "always_invoice",
-  //         }
-  //     );
+    const stripeSession = await stripe.subscriptions.update(
+      stripeSubscriptionId,
+      {
+        items: [{
+          id: subscription.items.data[0].id,
+          price: stripePriceId
+        }],
+        proration_behavior: "always_invoice",
+      }
+    );
 
-  //     console.log('stripeSession', stripeSession)
+    console.log('stripeSession', stripeSession)
 
-  //     return { url: billingUrl };
-  // }
+    return { url: billingUrl };
+  }
 
+
+
+  //! not subscribed and no stripeCustomerId
   if (!isSubscribed && !stripeCustomerId) {
     console.log("run not subscribed and no stripeCustomerId");
     // * Create a new subscription and customer

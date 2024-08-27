@@ -37,7 +37,7 @@ const SearchPageBanner = ({
   return (
     <div
       className={cn(
-        "relative h-[243px] rounded-2xl bg-[url('/app/3d-background-purple-background-abstract-background-windows-3840x1932.png')] bg-no-repeat bg-right bg-auto bg-cover bg-white  dark:bg-dark-bg-light dark:bg-[url('')] dark:border dark:border-dark-stroke",
+        "relative h-[243px] rounded-2xl bg-[url('/app/3d-background-purple-background-abstract-background-windows-3840x1932.png')] bg-no-repeat bg-right bg-auto bg-cover bg-white  dark:bg-dark-bg-light dark:border dark:border-dark-stroke", //dark:bg-[url('')]
         className,
       )}
     >

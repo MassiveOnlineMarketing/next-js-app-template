@@ -11,7 +11,7 @@ export const publicRoutes = ["/", "/auth/new-verification", "/404"];
  * @type {string[]}
  */
 export const publicDynamicRoutes = [
-  "/api/webhooks",
+  "/api/webhooks/stripe",
 ];
 
 /**

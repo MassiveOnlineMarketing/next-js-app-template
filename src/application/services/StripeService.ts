@@ -20,7 +20,23 @@ export class StripeService {
 
   // This is ran when a user completes a checkout session, both for new subscriptions and product purchases
   async handleWebsocketEvent(event: Stripe.Event): Promise<any> {
+
+
+    if (event.type === "customer.subscription.updated"){
+      console.log('❗ should fire when subscription is updated')
+      console.log('event: ', event)
+
+    }
+
+    if (event.type === "invoice.payment_succeeded"){
+      console.log('❗ should fire after a successfull payment. Ment for subscription payments')
+      console.log('event: ', event)
+
+    }
+
+    //* checkout session completed
     if (event.type === "checkout.session.completed") {
+      console.log("❗ fire when chcekout session is completed");
       const session = event.data.object as Stripe.Checkout.Session;
       console.log("stripe/webhook Checkout session: ", session);
 
@@ -45,6 +61,7 @@ export class StripeService {
 
 
   async subscriptionEvent(session: Stripe.Checkout.Session, userId: string) {
+    console.log("Subscription event: ", session);
     const subscription = await this.stripe.subscriptions.retrieve(
       session.subscription as string,
     );

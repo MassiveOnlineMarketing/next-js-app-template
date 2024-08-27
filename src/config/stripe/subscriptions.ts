@@ -30,11 +30,11 @@ export const storeMonthlySubcsriptionPlans: SubscriptionPlanProps[] = [
   },
   {
     id: "35000-monthly",
-    name: "35.000 Credits Monthly",
+    name: "35.000 Credits Monthly daily",
     description:
       "Gets you started with improving and tracking your SEO performance",
     stripePriceId:
-      process.env.NEXT_PUBLIC_STRIPE_250_SUBSCRIPTION_PRICE_ID ?? "",
+      process.env.NEXT_PUBLIC_STRIPE_100_SUBSCRIPTION_PRICE_ID ?? "",
     credits: 35000,
     price: 52.5,
   },
