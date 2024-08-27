@@ -21,6 +21,7 @@ import CampaignStats from "@/presentation/components/google-search-campaign/camp
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from "@/presentation/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
+import { useGoogleSearchKeywordResultStore } from "@/presentation/stores/google-search-keyword-result-store";
 
 
 const ClientPage = ({
@@ -35,6 +36,7 @@ const ClientPage = ({
   const filteredResults = useFilteredKeywordResults();
   const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
   const currentGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
+  const keywordResults = useGoogleSearchKeywordResultStore((state) => state.keywordResults);
 
   const { isDeleteDialogOpen, setIsDeleteDialogOpen, cancelDelete, confirmDelete } = useKeywordOpperations();
   const { setNewSerpResultState } = useGoogleSearchKeywordTracker();
@@ -53,8 +55,8 @@ const ClientPage = ({
     return <div>Select a location</div>;
   }
 
-  if (!filteredResults) {
-    return <div>no filteredResults</div>;
+  if (!keywordResults) {
+    return <div>keywordResults</div>;
   }
 
   if (currentGoogleSearchCampaign.id !== campaignId) {
