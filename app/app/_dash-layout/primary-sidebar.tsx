@@ -20,6 +20,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { HomeIcon, PresentationChartLineIcon, Cog6ToothIcon, CreditCardIcon } from "@heroicons/react/24/outline";
 import { MassiveDashLogo } from "../../../assets/branding";
 import { LogOutIcon } from "lucide-react";
+import TestWebsiteSelectionButton from "@/presentation/components/website/TestWesbiteSelectionButton";
 
 
 
@@ -63,7 +64,7 @@ const PrimarySidebar = () => {
         </li>
 
         <li className="px-6">
-          <WebsiteSelectionButton />
+          <TestWebsiteSelectionButton />
         </li>
 
         <li className="px-6">
