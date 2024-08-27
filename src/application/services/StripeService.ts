@@ -35,6 +35,14 @@ export class StripeService {
       console.log('event: ', event)
       const emailRepository = new EmailRepository();
       await emailRepository.sendEmail(event);
+
+      // If created add all the credits to the user
+      const created = event.data.object.billing_reason === "subscription_create" ? true : false;
+
+      // If updated, add the difference in credits to the user
+      const updated = event.data.object.billing_reason === "subscription_update" ? true : false;
+
+      // const continue = event.data.object.billing_reason === ""
     }
 
     //* checkout session completed, fires on both subscription and one-time purchases. 
