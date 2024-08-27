@@ -60,7 +60,12 @@ export const manageStripeSubscriptionAction = async ({
           id: subscription.items.data[0].id,
           price: stripePriceId
         }],
+        // TODO Stripe: Add proration_behavior to the update subscription
         proration_behavior: "always_invoice",
+        metadata: {
+          userId: userId,
+          stripePriceId,
+        },
       }
     );
 
