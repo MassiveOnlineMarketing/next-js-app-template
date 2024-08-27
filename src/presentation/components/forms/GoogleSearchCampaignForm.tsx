@@ -65,7 +65,7 @@ const GoogleSearchCampaignForm: React.FC<GoogleSearchProjectFormDialogProps> = (
         const res = await handleCreateCampaign(data, website?.id, website?.gscUrl, website?.domainUrl, addedCompetitors);
         if (res?.success) {
           resetForm();
-          router.push(`/app/search/google-search/${res.campaignId}`);
+          // router.push(`/app/search/google-search/${res.campaignId}`);
         }
       } else {
         const res = await handleUpdateCampaign(data, googleSearchCampaign.id, website?.gscUrl, addedCompetitors, removedCompetitors);
