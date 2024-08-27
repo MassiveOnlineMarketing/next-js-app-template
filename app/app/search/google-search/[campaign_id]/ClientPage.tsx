@@ -46,16 +46,14 @@ const ClientPage = ({
     setNewSerpResultState(latestSerpResults);
   }, []);
 
+  if (latestSerpResults.length === 0) {
+    return <div className='flex h-full w-full items-center justify-center'>No Results<LoadingSpinner /></div>;
+  }
+  // if (!currentGoogleSearchCampaign) {
+  //   return <div>No current location</div>;
+  // }
+  
   if (!latestSerpResults) return <div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>
-
-  if (!currentWebsite) {
-    return <div>loading</div>;
-  }
-
-
-  if (!keywordResults) {
-    return <div>keywordResults</div>;
-  }
 
   return (
     <>
@@ -64,7 +62,7 @@ const ClientPage = ({
         <div className="dark:border-x dark:border-dark-stroke h-fit">
           <CampaignStats filteredResults={filteredResults} />
           <div className="relative">
-            <DataTable columns={columns(currentWebsite.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
+            <DataTable columns={columns(googleSearchCampaign.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
           </div>
 
           {/* Dialog for deleting keyword */}

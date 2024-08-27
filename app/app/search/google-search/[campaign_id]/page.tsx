@@ -16,14 +16,14 @@ const page = async ({
 }) => {
 
   const googleSearchCampaign = await getGoogleSearchCampaignById(campaign_id)
-  if (!googleSearchCampaign) return <div className='flex h-full w-full items-center justify-center'>Project not Found</div>;
+  if (!googleSearchCampaign.data) return <div className='flex h-full w-full items-center justify-center'>Project not Found</div>;
 
   return (
     <div className="w-full h-full">
       <BreadCrumbsSearchKeywords campaignName={googleSearchCampaign.data!.campaignName} />
 
       <Suspense fallback={<div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>}>
-        <PageInitializationLoading project={googleSearchCampaign.data!} />
+        <PageInitializationLoading project={googleSearchCampaign.data} />
       </Suspense>  </div>
   )
 }
@@ -34,7 +34,8 @@ async function PageInitializationLoading({ project }: { project: GoogleSearchCam
   const session = await auth()
   if (project.userId !== session?.user.id) return <div className='flex h-full w-full items-center justify-center'>Not authorized</div>;
   const latestResultsRes = await getGoogleSearchLatestSerpResults(project.id);
-  const filteredSerpResults = latestResultsRes.data!.filter(result => result !== null) ;
+
+  const filteredSerpResults = latestResultsRes.data?.filter(result => result !== null) || [];
 
   return <ClientPage latestSerpResults={filteredSerpResults} googleSearchCampaign={project} />
 }
