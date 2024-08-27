@@ -1,50 +1,41 @@
 import { getGoogleSearchCampaignById } from '@/application/useCases/googleSearchCampaign/getGoogleSearchCampaignById'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import { getGoogleSearchLatestSerpResults } from '@/application/useCases/googleSearchLatestSerpResults/getGoogleSearchLatestSerpResults'
 import BreadCrumbsSearchKeywords from '@/presentation/keyword-tracker/components/bread-crumbs'
 import ClientPage from './ClientPage'
+import { LoadingSpinner } from '@/presentation/components/ui/loading-spinner'
+import { GoogleSearchCampaign } from '@/domain/serpTracker/enitities/GoogleSearchCampaign'
+import { auth } from '@/application/services/AuthService'
 
+// TODO: ui
 const page = async ({
   params: { campaign_id }
 }: {
   params: { campaign_id: string }
 }) => {
 
-  const [campaign, latestSerpResults] = await Promise.all([
-    getGoogleSearchCampaignById(campaign_id),
-    getGoogleSearchLatestSerpResults(campaign_id)
-  ]);
-  
-  if (!campaign.data) {
-    return (
-      <div className='flex h-full w-full items-center justify-center'>
-        <div className='bg-white p-4 rounded-xl text-xl'>
-          {campaign.error ?? 'Campaign not found'}
-        </div>
-      </div>
-    );
-  }
-  
-  // BUG: nadat je een projeect aanmaakt staan er geen serp results in de database
-  if (!latestSerpResults.data) {
-    return (
-      <div className='flex h-full w-full items-center justify-center'>
-        <div className='bg-white p-4 rounded-xl text-xl'>
-          {latestSerpResults.error ?? 'Latest Serp Results not found'}
-        </div>
-      </div>
-    );
-  }
-  // Filter out null values from latestSerpResults.data
-  const filteredSerpResults = latestSerpResults.data.filter(result => result !== null);
-  
+  const googleSearchCampaign = await getGoogleSearchCampaignById(campaign_id)
+  if (!googleSearchCampaign) return <div className='flex h-full w-full items-center justify-center'>Project not Found</div>;
+
   return (
     <div className="w-full h-full">
-      <BreadCrumbsSearchKeywords  campaignName={campaign.data.campaignName}/>
-      <ClientPage latestSerpResults={filteredSerpResults} googleSearchCampaign={campaign.data} campaignId={campaign_id}/>
-    </div>
+      <BreadCrumbsSearchKeywords campaignName={googleSearchCampaign.data!.campaignName} />
+
+      <Suspense fallback={<div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>}>
+        <PageInitializationLoading project={googleSearchCampaign.data!} />
+      </Suspense>  </div>
   )
 }
 
+async function PageInitializationLoading({ project }: { project: GoogleSearchCampaign }) {
+
+  // TODO AUTH: Check if the user is authorized to view the project 
+  const session = await auth()
+  if (project.userId !== session?.user.id) return <div className='flex h-full w-full items-center justify-center'>Not authorized</div>;
+  const latestResultsRes = await getGoogleSearchLatestSerpResults(project.id);
+  const filteredSerpResults = latestResultsRes.data!.filter(result => result !== null) ;
+
+  return <ClientPage latestSerpResults={filteredSerpResults} googleSearchCampaign={project} />
+}
 export default page

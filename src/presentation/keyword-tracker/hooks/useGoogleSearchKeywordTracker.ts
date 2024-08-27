@@ -26,8 +26,8 @@ export function useGoogleSearchKeywordTracker() {
 
   useEffect(() => {
     if (!googleSearchCampaign) return;
-    resetResults();
     router.push(`/app/search/google-search/${googleSearchCampaign.id}`);
+    console.log('🟢 Pushing new route');
   }, [googleSearchCampaign]);
 
 

@@ -22,16 +22,15 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useRouter } from "next/navigation";
 import { useGoogleSearchCampaignDetailsStore } from "@/presentation/stores/google-search-campaign-store";
 import { useGoogleSearchKeywordResultStore } from "@/presentation/stores/google-search-keyword-result-store";
+import { LoadingSpinner } from "@/presentation/components/ui/loading-spinner";
 
 
 const ClientPage = ({
   googleSearchCampaign,
   latestSerpResults,
-  campaignId
 }: {
   googleSearchCampaign: GoogleSearchCampaign;
   latestSerpResults: GoogleSearchLatestKeywordResult[];
-  campaignId: string;
 }) => {
   const filteredResults = useFilteredKeywordResults();
   const currentWebsite = useWebsiteDetailsStore((state) => state.websiteDetails);
@@ -47,20 +46,15 @@ const ClientPage = ({
     setNewSerpResultState(latestSerpResults);
   }, []);
 
+  if (!latestSerpResults) return <div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>
+
   if (!currentWebsite) {
     return <div>loading</div>;
   }
 
-  if (!currentGoogleSearchCampaign) {
-    return <div>Select a location</div>;
-  }
 
   if (!keywordResults) {
     return <div>keywordResults</div>;
-  }
-
-  if (currentGoogleSearchCampaign.id !== campaignId) {
-    router.push(`/search/google-search/${currentGoogleSearchCampaign.id}`);
   }
 
   return (
