@@ -23,6 +23,7 @@ export default class GoogleSearchConsoleApiRepository implements IGoogleSearchCo
     }
   }
 
+  // ! NOT USED
   async getKeywordDetailsData(keywordName: string, gscUrl: string, refresh_token: string, countryCode: string): Promise<GoogleSearchConsoleKeywordDetailsData | null> {
     const encodedKeyword = encodeURIComponent(keywordName);
 

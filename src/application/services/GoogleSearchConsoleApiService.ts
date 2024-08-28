@@ -24,6 +24,7 @@ export class GoogleSearchConsoleApiService {
     return this.googleSearchConsoleApiRepository.getConnectedSites(refreshToken);
   }
 
+  // ! NOT USED
   async fetchKeywordDetailsData(keywordName: string, websiteId: string, countryCode: string) {
     const user = await this.authService.currentUser();
     if (!user) {

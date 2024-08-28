@@ -16,7 +16,6 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/presentation/componen
 
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { GoogleSearchCampaign } from '@/domain/serpTracker/enitities/GoogleSearchCampaign';
-import useTestKeywordDetailsSearchConsoleData from '@/presentation/keyword-tracker/hooks/fetching/useTestKeywordDetailsSearchConsoleData';
 import { GoogleSearchConsoleKeywordDetailsData } from '@/domain/models/googleSearchConsoleApi';
 
 const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCampaign }: {
@@ -27,9 +26,8 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
   const { toast } = useToast();
   const { hasAccess, refreshToken } = useGoogleToken('search-console');
   const website = useWebsiteDetailsStore(state => state.websiteDetails);
-  const { isLoading, data: searchConsoleKeywordDetails } = useTestKeywordDetailsSearchConsoleData(keywordName, googleSearchCampaign, hasAccess, refreshToken, website?.gscUrl);
-  console.log('gsc data', searchConsoleKeywordDetails); 
-  // const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, googleSearchCampaign, hasAccess, website?.gscUrl);
+  const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, googleSearchCampaign, hasAccess, refreshToken, website?.gscUrl)
+  // console.log('gsc data', searchConsoleKeywordDetails); 
   // console.log('gsc data', searchConsoleKeywordDetails);
   useEffect(() => {
     if (searchConsoleKeywordDetails?.error) {
