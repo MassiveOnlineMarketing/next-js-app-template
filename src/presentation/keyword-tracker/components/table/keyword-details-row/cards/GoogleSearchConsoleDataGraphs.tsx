@@ -15,16 +15,17 @@ import { LoadingSpinner } from '@/presentation/components/ui/loading-spinner';
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/presentation/components/ui/tooltip";
 
 import { LockClosedIcon } from "@heroicons/react/20/solid";
+import { GoogleSearchCampaign } from '@/domain/serpTracker/enitities/GoogleSearchCampaign';
 
-const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCampaignId }: {
+const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCampaign }: {
   keywordName: string,
   websiteId: string,
-  googleSearchCampaignId: string
+  googleSearchCampaign: GoogleSearchCampaign
 }) => {
   const { toast } = useToast();
   const { hasAccess } = useGoogleToken('search-console');
   const website = useWebsiteDetailsStore(state => state.websiteDetails);
-  const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, googleSearchCampaignId, hasAccess, website?.gscUrl);
+  const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, googleSearchCampaign, hasAccess, website?.gscUrl);
   // console.log('gsc data', searchConsoleKeywordDetails);
   useEffect(() => {
     if (searchConsoleKeywordDetails?.error) {

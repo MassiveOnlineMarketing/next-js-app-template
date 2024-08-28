@@ -24,7 +24,7 @@ export class GoogleSearchConsoleApiService {
     return this.googleSearchConsoleApiRepository.getConnectedSites(refreshToken);
   }
 
-  async fetchKeywordDetailsData(keywordName: string, websiteId: string, campaignId: string) {
+  async fetchKeywordDetailsData(keywordName: string, websiteId: string, countryCode: string) {
     const user = await this.authService.currentUser();
     if (!user) {
       throw new SimpleError(401, 'Unauthorized');
@@ -45,13 +45,7 @@ export class GoogleSearchConsoleApiService {
       throw new SimpleError(403, 'Unauthorized');
     }
 
-    const campaign = await googleSearchCampaignRepository.getById(campaignId);
-    if (!campaign) {
-      console.error('No campaign found');
-      throw new SimpleError(404, 'Campaign not found');
-    }
-
-    return this.googleSearchConsoleApiRepository.getKeywordDetailsData(keywordName, website.gscUrl, refreshToken, campaign.country);
+    return this.googleSearchConsoleApiRepository.getKeywordDetailsData(keywordName, website.gscUrl, refreshToken, countryCode);
   }
 
   async fetchTopPerformingKeywordsByCountry(amountOfKeywords: number, websiteId: string, countryCode: string) {

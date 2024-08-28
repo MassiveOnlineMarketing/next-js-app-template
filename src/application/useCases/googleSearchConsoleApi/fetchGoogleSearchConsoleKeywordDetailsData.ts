@@ -4,7 +4,7 @@ import { auth } from "@/application/services/AuthService";
 import { GoogleSearchConsoleApiService } from "@/application/services/GoogleSearchConsoleApiService";
 import { SimpleError } from "@/domain/errors/simpleErrors";
 
-export async function fetchGoogleSearchConsoleKeywordDetailsData(keywordName: string, websiteId: string, campaignId: string) {
+export async function fetchGoogleSearchConsoleKeywordDetailsData(keywordName: string, websiteId: string, countryCode: string) {
   const session = await auth()
   if (!session?.user) {
     return { success: false, error: 'Unauthorized' };
@@ -13,7 +13,7 @@ export async function fetchGoogleSearchConsoleKeywordDetailsData(keywordName: st
   const googleSearchConsoleApiService = new GoogleSearchConsoleApiService();
 
   try {
-    const googleSearchConsoleData = await googleSearchConsoleApiService.fetchKeywordDetailsData(keywordName, websiteId, campaignId);
+    const googleSearchConsoleData = await googleSearchConsoleApiService.fetchKeywordDetailsData(keywordName, websiteId, countryCode);
 
     return { success: true, data: googleSearchConsoleData };
   } catch (error) {

@@ -28,6 +28,7 @@ export default class GoogleSearchConsoleApiRepository implements IGoogleSearchCo
 
     try {
       const url = `${process.env.NEXT_PUBLIC_PYTHON_API_URL}/api/keyword_data?keyword=${encodedKeyword}&site_url=${gscUrl}&refresh_token=${refresh_token}&country_code=${countryCode}`;
+      console.log('url',url);
       const res = await axios(url);
 
       return res.data;

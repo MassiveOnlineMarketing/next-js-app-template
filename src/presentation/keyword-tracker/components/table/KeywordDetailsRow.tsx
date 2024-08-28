@@ -22,7 +22,7 @@ const KeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
 
   return (
     <div className="dark:bg-p-1100 max-w-[1240px] mx-auto ">
-      <GoogleSearchConsoleDataGraphs keywordName={keywordData.keywordName} websiteId={googleSearchCampaign.websiteId} googleSearchCampaignId={googleSearchCampaign.id}/>
+      <GoogleSearchConsoleDataGraphs keywordName={keywordData.keywordName} websiteId={googleSearchCampaign.websiteId} googleSearchCampaign={googleSearchCampaign}/>
       <div className="grid grid-cols-2 gap-6 pb-6">
         <div className="space-y-6">
           <KeywordDetails keywordData={keywordData} />
