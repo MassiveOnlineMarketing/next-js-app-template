@@ -120,7 +120,7 @@ export class GoogleSearchLatestKeywordResult {
   // Def in use
   static fromDbQueryByCampaignId(data: GetLatestResultsByCampaignIdReturnType) {
     const GoogleSearchLatestResultDto = data?.keyword.map((serpResult) => {
-      if (!serpResult) {
+      if (!serpResult || !serpResult.result || !serpResult.result[0] || !serpResult.result[0].id) {
         return null;
       }
       const latestKeywordResult = new GoogleSearchLatestKeywordResult(
