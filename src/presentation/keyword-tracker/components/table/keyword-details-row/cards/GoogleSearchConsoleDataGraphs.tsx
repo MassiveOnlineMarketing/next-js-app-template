@@ -16,6 +16,8 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/presentation/componen
 
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { GoogleSearchCampaign } from '@/domain/serpTracker/enitities/GoogleSearchCampaign';
+import useTestKeywordDetailsSearchConsoleData from '@/presentation/keyword-tracker/hooks/fetching/useTestKeywordDetailsSearchConsoleData';
+import { GoogleSearchConsoleKeywordDetailsData } from '@/domain/models/googleSearchConsoleApi';
 
 const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCampaign }: {
   keywordName: string,
@@ -23,9 +25,11 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
   googleSearchCampaign: GoogleSearchCampaign
 }) => {
   const { toast } = useToast();
-  const { hasAccess } = useGoogleToken('search-console');
+  const { hasAccess, refreshToken } = useGoogleToken('search-console');
   const website = useWebsiteDetailsStore(state => state.websiteDetails);
-  const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, googleSearchCampaign, hasAccess, website?.gscUrl);
+  const { isLoading, data: searchConsoleKeywordDetails } = useTestKeywordDetailsSearchConsoleData(keywordName, googleSearchCampaign, hasAccess, refreshToken, website?.gscUrl);
+  console.log('gsc data', searchConsoleKeywordDetails); 
+  // const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, websiteId, googleSearchCampaign, hasAccess, website?.gscUrl);
   // console.log('gsc data', searchConsoleKeywordDetails);
   useEffect(() => {
     if (searchConsoleKeywordDetails?.error) {
@@ -127,10 +131,10 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
   }
 
   // TODO: Add error handling
-  if (!searchConsoleKeywordDetails?.data) {
+  if (!searchConsoleKeywordDetails) {
     return <div>No data</div>
   }
-  const data = Object.entries(searchConsoleKeywordDetails.data).map(([date, data]) => ({
+  const data = Object.entries(searchConsoleKeywordDetails as GoogleSearchConsoleKeywordDetailsData ).map(([date, data]) => ({
     date,
     clicks: Number(data.clicks.toFixed(1)),
     ctr: Number(data.ctr.toFixed(1)),
