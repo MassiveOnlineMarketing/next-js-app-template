@@ -117,7 +117,7 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
         <div className='grid grid-cols-4 gap-6 pb-6'>
           {mochChartConfig.map((config) => (
             <Card key={config.title} >
-              <CardHeader title={config.title} total={config.total} />
+              <CardHeader title={config.title} description={config.description} total={config.total} />
               <div className='h-[250px] flex items-center justify-center'>
                 <LoadingSpinner />
               </div>

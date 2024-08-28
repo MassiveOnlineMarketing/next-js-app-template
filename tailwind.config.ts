@@ -122,6 +122,10 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "open-down": {
+          from: { maxHeight: 0 },
+          to: { maxHeight: "1000px" },
+        },
         modalOpacityIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
@@ -133,6 +137,7 @@ module.exports = {
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
+        "open-down": "open-down 0.3s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "modal-opacity-in": "modalOpacityIn 0.5s ease forwards",
         "modal-opacity-out": "modalOpacityOut 0.5s ease forwards",

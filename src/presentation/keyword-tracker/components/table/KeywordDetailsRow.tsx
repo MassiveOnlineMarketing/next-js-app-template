@@ -21,7 +21,7 @@ const KeywordDetailsRow = ({ keywordData, googleSearchCampaign }: {
   console.log('KeywordDetailsRow', keywordData, googleSearchCampaign);
 
   return (
-    <div className="dark:bg-p-1100 max-w-[1240px] mx-auto ">
+    <div className="dark:bg-p-1100 max-w-[1240px] mx-auto animate-open-down overflow-hidden">
       <GoogleSearchConsoleDataGraphs keywordName={keywordData.keywordName} websiteId={googleSearchCampaign.websiteId} googleSearchCampaign={googleSearchCampaign}/>
       <div className="grid grid-cols-2 gap-6 pb-6">
         <div className="space-y-6">
