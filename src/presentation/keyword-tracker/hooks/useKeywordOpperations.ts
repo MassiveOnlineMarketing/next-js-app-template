@@ -43,7 +43,7 @@ export function useKeywordOpperations() {
       const endTime = Date.now(); // End time
       const duration = endTime - startTime; // Duration in milliseconds
       console.log(`handleAddNewKeyword took ${duration} ms`);
-      
+
       if (response.success) {
         showSuccessToast('Keywords added successfully!');
         return { success: true };
@@ -96,16 +96,16 @@ export function useKeywordOpperations() {
     const BATCH_SIZE = 99;
 
     try {
-      for (let i = 0; i < keywordsArray.length; i += BATCH_SIZE) {
-        const batch = keywordsArray.slice(i, i + BATCH_SIZE);
+      // for (let i = 0; i < keywordsArray.length; i += BATCH_SIZE) {
+      //   const batch = keywordsArray.slice(i, i + BATCH_SIZE);
 
         const payload = {
           campaignId: googleSearchCampaign.id,
-          keywordNames: batch,
+          keywordNames: keywordsArray,
         }
 
 
-        const response = await fetch("/api/serp", {
+        const response = await fetch("/api/serp-test", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -124,7 +124,7 @@ export function useKeywordOpperations() {
 
         updateKeywordResults(userResults);
         update({ credits: user.credits - userResults.length });
-      }
+      // }
       setIsLoading(false);
       return { success: true };
     } catch (error: any) {
