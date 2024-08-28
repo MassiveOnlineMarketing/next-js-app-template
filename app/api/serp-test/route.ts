@@ -16,6 +16,7 @@ type Data = {
   campaignId: string;
   keywordNames: string[];
 };
+export const maxDuration = 300;
 
 export async function POST(req: Request) {
   const data: Data = await req.json();
