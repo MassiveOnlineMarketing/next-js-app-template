@@ -9,7 +9,7 @@ export class GoogleAdsApiService {
   private googleAdsKeywordMetricsRepository: IGoogleAdsKeywordMetricsRepository;
 
   constructor(
-    googleAdsApi: IGoogleAdsApi, 
+    googleAdsApi: IGoogleAdsApi,
     googleAdsKeywordMetricsRepository: IGoogleAdsKeywordMetricsRepository
   ) {
     this.googleAdsApi = googleAdsApi;
@@ -23,22 +23,24 @@ export class GoogleAdsApiService {
     }, {});
     // console.log('keywordIdMap', keywordIdMap);
     const keywordString = keywords.map(keyword => keyword.keyword);
-  
+
     // Make the API call to get the metrics
     const keywordMetricsRes = await this.googleAdsApi.generateHistoricalMetrics(country, language, keywordString);
-  
+
     if (!keywordMetricsRes) {
       return [];
     }
 
 
     // Map the response to include the keyword IDs
-    const resultsWithIds = keywordMetricsRes.data.results.map((result: KeywordMetricsInput) => {
-      return {
-        ...result,
-        id: keywordIdMap[result.text]
-      };
-    });
+    const resultsWithIds = keywordMetricsRes.data.results
+      .filter((result: KeywordMetricsInput) => keywordIdMap[result.text] !== undefined)
+      .map((result: KeywordMetricsInput) => {
+        return {
+          ...result,
+          id: keywordIdMap[result.text]
+        };
+      });
 
 
     this.googleAdsKeywordMetricsRepository.insertMetrics(resultsWithIds);

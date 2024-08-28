@@ -7,7 +7,7 @@ class GoogleAdsApi implements IGoogleAdsApi {
     try {
       // make api call to adsApi to get the keyword metrices
       const url = `${process.env.NEXT_PUBLIC_PYTHON_API_URL}/historical-metrics?country-code=${country_code}&language-code=${language_code}&keywords=${keywordString.join(",")}`
-      console.log('reqUrl', url)
+      // console.log('reqUrl', url)
       const res = await axios(url);
 
       return res;

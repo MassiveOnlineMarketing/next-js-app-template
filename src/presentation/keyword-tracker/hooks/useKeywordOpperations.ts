@@ -36,8 +36,14 @@ export function useKeywordOpperations() {
     setIsLoading(true);
     showProcessingToast('Adding keywords...');
 
+    const startTime = Date.now(); // Start time
+
     try {
       const response = await handleProcessNewKeyword(keywords.keywords, googleSearchCampaign);
+      const endTime = Date.now(); // End time
+      const duration = endTime - startTime; // Duration in milliseconds
+      console.log(`handleAddNewKeyword took ${duration} ms`);
+      
       if (response.success) {
         showSuccessToast('Keywords added successfully!');
         return { success: true };
@@ -87,7 +93,7 @@ export function useKeywordOpperations() {
     }
 
     setIsLoading(true);
-    const BATCH_SIZE = 50;
+    const BATCH_SIZE = 99;
 
     try {
       for (let i = 0; i < keywordsArray.length; i += BATCH_SIZE) {
