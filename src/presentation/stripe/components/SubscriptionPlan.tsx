@@ -4,12 +4,17 @@ import React, { useState } from 'react';
 import { User } from 'next-auth';
 
 import { SubscriptionCard } from './billing-cards';
-import { UserSubscriptionPlan } from '../subscription';
 import { storeMonthlySubcsriptionPlans, storeYearlySubcsriptionPlans } from '@/config/stripe/subscriptions';
+import { UserSubscriptionPlan } from '@/application/services/StripeService';
 
-const SubscriptionPlan = ({ subscriptionPlan, user }: { subscriptionPlan: UserSubscriptionPlan, user: User }) => {
+
+const SubscriptionPlan = ({ subscriptionPlan, user }: { subscriptionPlan: UserSubscriptionPlan | undefined, user: User }) => {
   const [selectedPlan, setSelectedPlan] = useState('monthly');
 
+  // TODO: Fix this
+  if (!subscriptionPlan) {
+    return <div>Loading...</div>;
+  }
   console.log('current subsciption', subscriptionPlan);
 
   return (

@@ -4,10 +4,11 @@ import { User } from "next-auth";
 import ManageUserSubscriptionButton from "./manage-user-subscription-button";
 import BuyOneTimeProductButton from "./buy-one-time-product-button";
 
-import { UserSubscriptionPlan } from "../subscription";
+
 
 import { OneTimeProduct } from "@/config/stripe/one-time-products";
 import { SubscriptionPlanProps } from "@/config/stripe/subscriptions";
+import { UserSubscriptionPlan } from "@/application/services/StripeService";
 
 
 const SubscriptionCard = ({ plan, user, subscriptionPlan, selectedPlan }: { plan: SubscriptionPlanProps, user: User, subscriptionPlan: UserSubscriptionPlan, selectedPlan: 'monthly' | 'yearly' }) => {

@@ -57,7 +57,18 @@ export interface IUserRepository {
    * @param userId - The ID of the user.
    * @returns A promise that resolves to the updated user.
    */
-  update(data: any, userId: string): Promise<User>;
+  update(data: stripeData, userId: string): Promise<User>;
+
+  updateStripeSubscriptionData(data: any, userEmail: string): Promise<User>;
+
+  updateByStripeCustomerId(data: any, stripeCustomerId: string): Promise<User>;
 
   decrementUserCredits(userId: string, credits: number): Promise<boolean> 
+}
+
+export interface stripeData {
+  stripeSubscriptionId: string | null;
+  stripeCustomerId: string;
+  stripePriceId: string | null;
+  stripeCurrentPeriodEnd: Date | null;
 }

@@ -9,46 +9,87 @@ export interface SubscriptionPlanProps {
 
 export const storeMonthlySubcsriptionPlans: SubscriptionPlanProps[] = [
   {
-    id: "8750-monthly",
-    name: "8.750 Credits Monthly",
+    id: "personal-3000-monthly",
+    name: "Personal 3.000 Credits Monthly",
     description:
       "Gets you started with improving and tracking your SEO performance",
-    stripePriceId:
-      process.env.NEXT_PUBLIC_STRIPE_250_SUBSCRIPTION_PRICE_ID ?? "",
-    credits: 8750,
-    price: 15.75,
-  },
-  {
-    id: "17500-monthly",
-    name: "17.500 Credits Monthly",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_PERSONAL_1 ?? "",
+    credits: 3000,
+    price: 5.5,
+  },{
+    id: "personal-12000-monthly",
+    name: "Personal 12.000 Credits Monthly",
     description:
       "Gets you started with improving and tracking your SEO performance",
-    stripePriceId:
-      process.env.NEXT_PUBLIC_STRIPE_500_SUBSCRIPTION_PRICE_ID ?? "",
-    credits: 17500,
-    price: 29,
-  },
-  {
-    id: "35000-monthly",
-    name: "35.000 Credits Monthly daily",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_PERSONAL_2 ?? "",
+    credits: 12000,
+    price: 22,
+  },{
+    id: "personal-21000-monthly",
+    name: "Personal 21.000 Credits Monthly",
     description:
       "Gets you started with improving and tracking your SEO performance",
-    stripePriceId:
-      process.env.NEXT_PUBLIC_STRIPE_100_SUBSCRIPTION_PRICE_ID ?? "",
-    credits: 35000,
-    price: 52.5,
-  },
-  {
-    id: "70000-monthly",
-    name: "70.000 Credits Monthly",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_PERSONAL_3 ?? "",
+    credits: 21000,
+    price: 38,
+  },{
+    id: "starter-30000-monthly",
+    name: "Starter 30.000 Credits Monthly",
     description:
       "Gets you started with improving and tracking your SEO performance",
-    stripePriceId:
-      process.env.NEXT_PUBLIC_STRIPE_500_SUBSCRIPTION_PRICE_ID ?? "",
-    credits: 70000,
-    price: 94.5,
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_STARTER_1 ?? "",
+    credits: 30000,
+    price: 45,
+  },{
+    id: "starter-120000-monthly",
+    name: "Starter 120.000 Credits Monthly",
+    description:
+      "Gets you started with improving and tracking your SEO performance",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_STARTER_2 ?? "",
+    credits: 120000,
+    price: 180,
+  },{
+    id: "starter-210000-monthly",
+    name: "Starter 210.000 Credits Monthly",
+    description:
+      "Gets you started with improving and tracking your SEO performance",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_STARTER_3 ?? "",
+    credits: 210000,
+    price: 315,
+  },{
+    id: "premium-300000-monthly",
+    name: "Premium 300.000 Credits Monthly",
+    description:
+      "Gets you started with improving and tracking your SEO performance",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_PREMIUM_1 ?? "",
+    credits: 300000,
+    price: 375,
+  },{
+    id: "premium-1200000-monthly",
+    name: "Premium 1.200.000 Credits Monthly",
+    description:
+      "Gets you started with improving and tracking your SEO performance",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_PREMIUM_2 ?? "",
+    credits: 1200000,
+    price: 1200,
+  },{
+    id: "premium-2100000-monthly",
+    name: "Premium 2.100.000 Credits Monthly",
+    description:
+      "Gets you started with improving and tracking your SEO performance",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_SUBSCRIPTION_PRICE_ID_PREMIUM_3 ?? "",
+    credits: 2100000,
+    price: 2100,
+  },{
+    id: "test",
+    name: "test daily",
+    description:
+      "Gets you started with improving and tracking your SEO performance",
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_100_SUBSCRIPTION_PRICE_ID ?? "",
+    credits: 100,
+    price: 10,
   },
-];
+]
 
 // TODO: Add yearly subscription plans to environment variables
 export const storeYearlySubcsriptionPlans: SubscriptionPlanProps[] = [

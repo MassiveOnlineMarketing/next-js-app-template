@@ -16,7 +16,7 @@ export default class EmailRepository implements IEmailService {
     await resend.emails.send({
       from: "noreply@massiveonlinemarketing.nl",
       to: "trespaan@gmail.com",
-      subject: "Stripe Event",
+      subject: `Stripe Event ${event.type}`,
       html: `<p>${JSON.stringify(event, null, 2)}</p>`,
     });
   }

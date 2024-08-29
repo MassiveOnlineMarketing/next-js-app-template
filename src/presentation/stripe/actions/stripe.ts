@@ -26,6 +26,7 @@ export const manageStripeSubscriptionAction = async ({
 
   console.log("manageSubAction: isSubscribed", isSubscribed);
   console.log("manageSubAction: stripeCustomerId", stripeCustomerId);
+  // TODO: case when user has no subscription but has a stripeCustomerId
 
   // if (isSubscribed && stripeCustomerId ) {
   //     const stripeSession = await stripe.billingPortal.sessions.create({
@@ -38,6 +39,7 @@ export const manageStripeSubscriptionAction = async ({
 
   //! subscribed and stripeCustomerId
   if (isSubscribed && stripeCustomerId) {
+    console.log("run subscribed and stripeCustomerId");
     // * standard billing portal for existing customers
     const stripeSession = await stripe.billingPortal.sessions.create({
       customer: stripeCustomerId,
@@ -47,7 +49,8 @@ export const manageStripeSubscriptionAction = async ({
     return { url: stripeSession.url };
   }
 
-  //! subscribed and active subscription
+  //! subscribed and active subscription - can update users subscription
+  // Gives 4 events - customer.subscription.updated, invoice.payment_succeeded, invoice.payment_succeeded, customer.subscription.updated
   if (isSubscribed && stripeCustomerId && stripeSubscriptionId) {
     console.log('run')
     // * update subscription for existing customers
@@ -101,4 +104,54 @@ export const manageStripeSubscriptionAction = async ({
 
     return { url: stripeSession.url };
   }
+
+  // ! when user previously had a subscription, therefore we still have the stripeCustomerId. Use that to create a new subscription
+  if (stripeCustomerId) {
+    console.log("run stripeCustomerId");
+    const stripeSession = await stripe.checkout.sessions.create({
+      success_url: billingUrl,
+      cancel_url: billingUrl,
+      payment_method_types: ["card"],
+      mode: "subscription",
+      billing_address_collection: "auto",
+      customer: stripeCustomerId,
+      line_items: [
+        {
+          price: stripePriceId,
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        userId: userId,
+        stripePriceId,
+      },
+    });
+
+    return { url: stripeSession.url };
+  }
+
+
+  console.log("not subscribed and stripeCustomerId");
+  // * Create a new subscription and customer
+  const stripeSession = await stripe.checkout.sessions.create({
+    success_url: billingUrl,
+    cancel_url: billingUrl,
+    payment_method_types: ["card"],
+    mode: "subscription",
+    billing_address_collection: "auto",
+    customer_email: email,
+    line_items: [
+      {
+        price: stripePriceId,
+        quantity: 1,
+      },
+    ],
+    metadata: {
+      userId: userId,
+      stripePriceId,
+    },
+  });
+
+  return { url: stripeSession.url };
+
 };

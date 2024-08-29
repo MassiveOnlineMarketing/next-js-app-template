@@ -1,4 +1,4 @@
-import { IUserRepository } from '@/domain/repository/IUserRepository';
+import { IUserRepository, stripeData } from '@/domain/repository/IUserRepository';
 import { User } from '@/domain/_entities/User';
 import { db } from '@/infrastructure/db/prisma';
 import { Account } from '@prisma/client';
@@ -58,6 +58,24 @@ class UserRepository implements IUserRepository {
   async update(data: any, userId: string): Promise<User> {
     const user = await db.user.update({
       where: { id: userId },
+      data: { ...data },
+    });
+
+    return user;
+  }
+
+  async updateStripeSubscriptionData(data: stripeData, userEmail: string): Promise<User> {
+    const user = await db.user.update({
+      where: { email: userEmail },
+      data: { ...data },
+    });
+
+    return user;
+  }
+
+  async updateByStripeCustomerId(data: any, stripeCustomerId: string): Promise<User> {
+    const user = await db.user.update({
+      where: { stripeCustomerId },
       data: { ...data },
     });
 
