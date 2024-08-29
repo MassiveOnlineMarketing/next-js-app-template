@@ -2,8 +2,8 @@ import { auth } from "@/application/services/AuthService"
 import { getStripeCustomerInvoices } from "@/application/useCases/stripe/getStripeCustomerInvoices";
 import { getStripeUserSubscription } from "@/application/useCases/stripe/getStripeUserSubscription";
 import { storeOneTimeProducts } from "@/config/stripe/one-time-products"
-import { OneTimePurchaseCard } from "@/presentation/stripe/components/billing-cards"
-import SubscriptionPlan from "@/presentation/stripe/components/SubscriptionPlan";
+import { OneTimePurchaseCard } from "@/presentation/lib/stripe/components/billing-cards"
+import SubscriptionPlan from "@/presentation/lib/stripe/components/SubscriptionPlan";
 import ClientComp from "./ClientComp";
 
 const page = async () => {

@@ -1,7 +1,7 @@
 "use server";
 
 import { stripe } from "@/application/services/StripeService";
-import { BASE_URL } from "../../../../routes";
+import { BASE_URL } from "../../../../../routes";
 import { db } from "@/infrastructure/db/prisma";
 
 

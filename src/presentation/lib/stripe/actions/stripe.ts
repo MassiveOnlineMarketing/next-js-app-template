@@ -1,6 +1,6 @@
 "use server";
 
-import { BASE_URL } from "../../../../routes";
+import { BASE_URL } from "../../../../../routes";
 import { stripe } from "@/application/services/StripeService";
 
 interface ManageStripeSubscriptionActionProps {
