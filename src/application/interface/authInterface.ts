@@ -13,6 +13,16 @@ type ErrorResponse = {
   success?: undefined;
 }
 
+export type AuthSuccessResponse = {
+  success: string;
+  // error?: undefined?
+}
+
+export type AuthErrorResponse = {
+  error: string;
+  // success?: undefined
+}
+
 
 type SuccessResponseUpdateUserDetails = {
   success: boolean;
@@ -57,7 +67,7 @@ export interface AuthInterface {
    * @param callbackUrl - Optional callback URL after successful login.
    * @returns A promise that resolves to a success response, error response, or undefined.
    */
-  login(email: string, password: string, callbackUrl?: string | null): Promise<SucessResponse | ErrorResponse | undefined>;
+  login(email: string, password: string, callbackUrl?: string | null): Promise<AuthSuccessResponse | AuthErrorResponse>;
 
   /**
    * Registers a new user with the provided email, name, and password.

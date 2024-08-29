@@ -26,7 +26,7 @@ export class AuthService implements AuthInterface {
     return auth()
   }
 
-  async currentUser(): Promise<ExtendedUser | null>{
+  async currentUser(): Promise<ExtendedUser | null> {
     const session = await auth();
     const user = session?.user as ExtendedUser;
 
@@ -42,7 +42,7 @@ export class AuthService implements AuthInterface {
     }
     const account = await userRepository.getAccountById(user.id);
 
-    return account?.refresh_token || null; 
+    return account?.refresh_token || null;
   }
 
   async isAdmin() {
@@ -79,8 +79,12 @@ export class AuthService implements AuthInterface {
       });
     } catch (error) {
       if (error instanceof AuthError) {
+        console.log('error', error)
+        console.log('error.type', error.type)
         switch (error.type) {
           case "CredentialsSignin":
+            return { error: "Invalid credentials!" };
+          case "CallbackRouteError":
             return { error: "Invalid credentials!" };
           default:
             return { error: "Something went wrong!" };
@@ -89,6 +93,8 @@ export class AuthService implements AuthInterface {
 
       throw error;
     }
+
+    return { success: "Login successful!" };
   }
 
   async register(email: string, password: string, name: string) {
@@ -175,6 +181,8 @@ export class AuthService implements AuthInterface {
     return { success: "Email verified!" };
   }
 
+
+
   async updateUserDetails(currentPassword: string | undefined, password: string | undefined, passwordConfirmation: string | undefined, email: string | null, name: string | null) {
     const session = await auth();
     const user = session?.user;
@@ -231,10 +239,10 @@ export class AuthService implements AuthInterface {
 
       data.password = await bcrypt.hash(password, 10);
     }
-    
+
     const updatedUser = await userRepository.update(data, user.id as string);
 
-    return { success: true, data: updatedUser, message: "User details updated!"};
+    return { success: true, data: updatedUser, message: "User details updated!" };
   }
 }
 
@@ -267,36 +275,11 @@ export const {
         where: { id: user.id },
         data: { emailVerified: new Date() },
       });
-
-      // * Check if the user has Google connection
-      if (account?.provider === "google") {
-        // * If Google Search Console connection is granted update the user
-        if (
-          account.scope &&
-          account.scope.includes(
-            "https://www.googleapis.com/auth/webmasters.readonly",
-          )
-        ) {
-          console.log("Google Search Console connection");
-        }
-
-        // console.log('link account', account)
-
-        if (
-          account.scope &&
-          account.scope.includes("https://www.googleapis.com/auth/adwords")
-        ) {
-          console.log("Google Ads connection");
-        }
-      }
     },
   },
   callbacks: {
     // * Triggered when a user signs in or gives permissions using sign in function
     async signIn({ user, account }) {
-      console.log('signIn', user, account)
-
-      // * Allow OAuth without email verification
       if (account?.provider !== "credentials") {
         // Store the refresh token
         if (
@@ -305,7 +288,7 @@ export const {
           account.scope
         ) {
           console.log("google account");
-          const updatedAccount = await updateGoogleAccount(
+          await updateGoogleAccount(
             user.id as string,
             account.refresh_token,
             account.scope,
@@ -324,23 +307,12 @@ export const {
 
         // Update login provider for showing correct setting in the UI
         await updateLoginProvider(user.id as string, account.provider);
-
-        // * Two factor authentication
-        // if (existingUser.isTwoFactorEnabled) {
-        //   const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
-
-        //   if (!twoFactorConfirmation) return false;
-
-        //   // Delete two factor confirmation for next sign in
-        //   await db.twoFactorConfirmation.delete({
-        //     where: { id: twoFactorConfirmation.id }
-        //   });
-        // }
       }
 
       return true;
     },
     async jwt({ token, account, trigger, session }) {
+      // * Token is accessible in the middleware
       // If there's no user ID in the token, return the token as is
       if (!token.sub) return token;
 
@@ -370,6 +342,7 @@ export const {
     // is available in auth()
     // TODO: Check why token is not working
     async session({ session, token }: any) {
+      // TODO: Should grab this data from the token
       const latestUserData = await userRepository.getById(token.sub);
 
       // If there's a user in the session, add extra data to the user
@@ -388,7 +361,6 @@ export const {
       }
 
       // Add extra data to the session
-      session.accessToken = token.accessToken || session.accessToken;
       session.credits = token.credits || session.credits;
       session.email = token.email || session.email;
 
