@@ -120,23 +120,15 @@ export class StripeService {
       console.log('Attempting to update user credits...');
       console.log(`User Email: ${userEmail}`);
       console.log('Credits to add: ', creditsToAdd);
-
-      const user = await db.user.findFirst({
-        where: { email: userEmail },
-      });
-      if (!user) {
-        console.error('User not found');
-        console.log('User not found');
-        return new SimpleError(400, "User not found");
-      }
-      const test = await db.user.update({
+    
+      const user = await db.user.update({
         where: { email: userEmail },
         data: {
-          credits: user.credits + creditsToAdd
+          credits: { increment: creditsToAdd },
         },
       });
     
-      console.log('User after update: ', test);
+      console.log('User after update: ', user);
     } catch (error) {
       console.error('Error updating user credits: ', error);
       console.log('Error updating user credits: ', error);

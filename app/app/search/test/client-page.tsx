@@ -3,6 +3,7 @@
 import { useGoogleSearchCampaignDetailsStore } from '@/presentation/stores/google-search-campaign-store';
 import Image from 'next/image';
 import React, { useState } from 'react'
+import { testAction } from './actions';
 
 const ClientPage = () => {
   const googleSearchCampaign = useGoogleSearchCampaignDetailsStore(state => state.campaignDetails)
@@ -32,6 +33,8 @@ const ClientPage = () => {
 
   const handleClick = async () => {
     console.log('rest')
+    const res = testAction()
+    console.log('res', res)
   }
 
   return (
