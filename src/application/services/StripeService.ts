@@ -117,7 +117,7 @@ export class StripeService {
     }
     try {
       const user = await db.user.update({
-        where: { email: userEmail },
+        where: { id: 'clz1h02so00001770l1i8m8wf' },
         data: {
           credits: { increment: creditsToAdd },
         },
