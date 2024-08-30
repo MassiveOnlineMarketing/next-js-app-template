@@ -1,4 +1,4 @@
-
+"use server";
 import Stripe from "stripe";
 import { stripe, StripeService } from "@/application/services/StripeService";
 import { SimpleError } from "@/domain/errors/simpleErrors";
