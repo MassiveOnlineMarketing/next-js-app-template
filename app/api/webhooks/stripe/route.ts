@@ -3,7 +3,6 @@ import Stripe from "stripe";
 import { stripe, StripeService } from "@/application/services/StripeService";
 import { SimpleError } from "@/domain/errors/simpleErrors";
 
-export const maxDuration = 300;
 
 export async function POST(request: Request) {
   // console.log('stripe/webhook request: ', request)
