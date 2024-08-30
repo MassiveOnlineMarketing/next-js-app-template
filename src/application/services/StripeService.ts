@@ -124,8 +124,20 @@ export class StripeService {
       return new SimpleError(400, "Invalid user email");
     }
     try {
-      const newUser = await userRepository.updateByStripeCustomerId(data, userEmail);
-      console.log('newUser: ', newUser)
+      const user = await db.user.update({
+        where: { email: userEmail },
+        data: {
+          stripeCustomerId: stripeCustomerId as string,
+          stripeSubscriptionId: subscriptionItem.subscription as string,
+          stripePriceId: subscriptionItem.price!.id,
+          stripeCurrentPeriodEnd: new Date(
+            subscriptionItem.period.end * 1000,
+          ),
+          credits: { increment: credditsToAdd },
+        } ,
+      });
+  
+      console.log('user: ', user);
     } catch (error) {
       console.error("Subscription credits renewal, Error updating user in database:", error);
       return new SimpleError(500, "Failed to update user in database");
