@@ -4,6 +4,7 @@ import { SimpleError } from "@/domain/errors/simpleErrors";
 import { db } from "@/infrastructure/db/prisma";
 import EmailRepository from "@/infrastructure/repositories/EMailRepository";
 import userRepository from "@/infrastructure/repositories/UserRepository";
+import { PrismaClient } from "@prisma/client";
 import Stripe from "stripe";
 
 export type UserSubscriptionPlan = Awaited<ReturnType<StripeService['getUserSubscriptionPlan']>>;
@@ -12,7 +13,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
   apiVersion: "2024-06-20",
   typescript: true,
 });
-
+const prisma = new PrismaClient();
 export class StripeService {
   private stripe: Stripe;
 
@@ -121,12 +122,12 @@ export class StripeService {
       console.log(`User Email: ${userEmail}`);
       console.log('Credits to add: ', creditsToAdd);
 
-      const user = await db.user.findFirst({
+      const user = await prisma.user.findFirst({
         where: { email: userEmail },
       });
       console.log('User before update: ', user);
     
-      const newUser = await db.user.update({
+      const newUser = await prisma.user.update({
         where: { id: user?.id },
         data: {
           credits: { increment: creditsToAdd },
