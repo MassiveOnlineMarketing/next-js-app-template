@@ -95,19 +95,20 @@ export class StripeService {
 
 
   async subscriptionCreditsRenewal(event: Stripe.InvoicePaymentSucceededEvent) {
-    console.log('SUBSCRIPTION CREDITS RENEWAL')
+    console.log('SUBSCRIPTION CREDITS RENEWAL');
     const stripeCustomerId = event.data.object.customer;
-    console.log('stripeCustomerId: ', stripeCustomerId)
+    console.log('stripeCustomerId: ', stripeCustomerId);
     const subscriptionItem = event.data.object.lines.data[0];
-    console.log('subscriptionItem: ', subscriptionItem)
+    console.log('subscriptionItem: ', subscriptionItem);
     const plan = storeMonthlySubcsriptionPlans.find(
       (plan) => plan.stripePriceId === subscriptionItem.price!.id,
     );
-    console.log('plan: ', plan)
+    console.log('plan: ', plan);
     if (!plan) {
+      console.error('Invalid subscription plan');
       return new SimpleError(400, "Invalid subscription plan");
     }
-    const credditsToAdd = plan.credits || 0;
+    const creditsToAdd = plan.credits || 0;
     const data = {
       stripeSubscriptionId: subscriptionItem.subscription,
       stripeCustomerId: stripeCustomerId as string,
@@ -115,12 +116,12 @@ export class StripeService {
       stripeCurrentPeriodEnd: new Date(
         subscriptionItem.period.end * 1000,
       ),
-
-      credits: { increment: credditsToAdd },
-    }
-    console.log('data: ', data)
+      credits: { increment: creditsToAdd },
+    };
+    console.log('data: ', data);
     const userEmail = event.data.object.customer_email;
     if (!userEmail) {
+      console.error('Invalid user email');
       return new SimpleError(400, "Invalid user email");
     }
     try {
@@ -133,16 +134,16 @@ export class StripeService {
           stripeCurrentPeriodEnd: new Date(
             subscriptionItem.period.end * 1000,
           ),
-          credits: { increment: credditsToAdd },
-        } ,
+          credits: { increment: creditsToAdd },
+        },
       });
-  
+
       console.log('user: ', user);
     } catch (error) {
       console.error("Subscription credits renewal, Error updating user in database:", error);
       return new SimpleError(500, "Failed to update user in database");
     }
-  }
+}
 
   async oneTimePurchaseEvent(stripePriceId: string, userId: string) {
     const plan = storeOneTimeProducts.find(
