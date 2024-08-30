@@ -49,14 +49,14 @@ export async function POST(request: Request) {
       if (!plan) {
         console.error('Invalid subscription plan');
         console.log('Invalid subscription plan');
-        return new SimpleError(400, "Invalid subscription plan");
+        return new Response("Invalid subscription plan", {status: 400});
       }
       const creditsToAdd = plan.credits || 0;
       const userEmail = event.data.object.customer_email;
       if (!userEmail) {
         console.error('Invalid user email');
         console.log('Invalid user email');
-        return new SimpleError(400, "Invalid user email");
+        return new Response("Invalid user email", {status: 400});
       }
       try {
         console.log('Attempting to update user credits...');
@@ -93,6 +93,8 @@ export async function POST(request: Request) {
       console.error("Error processing stripe webhook", error);
       return new Response(null, { status: error.statusCode });
     }
+    console.error("Error processing stripe webhook", error);
+    return new Response(null, { status: 500 });
   }
 
   return new Response(null, { status: 200 });
