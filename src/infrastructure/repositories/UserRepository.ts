@@ -74,15 +74,20 @@ class UserRepository implements IUserRepository {
   }
 
   async updateByStripeCustomerId(data: any, email: string): Promise<User> {
-    console.log('data: ', data, email)
-    const user = await db.user.update({
-      where: { email },
-      data: { ...data },
-    });
-
-    console.log('user: ', user)
-
-    return user;
+    try {
+      console.log('data: ', data, email);
+      const user = await db.user.update({
+        where: { email },
+        data: { ...data },
+      });
+  
+      console.log('user: ', user);
+  
+      return user;
+    } catch (error) {
+      console.error('Error updating user: ', error);
+      throw error; // Re-throw the error after logging it
+    }
   }
 
   async decrementUserCredits(userId: string, credits: number): Promise<boolean> {
