@@ -121,16 +121,19 @@ export class StripeService {
       console.log(`User Email: ${userEmail}`);
       console.log('Credits to add: ', creditsToAdd);
 
-      const result = await db.$transaction(async (prisma) => {
-        const user = await prisma.user.update({
-          where: { email: userEmail },
-          data: {
-            credits: { increment: creditsToAdd },
-          },
-        });
-        return user;
+      const user = await db.user.findFirst({
+        where: { email: userEmail },
       });
-      console.log('User after update: ', result);
+      console.log('User before update: ', user);
+    
+      const newUser = await db.user.update({
+        where: { id: user?.id },
+        data: {
+          credits: { increment: creditsToAdd },
+        },
+      });
+    
+      console.log('User after update: ', newUser);
     } catch (error) {
       console.error('Error updating user credits: ', error);
       console.log('Error updating user credits: ', error);
