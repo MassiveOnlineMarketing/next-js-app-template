@@ -74,10 +74,13 @@ class UserRepository implements IUserRepository {
   }
 
   async updateByStripeCustomerId(data: any, email: string): Promise<User> {
+    console.log('data: ', data, email)
     const user = await db.user.update({
       where: { email },
       data: { ...data },
     });
+
+    console.log('user: ', user)
 
     return user;
   }
