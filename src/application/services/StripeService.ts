@@ -109,17 +109,8 @@ export class StripeService {
       return new SimpleError(400, "Invalid subscription plan");
     }
     const creditsToAdd = plan.credits || 0;
-    const data = {
-      stripeSubscriptionId: subscriptionItem.subscription,
-      stripeCustomerId: stripeCustomerId as string,
-      stripePriceId: subscriptionItem.price!.id,
-      stripeCurrentPeriodEnd: new Date(
-        subscriptionItem.period.end * 1000,
-      ),
-      credits: { increment: creditsToAdd },
-    };
-    console.log('data: ', data);
     const userEmail = event.data.object.customer_email;
+    console.log('userEmail: ', userEmail);
     if (!userEmail) {
       console.error('Invalid user email');
       return new SimpleError(400, "Invalid user email");
@@ -128,12 +119,6 @@ export class StripeService {
       const user = await db.user.update({
         where: { email: userEmail },
         data: {
-          stripeCustomerId: stripeCustomerId as string,
-          stripeSubscriptionId: subscriptionItem.subscription as string,
-          stripePriceId: subscriptionItem.price!.id,
-          stripeCurrentPeriodEnd: new Date(
-            subscriptionItem.period.end * 1000,
-          ),
           credits: { increment: creditsToAdd },
         },
       });
