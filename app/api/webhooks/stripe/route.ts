@@ -91,7 +91,7 @@ export async function POST(request: Request) {
       const session = event.data.object as Stripe.Checkout.Session;
       // If the user doesn't have a userId, return a 400 error
       if (!session?.metadata?.userId || !session?.metadata?.stripePriceId) {
-        return new SimpleError(400, "Invalid session metadata");
+        return new Response("Invalid session metadata", {status: 400});
       }
       const userId = session.metadata.userId;
       const stripePriceId = session.metadata.stripePriceId;
@@ -183,6 +183,8 @@ async function oneTimePurchaseEvent(stripePriceId: string, userId: string) {
         credits: { increment: credditsToAdd },
       },
     });
+
+    return new Response("User updated", { status: 200 });
   } catch (error) {
     console.error("One time purchase, Error updating user in database:", error);
     return new Response("Failed to update user in database", { status: 500 });
