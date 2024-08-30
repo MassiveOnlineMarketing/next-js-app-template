@@ -16,6 +16,7 @@ import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
 import { InputFieldAppWithIcon } from "@/presentation/components/ui/inputFields";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
+import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -80,7 +81,7 @@ export const NewPasswordForm = () => {
             <FormSuccess message={success} />
           </div>
           <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='md'>
-            Reset password
+          {isPending ? <LoadingSpinnerSmall /> : 'Reset password' } 
           </Button>
         </form>
       </Form>

@@ -15,6 +15,7 @@ import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
 import { InputFieldAppWithIcon } from "@/presentation/components/ui/inputFields";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
 
 export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -76,7 +77,7 @@ export const ResetForm = () => {
             <FormSuccess message={success} />
           </div>
           <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='md'>
-            Send reset email
+            {isPending ? <LoadingSpinnerSmall /> : 'Send reset email'}
           </Button>
         </form>
       </Form>
