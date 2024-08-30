@@ -119,7 +119,11 @@ export class StripeService {
       credits: { increment: credditsToAdd },
     }
     console.log('data: ', data)
-    const newUser = await userRepository.updateByStripeCustomerId(data, stripeCustomerId as string);
+    const userEmail = event.data.object.customer_email;
+    if (!userEmail) {
+      return new SimpleError(400, "Invalid user email");
+    }
+    const newUser = await userRepository.updateByStripeCustomerId(data, userEmail);
     console.log('newUser: ', newUser)
   }
 
