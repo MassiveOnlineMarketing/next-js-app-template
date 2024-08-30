@@ -27,7 +27,7 @@ export class StripeService {
 
     if (event.type === "customer.subscription.updated") {
       console.log('❗ should fire when subscription is updated')
-      sendEmail(event);
+      await sendEmail(event);
 
       // Update the user's subscription data in the database
       const stripeCustomer = await this.getStripeCustomerData(event.data.object.customer as string);
@@ -40,22 +40,22 @@ export class StripeService {
         ),
       }
       console.log('updatedSubscriptionData: ', updatedSubscriptionData)
-      userRepository.updateStripeSubscriptionData(updatedSubscriptionData, stripeCustomer.email as string);
+      await userRepository.updateStripeSubscriptionData(updatedSubscriptionData, stripeCustomer.email as string);
     }
 
 
     if (event.type === "customer.subscription.deleted") {
       console.log('❗ should fire when subscription is deleted')
-      sendEmail(event);
+      await sendEmail(event);
 
       const stripeCustomer = await this.getStripeCustomerData(event.data.object.customer as string);
-      userRepository.updateStripeSubscriptionData({ stripeCustomerId: stripeCustomer.id, stripeSubscriptionId: null, stripePriceId: null, stripeCurrentPeriodEnd: null }, stripeCustomer.email as string);
+      await userRepository.updateStripeSubscriptionData({ stripeCustomerId: stripeCustomer.id, stripeSubscriptionId: null, stripePriceId: null, stripeCurrentPeriodEnd: null }, stripeCustomer.email as string);
     }
 
     // * Fires when a payment is successful
     if (event.type === "invoice.payment_succeeded") {
       console.log('❗ should fire after a successfull payment. Ment for subscription payments')
-      sendEmail(event);
+      await sendEmail(event);
 
       // event when the subscription is created, add the credits to the user
       if (event.data.object.billing_reason === "subscription_create") {
@@ -76,7 +76,7 @@ export class StripeService {
     //* checkout session completed, fires on both subscription and one-time purchases. 
     if (event.type === "checkout.session.completed") {
       console.log("❗ fire when chcekout session is completed");
-      sendEmail(event);
+      await sendEmail(event);
 
       const session = event.data.object as Stripe.Checkout.Session;
       // If the user doesn't have a userId, return a 400 error
@@ -117,6 +117,7 @@ export class StripeService {
       console.log('Invalid user email');
       return new SimpleError(400, "Invalid user email");
     }
+    await this.testDatabaseConnection();
     try {
       console.log('Attempting to update user credits...');
       console.log(`User Email: ${userEmail}`);
@@ -138,6 +139,17 @@ export class StripeService {
     } catch (error) {
       console.error('Error updating user credits: ', error);
       console.log('Error updating user credits: ', error);
+    }
+  }
+
+  async testDatabaseConnection() {
+    try {
+      await prisma.$connect();
+      console.log('Database connection successful');
+    } catch (error) {
+      console.error('Database connection error: ', error);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
