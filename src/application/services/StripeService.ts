@@ -106,6 +106,7 @@ export class StripeService {
     console.log('plan: ', plan);
     if (!plan) {
       console.error('Invalid subscription plan');
+      console.log('Invalid subscription plan');
       return new SimpleError(400, "Invalid subscription plan");
     }
     const creditsToAdd = plan.credits || 0;
@@ -113,6 +114,7 @@ export class StripeService {
     console.log('userEmail: ', userEmail);
     if (!userEmail) {
       console.error('Invalid user email');
+      console.log('Invalid user email');
       return new SimpleError(400, "Invalid user email");
     }
     try {
@@ -130,6 +132,7 @@ export class StripeService {
       console.log('User after update: ', user);
     } catch (error) {
       console.error('Error updating user credits: ', error);
+      console.log('Error updating user credits: ', error);
     }
   }
 
