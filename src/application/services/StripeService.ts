@@ -123,8 +123,13 @@ export class StripeService {
     if (!userEmail) {
       return new SimpleError(400, "Invalid user email");
     }
-    const newUser = await userRepository.updateByStripeCustomerId(data, userEmail);
-    console.log('newUser: ', newUser)
+    try {
+      const newUser = await userRepository.updateByStripeCustomerId(data, userEmail);
+      console.log('newUser: ', newUser)
+    } catch (error) {
+      console.error("Subscription credits renewal, Error updating user in database:", error);
+      return new SimpleError(500, "Failed to update user in database");
+    }
   }
 
   async oneTimePurchaseEvent(stripePriceId: string, userId: string) {
