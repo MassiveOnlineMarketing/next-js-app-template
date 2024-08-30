@@ -121,14 +121,14 @@ export class StripeService {
       console.log(`User Email: ${userEmail}`);
       console.log('Credits to add: ', creditsToAdd);
     
-      const user = await db.user.update({
+      await db.user.update({
         where: { email: userEmail },
         data: {
           credits: { increment: creditsToAdd },
         },
       });
     
-      console.log('User after update: ', user);
+      // console.log('User after update: ', user);
     } catch (error) {
       console.error('Error updating user credits: ', error);
       console.log('Error updating user credits: ', error);
