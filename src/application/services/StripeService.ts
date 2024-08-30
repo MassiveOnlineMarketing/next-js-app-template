@@ -95,11 +95,15 @@ export class StripeService {
 
 
   async subscriptionCreditsRenewal(event: Stripe.InvoicePaymentSucceededEvent) {
+    console.log('SUBSCRIPTION CREDITS RENEWAL')
     const stripeCustomerId = event.data.object.customer;
+    console.log('stripeCustomerId: ', stripeCustomerId)
     const subscriptionItem = event.data.object.lines.data[0];
+    console.log('subscriptionItem: ', subscriptionItem)
     const plan = storeMonthlySubcsriptionPlans.find(
       (plan) => plan.stripePriceId === subscriptionItem.price!.id,
     );
+    console.log('plan: ', plan)
     if (!plan) {
       return new SimpleError(400, "Invalid subscription plan");
     }
@@ -114,7 +118,9 @@ export class StripeService {
 
       credits: { increment: credditsToAdd },
     }
-    userRepository.updateByStripeCustomerId(data, stripeCustomerId as string);
+    console.log('data: ', data)
+    const newUser = await userRepository.updateByStripeCustomerId(data, stripeCustomerId as string);
+    console.log('newUser: ', newUser)
   }
 
   async oneTimePurchaseEvent(stripePriceId: string, userId: string) {
