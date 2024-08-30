@@ -111,7 +111,6 @@ export class StripeService {
     }
     const creditsToAdd = plan.credits || 0;
     const userEmail = event.data.object.customer_email;
-    console.log('userEmail: ', userEmail);
     if (!userEmail) {
       console.error('Invalid user email');
       console.log('Invalid user email');
@@ -119,11 +118,11 @@ export class StripeService {
     }
     try {
       console.log('Attempting to update user credits...');
-      console.log('User ID: clz1h02so00001770l1i8m8wf');
+      console.log(`User Email: ${userEmail}`);
       console.log('Credits to add: ', creditsToAdd);
     
       const user = await db.user.update({
-        where: { id: 'clz1h02so00001770l1i8m8wf' },
+        where: { email: userEmail },
         data: {
           credits: { increment: creditsToAdd },
         },
