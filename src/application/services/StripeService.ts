@@ -121,12 +121,15 @@ export class StripeService {
       console.log(`User Email: ${userEmail}`);
       console.log('Credits to add: ', creditsToAdd);
 
-      const result = await db.$executeRaw`
-        UPDATE User
-        SET credits = credits + ${creditsToAdd}
-        WHERE email = ${userEmail}
-      `;
-
+      const result = await db.$transaction(async (prisma) => {
+        const user = await prisma.user.update({
+          where: { email: userEmail },
+          data: {
+            credits: { increment: creditsToAdd },
+          },
+        });
+        return user;
+      });
       console.log('User after update: ', result);
     } catch (error) {
       console.error('Error updating user credits: ', error);
