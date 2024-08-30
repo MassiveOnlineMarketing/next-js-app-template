@@ -65,8 +65,8 @@ export class StripeService {
       if (event.data.object.billing_reason === "subscription_cycle") {
         this.subscriptionCreditsRenewal(event);
       }
-      
-      
+
+
       // If updated, add the difference in credits to the user ? wanneer update, subscriptie wijziging de correcte credits toevoegen
       const updated = event.data.object.billing_reason === "subscription_update" ? true : false;
     }
@@ -116,19 +116,22 @@ export class StripeService {
       return new SimpleError(400, "Invalid user email");
     }
     try {
+      console.log('Attempting to update user credits...');
+      console.log('User ID: clz1h02so00001770l1i8m8wf');
+      console.log('Credits to add: ', creditsToAdd);
+    
       const user = await db.user.update({
         where: { id: 'clz1h02so00001770l1i8m8wf' },
         data: {
           credits: { increment: creditsToAdd },
         },
       });
-
-      console.log('user: ', user);
+    
+      console.log('User after update: ', user);
     } catch (error) {
-      console.error("Subscription credits renewal, Error updating user in database:", error);
-      return new SimpleError(500, "Failed to update user in database");
+      console.error('Error updating user credits: ', error);
     }
-}
+  }
 
   async oneTimePurchaseEvent(stripePriceId: string, userId: string) {
     const plan = storeOneTimeProducts.find(
@@ -171,7 +174,7 @@ export class StripeService {
       throw new SimpleError(400, "User not found");
     }
 
-    const invoices = this.stripe.paymentIntents.list({customer: user.stripeCustomerId});
+    const invoices = this.stripe.paymentIntents.list({ customer: user.stripeCustomerId });
 
     return invoices;
   }
