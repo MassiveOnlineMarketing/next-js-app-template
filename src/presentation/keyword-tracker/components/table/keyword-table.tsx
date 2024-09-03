@@ -13,6 +13,7 @@ import DataTablePagination from "@/presentation/components/ui/table/table-pagina
 
 import DataTableTopBar from "./topbar";
 import KeywordDetailsRow from "./KeywordDetailsRow";
+import { cn } from "@/presentation/components/utils";
 
 
 
@@ -111,9 +112,10 @@ function DataTable<TData, TValue>({
         {/* Dit naar Table */}
         <table className="w-full">
           {/* Weg , overflow hidden*/}
-          <TableHeader className="sticky top-[92px] z-20       rouded-md  bg-white dark:bg-p-1100">
+          <TableHeader className="sticky top-[92px] z-20 w-full      rouded-md  bg-white dark:bg-p-1100">
+            <div className="absolute w-full -m-[1px] h-full border border-light-stroke dark:border-dark-stroke pointer-events-none rounded-t-[10px]"></div>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className=" rounded-lg shadow-sm  dark:bg-dark-bg-light">
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
@@ -122,6 +124,7 @@ function DataTable<TData, TValue>({
                       onDragStart={(e) => handleDragStart(e, header.id)}
                       onDrop={(e) => handleDrop(e, header.id)}
                       onDragOver={(e) => e.preventDefault()}
+                      className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50 h-[54px]"
                     >
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
@@ -130,15 +133,18 @@ function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="overflow-y-auto">
+          <TableBody className="overflow-y-auto border-x border-b border-light-stroke dark:border-dark-stroke">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
                 <React.Fragment key={row.id}>
                   <TableRow
-                    data-state={row.getIsSelected() && "selected"}
-                    className="border-b border-gray-200 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter hover:bg-neutral-100/50 cursor-pointer"
+                    className={cn(
+                      "border-light-stroke dark:border-dark-stroke hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 cursor-pointer",
+                      selectedRowIndex === row.id ? "" : "border-b"
+                    )}
                     // handle click row, open keyword detail
                     onClick={handleClickRow(row.id)}
+                    data-state={selectedRowIndex === row.id ? "true" : "false"}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>

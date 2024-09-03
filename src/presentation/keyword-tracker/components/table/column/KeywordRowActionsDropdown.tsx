@@ -56,7 +56,7 @@ const KeywordRowActionsDropdown = ({ keyword }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger >
-        <div className="p-2 bg-white dark:bg-dark-bg-light rounded-lg">
+        <div className="p-2 bg-p-25 dark:bg-dark-bg-light rounded-lg shadow-md">
           <span className="sr-only">Open menu</span>
           <EllipsisHorizontalIcon className="w-4 h-4 dark:text-[#DFE5FA]/35" />
         </div>

@@ -17,6 +17,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/presentation/componen
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { GoogleSearchCampaign } from '@/domain/serpTracker/enitities/GoogleSearchCampaign';
 import { GoogleSearchConsoleKeywordDetailsData } from '@/domain/models/googleSearchConsoleApi';
+import { useTheme } from 'next-themes';
 
 const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCampaign }: {
   keywordName: string,
@@ -24,11 +25,11 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
   googleSearchCampaign: GoogleSearchCampaign
 }) => {
   const { toast } = useToast();
+  const { theme } = useTheme();
   const { hasAccess, refreshToken } = useGoogleToken('search-console');
   const website = useWebsiteDetailsStore(state => state.websiteDetails);
   const { isLoading, data: searchConsoleKeywordDetails } = useKeywordDetailsSearchConsoleData(keywordName, googleSearchCampaign, hasAccess, refreshToken, website?.gscUrl)
-  // console.log('gsc data', searchConsoleKeywordDetails); 
-  // console.log('gsc data', searchConsoleKeywordDetails);
+
   useEffect(() => {
     if (searchConsoleKeywordDetails?.error) {
       toast({
@@ -43,9 +44,9 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
 
   if (!hasAccess) {
     return (
-      <div className='grid grid-cols-4 gap-6 pb-6'>
+      <div className='grid grid-cols-4 gap-6'>
         {mochChartConfig.map((config) => (
-          <Card key={config.title} >
+          <Card key={config.title} borderColor={config.borderColor} theme={theme} >
             <CardHeader title={config.title} total={config.total} />
             <div className='h-[250px] relative'>
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col justify-center gap-1 z-10 opacity-100">
@@ -82,7 +83,7 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
     return (
       <div className='grid grid-cols-4 gap-6 pb-6'>
         {mochChartConfig.map((config) => (
-          <Card key={config.title} >
+          <Card key={config.title} borderColor={config.borderColor} theme={theme}>
             <CardHeader title={config.title} total={config.total} />
             <div className='h-[250px] relative'>
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col justify-center gap-1 z-10 opacity-100">
@@ -116,7 +117,7 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
       <div>
         <div className='grid grid-cols-4 gap-6 pb-6'>
           {mochChartConfig.map((config) => (
-            <Card key={config.title} >
+            <Card key={config.title} borderColor={config.borderColor} theme={theme}>
               <CardHeader title={config.title} description={config.description} total={config.total} />
               <div className='h-[250px] flex items-center justify-center'>
                 <LoadingSpinner />
@@ -145,7 +146,7 @@ const GoogleSearchConsoleDataGraphs = ({ keywordName, websiteId, googleSearchCam
   return (
     <div className='grid grid-cols-4 gap-6 pb-6'>
       {chartConfig.map((config) => (
-        <Card key={config.title} >
+        <Card key={config.title} borderColor={config.borderColor} theme={theme}>
           <CardHeader title={config.title} description={config.description} total={config.total} />
           <div className='h-[250px]'>
             <GoogleSearchConsoleChart
@@ -176,6 +177,7 @@ const generateChartConfig = (data: GoogleSearchConsoleChartData[]) => {
       title: "Clicks",
       description: "Search Engine Clicks",
       color: "#2563EB",
+      borderColor: "#DBEAFE",
       dataKey: "clicks",
       domain: getChartDomain(data, 'clicks'),
       total: getTotals(data, 'clicks'),
@@ -187,6 +189,7 @@ const generateChartConfig = (data: GoogleSearchConsoleChartData[]) => {
       title: "CTR",
       description: "Click Through Rate",
       color: "#059669",
+      borderColor: "#DCFCE7",
       dataKey: "ctr",
       domain: getChartDomain(data, 'ctr'),
       total: getCtrAverage(data, 'ctr'),
@@ -198,6 +201,7 @@ const generateChartConfig = (data: GoogleSearchConsoleChartData[]) => {
       title: "Position",
       description: "Average Position",
       color: "#F59E0B",
+      borderColor: "#FFEDD5",
       dataKey: "position",
       domain: getChartDomain(data, 'position', true),
       total: getPositionAverage(data, 'position'),
@@ -209,6 +213,7 @@ const generateChartConfig = (data: GoogleSearchConsoleChartData[]) => {
       title: "Impressions",
       description: "Search Engine Impressions",
       color: "#7857FE",
+      borderColor: "#DADCFF",
       dataKey: "impressions",
       domain: getChartDomain(data, 'impressions'),
       total: getTotals(data, 'impressions'),

@@ -54,7 +54,7 @@ function DataTableTopBar<TData>({
   return (
     <div className="flex items-center relative">
       {/* Backdrop */}
-      <div className="absolute w-full -top-6 h-[140px] -z-10 bg-p-25 dark:bg-p-1100 "></div>
+      <div className="absolute w-full -top-6 h-[140px] -z-10 bg-white dark:bg-p-1100 "></div>
       
       {/* Searchbar */}
       <div className="relative rounded-md shadow-sm h-[34px] z-30">

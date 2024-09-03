@@ -82,6 +82,17 @@ module.exports = {
 
         'p-1200': '#04010D',
 
+        //* Light Mode Colors
+        // Text
+        'light-text-dark': '#201755',
+        'light-text-light': '#475569',
+
+        // Background
+
+
+        // Stroke
+        'light-stroke': '#DFE5FA',
+
 
         //* Dark Mode Colors
         // Text

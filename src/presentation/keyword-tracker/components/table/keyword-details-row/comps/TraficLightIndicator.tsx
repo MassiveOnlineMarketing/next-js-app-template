@@ -30,7 +30,7 @@ const TraficLightIndicator: React.FC<TraficLightIndicatorProps> = ({ maxValue, c
 
   if (value > maximumValue) litSquares = 1;
   return (
-    <div className='w-fit flex gap-1 p-1  rounded-[4px] bg-white dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter'>
+    <div className='w-fit flex gap-1 p-1  rounded-[4px] bg-white dark:bg-dark-stroke border border-light-stroke dark:border-none'>
       {Array.from({ length: 10 }, (_, index) => (
         <div
           className={cn(

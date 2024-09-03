@@ -18,7 +18,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "bg-white dark:bg-dark-bg-light p-1 rounded-lg   gradient-mask card-gradient relative",
+          "bg-white dark:bg-dark-bg-light p-1 rounded-lg  border border-light-stroke dark:border-dark-stroke", 
           className,
         )}
         {...props}
@@ -287,7 +287,7 @@ const CardAccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn('rounded-lg data-[state=open]:shadow-CardAccordion overflow-hidden', className)}
+    className={cn('rounded-lg data-[state=open]:shadow-CardAccordion data-[state=open]:bg-primary-50 data-[state=open]:dark:bg-transparent overflow-hidden', className)}
     {...props}
   />
 ))
@@ -302,7 +302,7 @@ const CardAccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         // TODO: light styles
-        "flex flex-1 items-center justify-between gap-3 px-3 py-2 text-sm leading-5 transition-all text-slate-500 dark:text-dark-text-dark dark:hover:text-[#DFE5FA] dark:[&[data-state=open]]:text-[#DFE5FA] [&[data-state=open]>svg]:-rotate-90",
+        "flex flex-1 items-center justify-between gap-3 px-2 py-2 text-sm leading-5 transition-all text-slate-500 dark:text-dark-text-dark dark:hover:text-[#DFE5FA] dark:[&[data-state=open]]:text-[#DFE5FA] [&[data-state=open]>svg]:-rotate-90 bg-white dark:bg-transparent m-1",
         className
       )}
       {...props}
@@ -322,7 +322,7 @@ const CardAccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="mx-[1px] mb-1 dark:bg-p-1100 overflow-hidden text-sm font-light transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    className="mx-[1px] mb-1  dark:bg-p-1100 overflow-hidden text-sm font-light transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...props}
   >
     <div className={cn("p-3 text-slate-500 dark:text-dark-text-dark", className)}>{children}</div>

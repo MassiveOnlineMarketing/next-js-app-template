@@ -7,13 +7,15 @@ import { YAxis, XAxis, Tooltip, ResponsiveContainer, Area, AreaChart, CartesianG
 
 import { Card, CardTitle } from '../Card'
 import { format, parse } from "date-fns";
+import { cn } from '@/presentation/components/utils';
 
 // Define a color array for the different websites
 
 const COLORS = ["#059669", "#3B82F6", "#7857FE", "#EF4444", "#F59E0B", "#10B981", "#3B82F6", "#6366F1", "#8B5CF6", "#EC4899"];
 
-const PositionInsight = ({ keywordId }: {
+const PositionInsight = ({ keywordId, className }: {
   keywordId: string
+  className?: string
 }) => {
   const { isLoading, data: res } = useGoogleSearchCompetitorGraphData(keywordId);
   // console.log('google search competitor graph data', res);
@@ -28,7 +30,7 @@ const PositionInsight = ({ keywordId }: {
   const websiteKeys = keys.filter(key => key !== 'date');
 
   return (
-    <Card className=" mb-6">
+    <Card className={cn( className)}>
       <CardTitle title="Position Insight" />
 
       <div style={{ width: '100%', height: '265px' }}>

@@ -1,18 +1,25 @@
 import { cn } from "@/presentation/components/utils";
+import { hexToRgba } from "@/presentation/utils/colorUtils";
 import React from "react";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
+  borderColor: string;
+  theme: string | undefined;
 }
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, children, borderColor, theme, ...props }, ref) => {
+
+    const themedBorderColor = theme === 'dark' ? hexToRgba(borderColor, 0.09) : borderColor;
+
     return (
       <div
         ref={ref}
         className={cn(
-          "bg-white dark:bg-dark-bg-light  rounded-lg   gradient-mask card-gradient relative",
+          `bg-white dark:bg-dark-bg-light  rounded-lg `, // gradient-mask card-gradient relative
           className,
         )}
+        style={{ borderColor: themedBorderColor, borderWidth: '1px' }}
         {...props}
       >
         {children}
