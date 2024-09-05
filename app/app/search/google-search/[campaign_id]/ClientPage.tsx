@@ -52,38 +52,33 @@ const ClientPage = ({
   // if (!currentGoogleSearchCampaign) {
   //   return <div>No current location</div>;
   // }
-  
+
   if (!latestSerpResults) return <div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>
 
   return (
     <>
-      {/* <BreadCrumbsSearchKeywords campaignName={googleSearchCampaign.campaignName} /> */}
-      <div className=" h-[calc(100vh-96px)] overflow-y-scroll custom-scrollbar pr-4">
-        <div className="border-x border-light-stroke dark:border-dark-stroke h-fit">
-          <CampaignStats filteredResults={filteredResults} />
-          <div className="relative">
-            <DataTable columns={columns(googleSearchCampaign.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
-          </div>
-
-          {/* Dialog for deleting keyword */}
-          <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-            <AlertDialogContent className="bg-white">
-              <AlertDialogHeader>
-                Are you sure you want to delete this keyword?
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel onClick={cancelDelete}>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={confirmDelete}
-                  className="bg-red-200 hover:bg-red-300 text-red-500 hover:text-red-600 border border-red-300 px-[24px] py-[12px] rounded-lg"
-                >
-                  Confirm
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
+      <CampaignStats filteredResults={filteredResults} />
+      <div className="relative">
+        <DataTable columns={columns(googleSearchCampaign.domainUrl)} data={filteredResults} googleSearchCampaign={googleSearchCampaign} />
       </div>
+
+      {/* Dialog for deleting keyword */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent className="bg-white">
+          <AlertDialogHeader>
+            Are you sure you want to delete this keyword?
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelDelete}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-red-200 hover:bg-red-300 text-red-500 hover:text-red-600 border border-red-300 px-[24px] py-[12px] rounded-lg"
+            >
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
 
   );

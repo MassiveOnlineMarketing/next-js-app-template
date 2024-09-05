@@ -1,16 +1,23 @@
-"use client";
+'use server';
 
-import React from "react";
-import GeneralUserSettingsForm from "./_components/general-user-settings-from";
+import React from 'react'
+import ProfileSettingsForm from './ProfileSettingsForm'
+import { auth } from '@/application/services/AuthService';
+// import { isAllowedToViewPage } from '@/app/(auth)/pageAuth';
 
-const Page = () => {
+const page = async () => {
+  const session = await auth();
+  if (!session) return <div>no session</div>;
+
   return (
-    <div className="w-full pb-12 border-b border-gray-200">
-      <div className="max-w-[650px] mx-auto ">
-        <GeneralUserSettingsForm />
+    <>
+      <div className='px-6 pt-6 pb-3 flex flex-col gap-[6px]'>
+        <p className='text-xl font-medium text-p-800'>Profile Settings</p>
+        <p>Manage your profile settings here</p>
       </div>
-    </div>
-  );
-};
+      <ProfileSettingsForm user={session.user} />
+    </>
+  )
+}
 
-export default Page;
+export default page

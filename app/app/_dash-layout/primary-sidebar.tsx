@@ -43,9 +43,31 @@ function isActive(href: string, pathname: string) {
 
 const PrimarySidebar = () => {
   const pathname = usePathname();
+  const pathIsSettings = pathname.includes('/app/settings');
+
+  return (
+    <nav className="lg:block hidden min-h-full w-[328px] relative z-10 bg-primary-50 dark:bg-p-1100">
+      <ul className="flex flex-col min-h-full">
+        
+        <li className="h-[72px]">
+          logo
+        </li>
+
+        {pathIsSettings ? <SettingsMenu /> : <MainMenu pathname={pathname} />}
+        
+        <li className="p-6 mt-auto">
+          <UserActions />
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
+
+const MainMenu = ({ pathname }: { pathname: string }) => {
+
   const router = useRouter();
   const selectedGoogleSearchCampaign = useGoogleSearchCampaignDetailsStore((state) => state.campaignDetails);
-
   const navigation = [
     { name: 'Home', href: '/app', icon: HomeIcon },
     { name: "Keyword Tracker", href: `/app/search/google-search/${selectedGoogleSearchCampaign?.id}`, icon: PresentationChartLineIcon, disabled: !selectedGoogleSearchCampaign?.id },
@@ -55,67 +77,44 @@ const PrimarySidebar = () => {
 
 
   return (
-    <nav className="lg:block hidden h-full w-fit min-w-[398px] bg-white-50 relative z-10 bg-primary-50 dark:bg-p-1100">
-      <ul className="flex gap-6 flex-col min-h-full">
-        <li className="mb-6 px-6">
-          <div className="pb-[15px] flex items-center justify-center border-b">
-            <MassiveDashLogo />
-          </div>
-        </li>
+    <>
+      <li className="px-6 pb-3">
+        <TestWebsiteSelectionButton />
+      </li>
 
-        <li className="px-6">
-          <TestWebsiteSelectionButton />
-        </li>
 
-        <li className="px-6">
-          <ul>
-            {navigation.map((item) => (
-              <li key={item.name}>
-                <NavItem item={item} pathname={pathname}/>
-              </li>
-            ))}
-          </ul>
-        </li>
+      <li className="px-6 pb-3">
+        <p className="text-xs text-slate-400 dark:text-dark-text-light">Main Menu</p>
+        <ul>
+          {navigation.map((item) => (
+            <li key={item.name}>
+              <MainNavItem item={item} pathname={pathname} />
+            </li>
+          ))}
+        </ul>
+      </li>
 
-        <li className="mt-auto px-6">
-          <ThemeSwitcher />
-          <div>
-            <button onClick={() => router.back()}>
-              <p>back</p>
-            </button>
-            <button onClick={() => router.forward()}>
-              <p>forward</p>
-            </button>
-          </div>
-        </li>
-        <li className="px-6">
-          {/* <UpdateWebsiteButton>
-            <Cog6ToothIcon className="w-6 h-6 text-gray-400" />
-            <span className="text-gray-500 text-base font-medium">
-              Website Settings
-            </span>
-          </UpdateWebsiteButton> */}
-          {/* <Link href="/search/help" className="py-2 flex gap-4 items-center">
-            <QuestionMarkCircleIcon className="w-6 h-6 text-gray-400" />
-            <span className="text-gray-500 text-base font-medium">
-              Help Center
-            </span>
-          </Link> */}
-        </li>
-        <li className="p-6">
-          <UserActions />
-        </li>
-      </ul>
-    </nav>
-  );
-};
+      <li className="mt-auto px-6">
+        <ThemeSwitcher />
+        <div>
+          <button onClick={() => router.back()}>
+            <p>back</p>
+          </button>
+          <button onClick={() => router.forward()}>
+            <p>forward</p>
+          </button>
+        </div>
+      </li>
+    </>
+  )
+}
 
-type NavItemProps = {
+type MainNavItemProps = {
   item: NavigationProps;
   pathname: string;
 };
 
-const NavItem = ({ item, pathname }: NavItemProps) => {
+const MainNavItem = ({ item, pathname }: MainNavItemProps) => {
 
   return (
     <div
@@ -133,7 +132,7 @@ const NavItem = ({ item, pathname }: NavItemProps) => {
             "h-6 w-6",
             isActive(item.href, pathname)
               ? "text-primary-500 dark:text-dark-text-light"
-              : "text-gray-500 dark:text-dark-text-dark",
+              : "text-light-text-light dark:text-dark-text-dark",
           )}
         />
         <Link
@@ -142,7 +141,7 @@ const NavItem = ({ item, pathname }: NavItemProps) => {
             "text-base font-medium",
             isActive(item.href, pathname)
               ? "text-primary-500 dark:text-dark-text-light"
-              : "text-gray-500 dark:text-dark-text-dark",
+              : "text-light-text-light dark:text-dark-text-dark",
           )}
         >
           {item.name}
@@ -150,14 +149,48 @@ const NavItem = ({ item, pathname }: NavItemProps) => {
       </div>
       <div
         className={cn(
-          "dark:absolute top-0 h-full transition-all duration-500",
+          "absolute top-0 h-full transition-all duration-500",
           isActive(item.href, pathname)
-            ? "bg-gradient-to-r from-primary-500/15 to-transparent  border-x dark:border-dark-stroke  w-[350px]"
+            ? "dark:bg-gradient-to-r from-primary-500/15 to-transparent  border-x dark:border-dark-stroke  w-[292px]"
             : "w-0",
         )}
       >
       </div>
     </div>
+  )
+}
+
+
+
+const SettingsMenu = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const navigation = [
+    { name: 'Profile', href: '/app/settings/profile', icon: Cog6ToothIcon },
+    { name: 'Integration', href: '/app/settings/integrations', icon: PresentationChartLineIcon },
+  ]
+
+  const websites = [
+
+  ]
+
+  const locations = [
+
+  ]
+
+  return (
+    <>
+      <li className="px-6">
+        <p className="text-xs text-slate-400 dark:text-dark-text-light">Settings Menu</p>
+        {/* <ul>
+          {navigation.map((item) => (
+            <li key={item.name}>
+              <NavItem item={item} pathname={pathname} />
+            </li>
+          ))}
+        </ul> */}
+      </li>
+    </>
   )
 }
 
@@ -169,7 +202,7 @@ const UserActions = () => {
   const handleLogout = async () => {
     await logout();
   };
-  
+
   return (
     <div className="p-1 border dark:bg-dark-bg-light dark:border-dark-stroke border-mix-blend-multiply dark:border-mix-blend-plus-lighter rounded-xl group bg-white ">
       <div className="h-[54px] p-[6px] flex gap-3 justify-center items-center">

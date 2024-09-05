@@ -19,12 +19,13 @@ const page = async ({
   if (!googleSearchCampaign.data) return <div className='flex h-full w-full items-center justify-center'>Project not Found</div>;
 
   return (
-    <div className="w-full h-full">
+    <>
       <BreadCrumbsSearchKeywords campaignName={googleSearchCampaign.data!.campaignName} />
 
       <Suspense fallback={<div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>}>
         <PageInitializationLoading project={googleSearchCampaign.data} />
-      </Suspense>  </div>
+      </Suspense>
+    </>
   )
 }
 

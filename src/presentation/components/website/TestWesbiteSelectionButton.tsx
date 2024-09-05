@@ -62,7 +62,7 @@ const TestWebsiteSelectionButton = () => {
 
   if (isLoading === true) {
     return (
-      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[350px]'>
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[292px]'>
         <WebsiteSelectorMock label='Loading...' />
         <LocationSelectorMock label='Loading...' />
       </div>
@@ -76,7 +76,7 @@ const TestWebsiteSelectionButton = () => {
   // console.log('websiteWithGoogleSearchCampaigns', websiteWithGoogleSearchCampaigns)
   if (websiteWithGoogleSearchCampaigns.length === 0) {
     return (
-      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[350px]'>
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[292px]'>
         <WebsiteSelectorMock label='Click to setup website' onClick={handleCreateWebsite} />
         <LocationSelectorMock label='No location to select' />
       </div>
@@ -86,12 +86,12 @@ const TestWebsiteSelectionButton = () => {
   // no website selected
   if (!selectedWebsite) {
     return (
-      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[350px]'>
+      <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[292px]'>
         <Popover onOpenChange={setPopoverOpen} open={popoverOpen} >
           <PopoverTrigger className='flex items-center mb-2'>
             <CubeTransparentIcon className="h-9 w-9 text-gray-700" />
-            <p className='pl-3 dark:text-dark-text-light'>Select Website</p>
-            <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
+            <p className='pl-3 text-light-text-dark dark:text-dark-text-light'>Select Website</p>
+            <ChevronUpDownIcon className='min-w-5 h-5 ml-auto mr-[6px] text-light-text-light dark:text-dark-text-dark' />
           </PopoverTrigger>
           <WebsitePopover
             websiteWithGoogleSearchCampaigns={websiteWithGoogleSearchCampaigns}
@@ -111,13 +111,13 @@ const TestWebsiteSelectionButton = () => {
     console.log('create location')
   }
   return (
-    <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[350px]'>
+    <div className='flex flex-col p-[6px] rounded-md border dark:border-dark-stroke bg-white dark:bg-dark-bg-light w-[292px]'>
       {/* Website selector */}
       <Popover onOpenChange={setPopoverOpen} open={popoverOpen}>
         <PopoverTrigger className='flex items-center mb-2'>
           <img src={getFaviconUrl(selectedWebsite?.domainUrl)} width={36} height={36} alt='favicon' className='border dark:border-dark-stroke rounded-[4px]' />
-          <p className='pl-3 dark:text-dark-text-light'>{selectedWebsite.websiteName}</p>
-          <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
+          <p className='pl-3 text-light-text-dark dark:text-dark-text-light'>{selectedWebsite.websiteName}</p>
+          <ChevronUpDownIcon className='min-w-5 h-5 ml-auto mr-[6px] text-light-text-light dark:text-dark-text-dark' />
         </PopoverTrigger>
         <WebsitePopover
           websiteWithGoogleSearchCampaigns={websiteWithGoogleSearchCampaigns}
@@ -132,18 +132,18 @@ const TestWebsiteSelectionButton = () => {
       {selectedWebsite && websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite.id).length > 0 &&
         websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite.id)[0].googleSearchCampaign.length > 0 ? (
         <DropdownMenu>
-          <DropdownMenuTrigger className='px-3 py-2 bg-p-25 dark:bg-dark-bg-light dark:text-dark-text-dark text-left flex items-center gap-[6px]'>
-            <MapPinIcon className='min-w-5 h-5 dark:text-dark-text-dark' />
+          <DropdownMenuTrigger className='px-3 py-2 bg-p-25 dark:bg-dark-bg-light text-light-text-light dark:text-dark-text-dark text-left flex items-center gap-[6px]'>
+            <MapPinIcon className='min-w-5 h-5 text-slate-400 dark:text-dark-text-dark' />
             <p className='text-nowrap text-sm'>
               {selectedGoogleSearchCampaign?.location ? `${selectedGoogleSearchCampaign.country} ${selectedGoogleSearchCampaign.location.split(',')[0]}` : (
                 selectedGoogleSearchCampaign?.country ? selectedGoogleSearchCampaign.country : 'Select Location'
               )}
             </p>
             <div className='w-full h-[1px] bg-p-100 dark:bg-dark-stroke'></div>
-            <ChevronDownIcon className='min-w-5 h-5 ml-auto dark:text-dark-text-dark' />
+            <ChevronDownIcon className='min-w-5 h-5 ml-auto text-light-text-light dark:text-dark-text-dark' />
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent side="bottom" className=" w-[350px]">
+          <DropdownMenuContent side="bottom" className=" w-[292px]">
             {websiteWithGoogleSearchCampaigns.filter(website => website.id === selectedWebsite?.id).map((website) => (
               <React.Fragment key={website.id}>
                 {website.googleSearchCampaign.map((campaign) => (
@@ -173,8 +173,8 @@ const WebsiteSelectorMock = ({ label, onClick }: { label: string, onClick?: () =
       onClick={onClick}
     >
       <CubeTransparentIcon className="h-9 w-9 text-gray-700" />
-      <p className='pl-3 dark:text-dark-text-light'>{label}</p>
-      <ChevronUpDownIcon className='min-w-6 h-6 ml-auto mr-[6px] dark:text-dark-text-dark' />
+      <p className='pl-3 text-light-text-dark dark:text-dark-text-light'>{label}</p>
+      <ChevronUpDownIcon className='min-w-5 h-5 ml-auto mr-[6px] text-light-text-light dark:text-dark-text-dark' />
     </div>
   )
 }
@@ -188,12 +188,12 @@ const LocationSelectorMock = ({ label, onClick }: { label: string, onClick?: () 
       )}
       onClick={onClick}
     >
-      <MapPinIcon className='min-w-5 h-5 dark:text-dark-text-dark' />
+      <MapPinIcon className='min-w-5 h-5 text-slate-400 dark:text-dark-text-dark' />
       <p className='text-nowrap text-sm'>
         {label}
       </p>
       <div className='w-full h-[1px] bg-p-100 dark:bg-dark-stroke'></div>
-      <ChevronDownIcon className='min-w-5 h-5 ml-auto dark:text-dark-text-dark' />
+      <ChevronDownIcon className='min-w-5 h-5 ml-auto text-light-text-light dark:text-dark-text-dark' />
     </div>
   )
 }

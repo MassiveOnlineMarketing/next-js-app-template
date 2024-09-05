@@ -98,7 +98,7 @@ function DataTable<TData, TValue>({
   return (
 
     <div className="p-6 pb-10 ">
-      <div className="sticky top-0 pt-6 dark:bg-p-1100 z-20" >
+      <div className="sticky top-[69px] pt-6 dark:bg-p-1100 z-20" >
         {/* Top bar */}
         <DataTableTopBar
           table={table}
@@ -112,7 +112,7 @@ function DataTable<TData, TValue>({
         {/* Dit naar Table */}
         <table className="w-full">
           {/* Weg , overflow hidden*/}
-          <TableHeader className="sticky top-[92px] z-20 w-full      rouded-md  bg-white dark:bg-p-1100">
+          <TableHeader className="sticky top-[161px] z-20 w-full      rouded-md  bg-white dark:bg-p-1100">
             <div className="absolute w-full -m-[1px] h-full border border-light-stroke dark:border-dark-stroke pointer-events-none rounded-t-[10px]"></div>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
